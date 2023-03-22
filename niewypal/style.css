@@ -1,0 +1,164 @@
+/* html {
+    background-color: white;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+body {
+    background-color: black;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    font-size: 1.5em;
+    background-color: WhiteSmoke;
+    height: 100%;
+    width: 100%;
+}
+
+
+.header {
+    display: flex;
+    align-items: flex-start;
+    height: 10%;
+    background-color: Gainsboro;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.section1 {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.section2 {
+    margin-bottom: 5vh;
+    height: 20%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.login-form {
+    background-color: Gainsboro;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 20%;
+    height: 40%;
+}
+
+.login-form > form {
+    background-color: Gainsboro;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.promo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: Gainsboro;
+    width: 20%;
+    height: 40%;
+}
+
+.announcements {
+    width: 80%;
+    background-color: Gainsboro;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.footer {
+    display: flex;
+    height: 10%;
+    background-color: Gainsboro;
+    justify-content: center;
+    align-items: center;
+} */
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    /* margin: 0;
+    padding: 0; */
+}
+
+.container-fluid {
+    height: 10%;
+    font-size: 1.5em;
+    background-color: lightgray;
+}
+.container {
+    height: 80%;
+    font-size: 1.5em;
+    background-color: gray;
+    /* display: flex; */
+    /* align-items: center; */
+    /* align-content: center; */
+}
+
+.login-form {
+    background-color: Gainsboro;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 20%;
+    height: 40%;
+}
+
+.login-form > form {
+    padding: 30px;
+    background-color: Gainsboro;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.promo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: Gainsboro;
+    width: 20%;
+    height: 40%;
+
+}
+
+.filler {
+    height: 25%;
+    margin: 0;
+    padding: 0;
+}
+
+
+.announcments {
+    display: flex;
+    text-justify:auto;
+    text-align: center;
+}

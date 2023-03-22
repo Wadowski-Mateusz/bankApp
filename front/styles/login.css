@@ -1,0 +1,72 @@
+.main {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.section1 {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.section2 {
+    margin-bottom: 5vh;
+    height: 20%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.login-form {
+    background-color: Gainsboro;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 20%;
+    height: 40%;
+}
+
+.login-form > form, .code-form > form {
+    /* background-color: gray; */
+    background-color: Gainsboro;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.code-form {
+    background-color: Gainsboro;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 70%;
+    height: 40%;
+}
+
+.promo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: Gainsboro;
+    width: 20%;
+    height: 40%;
+}
+
+.announcements {
+    width: 80%;
+    background-color: Gainsboro;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+}
