@@ -8,10 +8,10 @@
 
 * nazwy kart
 
-* karty z tworzeniem lokaty, kredytów, przelewów
+* tworzenie lokat - powinno otworzyć się jakieś okienko w oknie
 
-* usuwanie kont
+* usuwanie lokat i kredytów po najechaniu kursorem pojawi się ikonka
 
-* usuwanie lokat/kredytów
+* numer konta
 
-* jakiś panel zarządzania?
+* navbar importować kiedyś za pomocą `import` w react

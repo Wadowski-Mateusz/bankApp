@@ -15,8 +15,8 @@
     align-items: center;
 }
 
-.balance {
-    width: 80%;
+.general-info {
+    width: 60%;
     height: 15%;
     /* padding: 1%; */
     background-color: green;
@@ -34,12 +34,16 @@
     width: 20%;
 }
 
-.balance2 {
+.balance {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 1em 2em 1em 1em;
     width: 20%;
+}
+
+.number {
+    background-color: aqua;
 }
 
 .history {

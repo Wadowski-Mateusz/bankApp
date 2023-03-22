@@ -1,11 +1,30 @@
 .main{
-    background-color: rebeccapurple;
+    background-color: whitesmoke;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .options {
-    background-color: salmon;
+    width: 40%;
 }
 
 .option {
-    background-color: green;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2em;
+    padding: 1em 2em;
+    background-color: gainsboro;
+}
+
+.button {
+    justify-content: center;
+    background-color: whitesmoke;
+}
+
+.button > button {
+    padding: 0.8em 1.5em;
+    border-radius: 8px;
+    font-size: 1.5em;
 }
