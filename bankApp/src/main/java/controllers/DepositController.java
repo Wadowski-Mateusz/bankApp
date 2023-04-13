@@ -1,37 +1,39 @@
 package controllers;
 
 import models.Deposit;
-import org.atmosphere.config.service.Post;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
-@RequestMapping
+@RequestMapping("/deposits")
 public class DepositController {
 
     // id - user id
     @GetMapping("/{id}")
-    public Deposit[] getAllDeposits(@PathVariable int id) {
+    public ResponseEntity<Deposit[]> getAllDeposits(@PathVariable UUID id) {
         // TODO
         throw new UnsupportedOperationException("");
     }
 
     // id - id deposit
     @GetMapping("/{id}")
-    public Deposit getDeposit(@PathVariable int id) {
+    public ResponseEntity<Deposit> getDeposit(@PathVariable UUID id) {
         // TODO
         throw new UnsupportedOperationException("");
     }
 
     // id - id deposit
     @DeleteMapping("/{id}")
-    public Deposit deleteDeposit(@PathVariable int id) {
+    public ResponseEntity<Deposit> deleteDeposit(@PathVariable UUID id) {
         // TODO
         throw new UnsupportedOperationException("");
     }
 
     // id - user id
     @PostMapping("/{id}")
-    public Deposit postDeposit(@PathVariable int id, @RequestBody Deposit deposit) {
+    public ResponseEntity<Deposit> postDeposit(@PathVariable UUID id, @RequestBody Deposit deposit) {
         // TODO
         throw new UnsupportedOperationException("");
     }
