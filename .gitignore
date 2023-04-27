@@ -1,0 +1,10 @@
+bankApp/src/main/resources/application.properties
+
+.idea/
+
+
+target/
+
+
+*.tmp
+*.log
