@@ -1,5 +1,6 @@
 package bankApp.services;
 
+import bankApp.DTOs.UserDTO;
 import bankApp.entities.User;
 import bankApp.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -36,4 +37,14 @@ public class UserService {
     public User updateUser(User user) {
         return userRepository.save(user);
     }
+
+    public Optional<User> getUserByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    public UserDTO convertUserToDTO(User user) {
+        // TODO
+        return null;
+    }
+
 }

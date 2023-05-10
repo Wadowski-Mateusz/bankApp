@@ -20,7 +20,4 @@ public class UserOptions {
     @Column(name = "email_subscription", nullable = false)
     private boolean emailSubscription;
 
-    @Column(name = "two_step_login", nullable = false)
-    private boolean twoStepLogin;
-
 }
