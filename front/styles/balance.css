@@ -53,3 +53,25 @@
     background-color: purple;
     margin-top: 2em;
 }
+
+.make-transaction{
+    width: 80%;
+    background-color: #646464;
+}
+
+.make-transaction > form {
+    /* padding: 1em; */
+    width: 100%;
+    background-color: #A0A0A0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.make-transaction > form > .input-column {
+    /* display: flex; */
+    /* flex-direction: column; */
+    display: block;
+    
+}
