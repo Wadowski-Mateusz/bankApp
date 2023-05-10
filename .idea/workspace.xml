@@ -5,11 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2adbc0a4-6489-45a6-9d3a-4fd00b12af61" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/bankApp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/bankApp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/771f55c7-1732-4e9b-9716-317932a9420d.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/771f55c7-1732-4e9b-9716-317932a9420d.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/771f55c7-1732-4e9b-9716-317932a9420d/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/771f55c7-1732-4e9b-9716-317932a9420d/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/controllers/DepositController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/controllers/PromoController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/controllers/TransactionController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/controllers/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/bankApp/src/main/java/entities/Address.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/Answer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/bankApp/src/main/java/entities/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/Deposit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/Loan.java" beforeDir="false" afterPath="$PROJECT_DIR$/bankApp/src/main/java/entities/Loan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/Promo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/Question.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/SavingAccount.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/bankApp/src/main/java/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/UserDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/bankApp/src/main/java/entities/UserDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bankApp/src/main/java/entities/UserOptions.java" beforeDir="false" afterPath="$PROJECT_DIR$/bankApp/src/main/java/entities/UserOptions.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bankApp/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/bankApp/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/erdDiagram.drawio" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/styles/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/front/styles/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/views/balance.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/views/balance.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/views/deposit.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/views/loans.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/views/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/views/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/views/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/views/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/views/register2.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/views/register2.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +40,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -36,6 +58,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectId" id="2NEJD8kb2ROzOYBPNAQt4BIhZKf" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -45,6 +70,10 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
@@ -55,7 +84,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
@@ -92,7 +121,10 @@
       <workItem from="1682516584764" duration="341000" />
       <workItem from="1682516943693" duration="1549000" />
       <workItem from="1682527712623" duration="3215000" />
-      <workItem from="1682586758250" duration="4232000" />
+      <workItem from="1682586758250" duration="11475000" />
+      <workItem from="1682789574442" duration="30000" />
+      <workItem from="1683705790506" duration="18000" />
+      <workItem from="1683707207779" duration="5203000" />
     </task>
     <servers />
   </component>

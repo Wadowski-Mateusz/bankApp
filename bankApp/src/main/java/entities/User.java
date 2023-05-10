@@ -4,9 +4,9 @@ import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
 @Table(name = "users")
 public class User {
@@ -23,9 +23,6 @@ public class User {
     @Column(name = "is_verified", nullable = false)
     private boolean isVerified;
 
-    @Column(name = "user_details_id", nullable = false)
-    private UUID userDetails;
-
-    @Column(name = "user_option_id", nullable = false)
-    private UUID userOptions;
+    @Column(name = "role_id", nullable = false)
+    private UUID roleId;
 }

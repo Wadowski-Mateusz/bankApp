@@ -6,9 +6,9 @@ import lombok.*;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
 @Table(name = "user_details")
 public class UserDetails {
@@ -18,9 +18,8 @@ public class UserDetails {
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private Address address;
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @Column(name = "name")
     private String name;

@@ -19,6 +19,9 @@ public class Address {
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private UUID id;
 
+    @Column(name = "user_details_id", nullable = false)
+    private UUID userDetailsId;
+
     @Column(name = "country", nullable = false)
     private String country;
 
