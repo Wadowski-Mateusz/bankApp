@@ -1,4 +1,6 @@
 package bankApp.DTOs;
 
-public class UserDTO {
+import java.util.UUID;
+
+public record UserDTO(UUID id, String fullName) {
 }
