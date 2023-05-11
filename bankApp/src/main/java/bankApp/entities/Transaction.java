@@ -21,7 +21,7 @@ public class Transaction {
     private Account fromAccount;
 
     @ManyToOne
-    @JoinColumn(name = "from_account")
+    @JoinColumn(name = "to_account")
     private Account toAccount;
 
     @Column(name = "date", nullable = false)

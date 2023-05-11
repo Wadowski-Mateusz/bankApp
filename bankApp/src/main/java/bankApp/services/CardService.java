@@ -32,7 +32,7 @@ public class CardService {
         Card existingCard = cardRepository.findById(id).orElse(null);
         if (existingCard != null) {
             existingCard.setNumber(card.getNumber());
-            existingCard.setUserId(card.getUserId());
+//            existingCard.setUserId(card.getUserId());
             existingCard.setExpiryDate(card.getExpiryDate());
             existingCard.setCvv(card.getCvv());
             return cardRepository.save(existingCard);

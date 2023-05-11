@@ -16,4 +16,5 @@
 
 * navbar importować kiedyś za pomocą `import` w react
 
-* usunąć 2 step factor z mail
+
+* poprawić  serwisy (po zmianach w bazie)

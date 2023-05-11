@@ -19,9 +19,6 @@ public class Card {
     @Column(name = "number", nullable = false, unique = true)
     private String number;
 
-    @Column(name = "account_id", nullable = false)
-    private UUID userId;
-
     @Column(name = "expiry_date", nullable = false)
     private Timestamp expiryDate;
 

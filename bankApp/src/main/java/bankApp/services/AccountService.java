@@ -32,7 +32,7 @@ public class AccountService {
         Account account = accountRepository.findById(accountId).orElse(null);
 
         if (account != null) {
-            account.setUserId(accountDetails.getUserId());
+//            account.setUserId(accountDetails.getUserId());
             account.setBalance(accountDetails.getBalance());
             account.setNumber(accountDetails.getNumber());
 
