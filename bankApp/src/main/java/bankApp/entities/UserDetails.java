@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -28,7 +29,7 @@ public class UserDetails {
     private String email;
 
     @Column(name = "birthday")
-    private Timestamp birthday;
+    private LocalDate birthday;
 
     @Column(name = "id_number")
     private String idNumber;

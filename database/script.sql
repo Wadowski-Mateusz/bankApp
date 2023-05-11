@@ -38,7 +38,7 @@ create table user_details
     name      varchar,
     surname   varchar,
     email     varchar,
-    birthday  timestamp,
+    birthday  date,
     id_number varchar,
     user_id   uuid                           not null
         unique

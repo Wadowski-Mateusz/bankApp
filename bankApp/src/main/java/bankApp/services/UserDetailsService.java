@@ -1,8 +1,8 @@
 package bankApp.services;
 
+import bankApp.DTOs.UserDetailsDTO;
 import bankApp.entities.UserDetails;
 import bankApp.repositories.UserDetailsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,4 +37,15 @@ public class UserDetailsService {
     public UserDetails updateUserDetails(UserDetails userDetails) {
         return userDetailsRepository.save(userDetails);
     }
+
+
+    public UserDetailsDTO convertUserDetailsToDTO(UserDetails userDetails) {
+        return new UserDetailsDTO(
+                userDetails.getFullName(),
+                userDetails.getEmail(),
+                userDetails.getBirthday()
+        );
+    }
+
+
 }

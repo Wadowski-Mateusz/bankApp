@@ -22,7 +22,7 @@ public class RoleService {
         return roleRepository.save(role);
     }
 
-    public Optional<Role> getRoleById(UUID id) {
+    public Role getRoleById(UUID id) {
         return roleRepository.findById(id);
     }
 

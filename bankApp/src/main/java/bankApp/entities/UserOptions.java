@@ -4,9 +4,9 @@ import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
 @Table(name = "user_options")
 public class UserOptions {

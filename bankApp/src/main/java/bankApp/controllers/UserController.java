@@ -2,16 +2,16 @@ package bankApp.controllers;
 
 
 import bankApp.DTOs.AccountDTO;
-import bankApp.entities.Account;
+import bankApp.DTOs.UserOptionsDTO;
 import bankApp.entities.User;
 import bankApp.exceptions.UserNotFoundException;
 import bankApp.services.AccountService;
+import bankApp.services.UserOptionsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import bankApp.services.UserService;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @CrossOrigin
@@ -43,10 +43,10 @@ public class UserController {
         try {
             if (u == null)
                 throw new UserNotFoundException("");
+            return ResponseEntity.ok(AccountService.convertAccountToDto(u.getAccount()));
         } catch (UserNotFoundException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.ok(AccountService.convertAccountToDto(u.getAccount()));
     }
 
 }

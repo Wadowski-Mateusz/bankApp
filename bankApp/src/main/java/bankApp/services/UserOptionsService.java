@@ -1,5 +1,6 @@
 package bankApp.services;
 
+import bankApp.DTOs.UserOptionsDTO;
 import bankApp.entities.UserOptions;
 import bankApp.repositories.UserOptionsRepository;
 import org.springframework.stereotype.Service;
@@ -36,4 +37,9 @@ public class UserOptionsService {
     public UserOptions updateUserOptions(UserOptions userOptions) {
         return userOptionsRepository.save(userOptions);
     }
+
+    public UserOptionsDTO convertUserOptionsToDTO(UserOptions userOptions) {
+        return new UserOptionsDTO(userOptions.isEmailSubscription());
+    }
+
 }

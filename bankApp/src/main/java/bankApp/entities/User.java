@@ -42,4 +42,13 @@ public class User {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
+    public User(String login, String password, boolean isVerified, Role role) {
+        this.login = login;
+        this.password = password;
+        this.isVerified = isVerified;
+        this.role = role;
+    }
+
+//    public User(String login, String password, boolean isVerified)
+
 }
