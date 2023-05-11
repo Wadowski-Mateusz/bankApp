@@ -36,7 +36,7 @@ public class UserOptionsController {
         }
     }
 
-    @PutMapping
+    @PutMapping//("/update")
     public ResponseEntity<?> setUserSettings(@RequestBody UserOptionsDTO uoDTO, @RequestParam UUID userId) {
         User user = userService.getUserById(userId).orElse(null);
         try {
@@ -44,7 +44,7 @@ public class UserOptionsController {
             UserOptions uo = user.getUserOptions();
             uo.setEmailSubscription(uoDTO.emailSubscription());
             userOptionsService.updateUserOptions(uo);
-            return (ResponseEntity<?>) ResponseEntity.ok();
+            return ResponseEntity.ok().build();
         } catch (UserNotFoundException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

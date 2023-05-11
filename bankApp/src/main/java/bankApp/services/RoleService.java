@@ -2,7 +2,6 @@ package bankApp.services;
 
 import bankApp.entities.Role;
 import bankApp.repositories.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class RoleService {
         return roleRepository.save(role);
     }
 
-    public Role getRoleById(UUID id) {
+    public Optional<Role> getRoleById(UUID id) {
         return roleRepository.findById(id);
     }
 
