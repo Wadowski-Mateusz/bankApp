@@ -1,8 +1,10 @@
 package bankApp.DTOs;
 
+import java.time.LocalDate;
+
 public record AnnouncementToAddDTO(
-        String dateFrom,
-        String dateTo,
+        LocalDate dateFrom,
+        LocalDate dateTo,
         String content
 ) {
 }

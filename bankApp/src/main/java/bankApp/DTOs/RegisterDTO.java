@@ -1,5 +1,7 @@
 package bankApp.DTOs;
 
+import java.time.LocalDate;
+
 public record RegisterDTO(
         String login,
         String password,
@@ -7,7 +9,7 @@ public record RegisterDTO(
         String name,
         String surname,
         String email,
-        String birthday,
+        LocalDate birthday,
         String idNumber,
         String pesel,
         String country,

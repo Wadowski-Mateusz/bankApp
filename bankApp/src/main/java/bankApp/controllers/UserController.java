@@ -1,12 +1,17 @@
 package bankApp.controllers;
 
 
+import bankApp.DTOs.AccountDTO;
+import bankApp.entities.Account;
 import bankApp.entities.User;
+import bankApp.exceptions.UserNotFoundException;
+import bankApp.services.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import bankApp.services.UserService;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @CrossOrigin
@@ -30,6 +35,18 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @GetMapping("/account")
+    public ResponseEntity<AccountDTO> getAccountByUserId(@RequestParam UUID userId) {
+        User u = userService.getUserById(userId).orElseGet(null);
+        try {
+            if (u == null)
+                throw new UserNotFoundException("");
+        } catch (UserNotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(AccountService.convertAccountToDto(u.getAccount()));
     }
 
 }

@@ -1,7 +1,10 @@
 package bankApp.services;
 
+import bankApp.DTOs.AccountDTO;
 import bankApp.entities.Account;
 import bankApp.repositories.AccountRepository;
+import bankApp.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,4 +55,11 @@ public class AccountService {
             return false;
         }
     }
+
+
+    public static AccountDTO convertAccountToDto(Account account) {
+        return new AccountDTO(account.getBalance(), account.getNumber());
+    }
+
+
 }
