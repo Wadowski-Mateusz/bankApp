@@ -19,8 +19,8 @@ public class Address {
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private UUID id;
 
-    @Column(name = "user_details_id", nullable = false)
-    private UUID userDetailsId;
+//    @Column(name = "user_details_id", nullable = false)
+//    private UUID userDetailsId;
 
     @Column(name = "country", nullable = false)
     private String country;
@@ -39,5 +39,9 @@ public class Address {
 
     @Column(name = "zip")
     private String zip;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_details_id")
+    private UserDetails userDetails;
 
 }

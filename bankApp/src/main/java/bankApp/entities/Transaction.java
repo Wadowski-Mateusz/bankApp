@@ -16,11 +16,13 @@ public class Transaction {
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private UUID id;
 
-    @Column(name = "from_user", nullable = false)
-    private UUID fromUser;
+    @ManyToOne
+    @JoinColumn(name = "from_account")
+    private Account fromAccount;
 
-    @Column(name = "to_user", nullable = false)
-    private UUID toUser;
+    @ManyToOne
+    @JoinColumn(name = "from_account")
+    private Account toAccount;
 
     @Column(name = "date", nullable = false)
     private LocalDateTime date;

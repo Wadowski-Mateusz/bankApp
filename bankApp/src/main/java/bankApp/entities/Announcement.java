@@ -14,7 +14,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "announcements")
 public class Announcement {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private UUID id;
 

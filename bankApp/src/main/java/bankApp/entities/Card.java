@@ -27,4 +27,8 @@ public class Card {
 
     @Column(name = "cvv", nullable = false)
     private String cvv;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
 }

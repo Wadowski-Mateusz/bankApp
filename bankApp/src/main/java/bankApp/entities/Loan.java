@@ -12,13 +12,11 @@ import lombok.*;
 @Entity
 @Table(name = "loans")
 public class Loan {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private UUID id;
-
-    @Column(name = "user_id", nullable = false)
-    private UUID userId;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -34,4 +32,9 @@ public class Loan {
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount = BigDecimal.ZERO;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

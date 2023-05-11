@@ -1,5 +1,6 @@
 package bankApp.entities;
 
+import java.util.List;
 import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,6 +12,7 @@ import lombok.*;
 @Table(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private UUID id;
 
@@ -23,10 +25,21 @@ public class User {
     @Column(name = "is_verified", nullable = false)
     private boolean isVerified;
 
-    @Column(name = "role_id", nullable = false)
-    private UUID roleId;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Account account;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserDetails userDetails;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserOptions userOptions;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Loan> loans;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    private Role role;
 
 }

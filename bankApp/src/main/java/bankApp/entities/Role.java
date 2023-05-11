@@ -10,7 +10,9 @@ import lombok.*;
 @Entity
 @Table(name = "roles")
 public class Role {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private UUID id;
 

@@ -37,6 +37,9 @@ public class UserDetails {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToOne(mappedBy = "userDetails", cascade = CascadeType.ALL)
+    private Address address;
+
     public String getFullName() {
         return name + " " + surname;
     }
