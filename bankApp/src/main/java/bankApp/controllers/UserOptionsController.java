@@ -29,7 +29,8 @@ public class UserOptionsController {
     public ResponseEntity<UserOptionsDTO> getUserSettings(@RequestParam UUID userId) {
         User u = userService.getUserById(userId).orElse(null);
         try {
-            if (u == null) throw new UserNotFoundException("");
+            if (u == null)
+                throw new UserNotFoundException("");
             return ResponseEntity.ok(userOptionsService.convertUserOptionsToDTO(u.getUserOptions()));
         } catch (UserNotFoundException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -40,7 +41,8 @@ public class UserOptionsController {
     public ResponseEntity<?> setUserSettings(@RequestBody UserOptionsDTO uoDTO, @RequestParam UUID userId) {
         User user = userService.getUserById(userId).orElse(null);
         try {
-            if (user == null) throw new UserNotFoundException("");
+            if (user == null)
+                throw new UserNotFoundException("");
             UserOptions uo = user.getUserOptions();
             uo.setEmailSubscription(uoDTO.emailSubscription());
             userOptionsService.updateUserOptions(uo);

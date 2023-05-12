@@ -1,3 +1,5 @@
+Front:
+
 * wydzielić headery i stóki do osobnych plików
 
 * balance zafiksować na wysokości
@@ -17,4 +19,14 @@
 * navbar importować kiedyś za pomocą `import` w react
 
 
+Java:
+
 * poprawić  serwisy (po zmianach w bazie)
+
+* zmienić typ dat ze string na date
+
+
+Baza:
+
+* dodać pesel do bazy
+
