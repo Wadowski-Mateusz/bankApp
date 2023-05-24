@@ -20,6 +20,12 @@ public class LoginController {
         this.userService = userService;
     }
 
+
+    @GetMapping
+    public String getLoginPage() {
+        return "index.html";
+    }
+
     @PostMapping
     public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO) {
         try {
