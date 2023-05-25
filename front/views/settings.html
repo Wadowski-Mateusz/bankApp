@@ -13,10 +13,12 @@
 
     <!-- header -->
     <div id="menu">
-        <div id="email-sub">
-            Email subscription
-            <input type="checkbox" id="email-sub-checkbox" value="0">
-        </div>
+        <form>
+            <div class="form-check form-switch form-check-inline">
+                <label for="email-sub" class="form-check-label">Email subscription</label>
+                <input type="checkbox" id="email-sub" class="form-check-input" value="0">
+            </div>
+        </form>
         <div id="delete-button">
             <button type="button" class="btn btn-primary">Delete account</button>
         </div>

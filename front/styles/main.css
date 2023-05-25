@@ -1,0 +1,9 @@
+body {
+    background: linear-gradient(#0283BB 0%, #052F5F 70%); 
+    background-attachment: fixed;
+    color: white;
+}
+
+.container > .background-color-container {
+    background-color: #052F5F;
+}
