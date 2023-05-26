@@ -1,9 +1,13 @@
 body {
-    background: linear-gradient(#0283BB 0%, #052F5F 70%); 
+    background: linear-gradient(#0283BB 0%, #052FA8 70%); 
     background-attachment: fixed;
     color: white;
 }
 
 .container > .background-color-container {
-    background-color: #052F5F;
+    background-color: #050F9F;
+}
+
+.container > .row > .background-color-container {
+    background-color: #050F9F;
 }
