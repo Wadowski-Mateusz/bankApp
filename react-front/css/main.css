@@ -1,0 +1,17 @@
+html, body {
+    background: linear-gradient(#0283BB 0%, #052F5F 80%); 
+    background-attachment: fixed;
+    color: white;
+    height: 100%;
+}
+.background-color-container {
+    background-color: #052F5F;
+}
+
+.container > .background-color-container {
+    background-color: #052F5F;
+}
+
+.container > .row > .background-color-container {
+    background-color: #052F5F;
+}
