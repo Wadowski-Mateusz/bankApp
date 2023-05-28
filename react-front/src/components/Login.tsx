@@ -29,22 +29,6 @@ function Login() {
         </div>
         <div className="row justify-content-center">
           <LoginForm verify={verify}/>
-          {/* <form onSubmit={handleSubmit} className="col-lg-5 col-md-8">
-            <div className="row mt-2">
-              <input
-                value={login} onChange={(e) => setLogin(e.target.value)}  
-                type="text" className="rounded-2" placeholder="login"  />
-            </div>
-            <div className="row mt-2">
-              <input value={password} onChange={(e) => setPassword(e.target.value)}
-              type="password" className="rounded-2" placeholder="password" />
-            </div>
-            <div className="row mt-2">
-              <button className="btn btn-primary">
-                Log in
-              </button>
-            </div>
-          </form> */}
         </div>
         <div className="row mt-2 text-center">
           <a href="#" className="text-light">
