@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 interface Props {
-  submit: (login: string, password: string) => void
+  verify: (login: string, password: string) => void
 }
 
-export default function Login( submit: Props) {
+export default function Login( { verify }: Props) {
 
 
   const [login, setLogin] = useState("")
@@ -12,7 +12,7 @@ export default function Login( submit: Props) {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    submit.submit(login, password)
+    verify(login, password)
   }
 
   return (  

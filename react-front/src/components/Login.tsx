@@ -28,7 +28,7 @@ function Login() {
           <h1>[logo] Marsupium</h1>
         </div>
         <div className="row justify-content-center">
-          <LoginForm submit={verify}/>
+          <LoginForm verify={verify}/>
           {/* <form onSubmit={handleSubmit} className="col-lg-5 col-md-8">
             <div className="row mt-2">
               <input
