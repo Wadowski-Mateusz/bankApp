@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import MyNavbar from "./MyNavbar";
 import Loan from "./Loan";
+import Footer from "./Footer";
 
 
 export default function Loans() {
 
 
-  const loan1: Props = {
+  const loan1 = {
     id: "00000000-0000-0000-0000-000000000000",
     name: "loan 1",
     dateFrom: "2023-01-01",
@@ -15,7 +16,7 @@ export default function Loans() {
     loanDue: 100000,
   };
 
-  const loan2: Props = {
+  const loan2 = {
     id: "00000000-1111-1111-1111-000000000000",
     name: "loan 2",
     dateFrom: "2023-01-01",
@@ -26,6 +27,7 @@ export default function Loans() {
 
   const [btnRequestContent, setBtnRequestContent] = useState("Request for a loan");
   const [loans, setLoans] = useState([loan1, loan2]);
+  // const [loans, setLoans] = useState([loan1, loan2, loan2, loan2, loan2, loan2, loan2, loan2, loan2, loan2]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     id:"",
@@ -165,7 +167,7 @@ export default function Loans() {
 
             <div
               id="loans-container"
-              className="container mt-3 text-light h-100 overflow-y-auto flex-row"
+              className="container mt-3 text-light h-100 overflow-y-auto"
             >
               {loans.length === 0 && (
                 <div className="row h3 d-flex justify-content-center">
@@ -178,6 +180,7 @@ export default function Loans() {
             </div>
           </div>
         </div>
+        <Footer />
     </>
   );
 }
