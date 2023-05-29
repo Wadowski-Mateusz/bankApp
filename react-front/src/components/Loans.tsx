@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MyNavbar from "./MyNavbar";
-import Loan from "./Loan";
 import Footer from "./Footer";
+import Loan from "./Loan";
 
 
 export default function Loans() {
