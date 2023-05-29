@@ -1,11 +1,7 @@
-import MyNavbar from "./MyNavbar";
-import Footer from "./Footer";
 
 export default function PanelEmp() {
   return (
     <>
-      <MyNavbar />
-
       <div className="d-flex align-items-center vh-100">
         <div className="container text-light col-lg-6 col-8 h-75 d-flex align-items-center">
           <div
@@ -60,8 +56,6 @@ export default function PanelEmp() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 }

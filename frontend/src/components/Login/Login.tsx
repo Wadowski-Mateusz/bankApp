@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Alert from "react-bootstrap/Alert"
 import LoginForm from "./LoginForm";
-
+import { useState } from "react";
 
 
 function Login() {
-
+  const navigate = useNavigate();
   const [auth, setAuth] = useState(false);  
   const [submited, setSubmited] = useState(false);  
 
   function verify(login: string, password: string) {
-    if(login === "admin" && password === "admin" )
-      setAuth(true);
+    if(login === "admin" && password === "admin" ) {
+      navigate("/account"); 
+    }
+    if(login === "" && password === "" ) {
+      navigate("/account"); 
+    }
     else
       setAuth(false);
     setSubmited(true);

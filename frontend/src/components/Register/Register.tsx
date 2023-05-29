@@ -1,18 +1,23 @@
-import { Row, Col, Container } from 'react-bootstrap';
+import { useState } from 'react';
+
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
-import StepFiveA from "./StepFive";
+import StepFive from "./StepFive";
 
 export default function Register() {
+
+  // indexed from 1
+  const [stepNo, setstepNo] = useState(false);  
+
   return (
     <>
-    <StepOne/><br/><br/><br/>
-    <StepTwo/><br/><br/><br/>
-    <StepThree/><br/><br/><br/>
-    <StepFour/><br/><br/><br/>
-    <StepFive/><br/><br/><br/>
+    <StepOne/>
+    <StepTwo/>
+    <StepThree/>
+    <StepFour/>
+    <StepFive/>
     </>
   );
 }

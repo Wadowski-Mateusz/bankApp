@@ -1,6 +1,6 @@
 import Table from 'react-bootstrap/Table';
-import MyNavbar from "./MyNavbar";
-import Footer from "./Footer";
+import MyNavbar from "../Nav/MyNavbar";
+import Footer from "../Nav/Footer";
 
 export default function Account() {
   return (

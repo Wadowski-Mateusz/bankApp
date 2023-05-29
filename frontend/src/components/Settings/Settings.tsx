@@ -1,5 +1,5 @@
-import MyNavbar from "./MyNavbar";
-import Footer from "./Footer";
+import MyNavbar from "../Nav/MyNavbar";
+import Footer from "../Nav/Footer";
 
 export default function Settings() {
   return (
