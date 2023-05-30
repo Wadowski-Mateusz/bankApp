@@ -1,31 +1,46 @@
 import { useNavigate, Link } from "react-router-dom";
-import Alert from "react-bootstrap/Alert"
+import Alert from "react-bootstrap/Alert";
+import React, { useState } from "react";
+import axios from 'axios';
+
 import LoginForm from "./LoginForm";
-import { useState } from "react";
+import MyNavbar from "../nav/MyNavbar";
+
+interface UserDTO {
+  id: string;
+  fullName: string;
+}
 
 function Login() {
   const navigate = useNavigate();
-  const [auth, setAuth] = useState(false);  
   const [submited, setSubmited] = useState(false);  
 
-  function verify(login: string, password: string) {
-    if(login === "admin" && password === "admin" ) {
-      navigate("/account"); 
-    }
+
+  async function verify(login: string, password: string) {
+
     if(login === "" && password === "" ) {
       navigate("/account"); 
     }
-    else
-      setAuth(false);
-    setSubmited(true);
-  }
 
+    try {
+      const response = await axios.post<UserDTO>('http://localhost:8081/login', {
+        login: login,
+        password: password,
+      });
+  
+      const { id, fullName } = response.data;
+      navigate("/account");
+    } catch (error) {
+      setSubmited(true);
+      console.error('Login failed:', error);
+    }
+  }
 
 
   return (
     <>
-    {submited && !auth && <Alert  className="alert-danger text-center">My Alert</Alert>}
-    {submited && auth && <Alert className="alert-success text-center">My Alert</Alert>}
+    <MyNavbar />
+    {submited && <Alert  className="alert-danger text-center">Wrong login or password</Alert>}
     <div className="d-flex align-items-center vh-100">
       <div className="container col-6">
         <div className="row text-center">

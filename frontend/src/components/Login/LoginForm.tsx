@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState } from 'react';
+
 
 interface Props {
   verify: (login: string, password: string) => void

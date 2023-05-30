@@ -7,7 +7,6 @@ import PanelEmp from "./components/EmployeePanel/PanelEmp";
 import Register from "./components/Register/Register";
 import "../css/main.css"
 
-
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export default function App() {

@@ -17,7 +17,7 @@ Login:
   * delete alert on success
   * change background to picture
   * add logo 
-
+  * delte navbar
 
 Register:
   * input validation
@@ -25,6 +25,7 @@ Register:
   * step 1 - id submit
   * step 3 - send mail
   * step 5 - user role display / add user to verify queue
+  * for employee there should be "Back to panel"
 
 
 Settings:
