@@ -18,7 +18,7 @@ export default function StepOne( { move, stepId }: Props ) {
   
   return (
     <>
-
+    <span className="h1">STEP 1</span>
     <div className="d-flex align-items-center justify-content-center vh-100">
       <Container className="d-flex justify-content-center row col-8">
       <span className='text-white text-center h2 mb-3'> Please enter your data </span>

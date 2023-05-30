@@ -6,7 +6,10 @@ Login:
   * delete alert on success
 
 
-  copy paste:
-import { useNavigate } from "react-router-dom";
-const navigate = useNavigate();
-navigate("/"); 
+register:
+  delete spans with step number displayed on page
+
+copy paste:
+  import { useNavigate } from "react-router-dom";
+  const navigate = useNavigate();
+  navigate("/"); 

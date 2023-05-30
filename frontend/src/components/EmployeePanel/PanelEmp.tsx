@@ -1,11 +1,8 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function PanelEmp() {
-  const navigate = useNavigate();
 
-  const logout = () => {
-    navigate("/");
-  }
+
 
   return (
     <>
@@ -24,12 +21,13 @@ export default function PanelEmp() {
               className="container d-flex flex-column"
             >
               <div className="row mt-3 justify-content-evenly">
-                <button
+                <Link
+                  to="/register"
                   type="button"
                   className="btn btn-primary btn-lg col-lg-5 col-12 rounded-4 m-1"
                 >
                   Register client
-                </button>
+                </Link>
                 <button
                   type="button"
                   className="btn btn-primary btn-lg col-lg-5 col-12 rounded-4 m-1"
@@ -53,13 +51,13 @@ export default function PanelEmp() {
               </div>
             </div>
             <div className="row mt-3 d-flex align-content-end">
-              <button
+              <Link
+                to="/"
                 type="button"
-                onClick={logout}
                 className="btn btn-primary col-xl-2 col-lg-3 col-12 btn-lg rounded-4"
               >
                 Log out
-              </button>
+              </Link>
             </div>
           </div>
         </div>

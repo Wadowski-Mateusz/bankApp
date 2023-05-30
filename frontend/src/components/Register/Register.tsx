@@ -12,6 +12,7 @@ export default function Register() {
   const [stepNo, setStepNo] = useState(1);
 
   function move(moveTo: number) {
+    console.log("obecnie", stepNo, "po zmianie", moveTo)
     setStepNo(moveTo)
   }
 
@@ -22,7 +23,7 @@ export default function Register() {
     {stepNo === 2 && <StepTwo move={move} stepId={2}/>}
     {stepNo === 3 && <StepThree move={move} stepId={3}/>}
     {stepNo === 4 && <StepFour move={move} stepId={4}/>}
-    {stepNo === 5 && <StepFive move={move} stepId={5}/>}
+    {stepNo === 5 && <StepFive/>}
     </>
   );
 }

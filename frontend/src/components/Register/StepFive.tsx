@@ -2,22 +2,15 @@ import { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
+export default function StepFive() {
 
-interface Props {
-  move: (moveTo: number) => void,
-  stepId: number, 
-}
-
-
-
-export default function StepFive( { move, stepId }: Props ) {
-
-  const [clientRole, setclientRole] = useState(true);
+  const [clientRole, setClientRole] = useState(true);
  
 
 
   return (
     <>
+    <span className="h1">STEP 5</span>
     <div className="d-flex align-items-center justify-content-center vh-100">
       <Container 
         className="
@@ -47,7 +40,7 @@ export default function StepFive( { move, stepId }: Props ) {
             <Link 
               type="button" 
               className="btn btn-primary mt-3 fs-4 p-3 rounded-4"
-              to="/">
+              to="/panel">
                 Go back to panel
             </Link>
           </>
