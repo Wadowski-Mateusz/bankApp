@@ -1,5 +1,12 @@
+import { useNavigate } from "react-router-dom";
 
 export default function PanelEmp() {
+  const navigate = useNavigate();
+
+  const logout = () => {
+    navigate("/");
+  }
+
   return (
     <>
       <div className="d-flex align-items-center vh-100">
@@ -48,6 +55,7 @@ export default function PanelEmp() {
             <div className="row mt-3 d-flex align-content-end">
               <button
                 type="button"
+                onClick={logout}
                 className="btn btn-primary col-xl-2 col-lg-3 col-12 btn-lg rounded-4"
               >
                 Log out

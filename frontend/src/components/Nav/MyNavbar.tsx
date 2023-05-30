@@ -15,6 +15,8 @@ function MyNavbar() {
             <Link className="nav-link" to="/loans">Loans</Link>
             <Link className="nav-link" to="/settings">Settings</Link>
             <Link className="nav-link" to="/">Logout</Link>
+            <Link className="nav-link" to="/panel">[Panel]</Link>
+            <Link className="nav-link" to="/register">[Register]</Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

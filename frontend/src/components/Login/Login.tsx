@@ -1,8 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Alert from "react-bootstrap/Alert"
 import LoginForm from "./LoginForm";
 import { useState } from "react";
-
 
 function Login() {
   const navigate = useNavigate();
@@ -20,7 +19,8 @@ function Login() {
       setAuth(false);
     setSubmited(true);
   }
-  
+
+
 
   return (
     <>
@@ -35,10 +35,9 @@ function Login() {
           <LoginForm verify={verify}/>
         </div>
         <div className="row mt-2 text-center">
-          <a href="#" className="text-light">
-            {" "}
+          <Link to="register" className="text-light">
             Don't have an account? Sign up!
-          </a>
+          </Link>
         </div>
 
         <div className="row justify-content-center mt-2">
