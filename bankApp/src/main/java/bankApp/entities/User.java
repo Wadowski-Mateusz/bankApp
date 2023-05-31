@@ -42,6 +42,10 @@ public class User {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<Announcement> createdAnnouncements;
+
+
     public User(String login, String password, boolean isVerified, Role role) {
         this.login = login;
         this.password = password;

@@ -29,4 +29,9 @@ public class Transaction {
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
+
+    @Column(name = "title", nullable = false)
+    private String title;
+
+
 }
