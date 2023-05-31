@@ -1,6 +1,7 @@
+import axios from 'axios';
+
 import Login from "./components/Login/Login";
 import Loans from "./components/Loan/Loans";
-
 import Account from "./components/Account/Account";
 import Settings from "./components/Settings/Settings";
 import PanelEmp from "./components/EmployeePanel/PanelEmp";
@@ -8,6 +9,8 @@ import Register from "./components/Register/Register";
 import "../css/main.css"
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
+axios.defaults.baseURL = 'http://localhost:8081';
 
 export default function App() {
     return (

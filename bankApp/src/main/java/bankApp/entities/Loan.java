@@ -2,6 +2,7 @@ package bankApp.entities;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,13 +26,16 @@ public class Loan {
     private BigDecimal interest = BigDecimal.ZERO;
 
     @Column(name = "date_from", nullable = false)
-    private Timestamp dateFrom;
+    private LocalDate dateFrom;
 
     @Column(name = "date_to", nullable = false)
-    private Timestamp dateTo;
+    private LocalDate dateTo;
 
     @Column(name = "amount", nullable = false)
     private BigDecimal amount = BigDecimal.ZERO;
+
+    @Column(name = "due", nullable = false)
+    private BigDecimal due = BigDecimal.ZERO;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false,

@@ -1,5 +1,6 @@
 package bankApp.services;
 
+import bankApp.DTOs.LoanDTO;
 import bankApp.entities.Loan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,4 +58,18 @@ public class LoanService {
         return amount.multiply(interest).setScale(2, RoundingMode.HALF_UP);
     }
 
+    public List<Loan> getLoansByUserId(UUID id) {
+        return loanRepository.findByUserId(id);
+    }
+
+    public static LoanDTO convertLoanToDTO(Loan loan) {
+        return new LoanDTO(
+                loan.getId(),
+                loan.getName(),
+                loan.getInterest(),
+                loan.getDateFrom(),
+                loan.getDateTo(),
+                loan.getAmount(),
+                loan.getDue());
+    }
 }

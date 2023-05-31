@@ -3,8 +3,10 @@ import Alert from "react-bootstrap/Alert";
 import React, { useState } from "react";
 import axios from 'axios';
 
+
 import LoginForm from "./LoginForm";
 import MyNavbar from "../nav/MyNavbar";
+import {LOGIN_ENDPOINT} from "../../endpoints/userEndpoints";
 
 interface UserDTO {
   id: string;
@@ -23,7 +25,8 @@ function Login() {
     }
 
     try {
-      const response = await axios.post<UserDTO>('http://localhost:8081/login', {
+      // const response = await axios.post<UserDTO>('http://localhost:8081/user/login', {
+      const response = await axios.post<UserDTO>(LOGIN_ENDPOINT, {
         login: login,
         password: password,
       });

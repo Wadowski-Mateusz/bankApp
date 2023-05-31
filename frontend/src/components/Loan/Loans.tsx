@@ -1,33 +1,36 @@
-import { useEffect, useState } from "react";
-import MyNavbar from "../Nav/MyNavbar";
-import Footer from "../Nav/Footer";
+import React, { useEffect, useState } from "react";
+import MyNavbar from "../nav/MyNavbar";
+import Footer from "../nav/Footer";
 import Loan from "./Loan";
+import axios from 'axios';
 
+import {LoanDTO} from "./LoanDTO"
+import {LOGIN_ENDPOINT} from "../../endpoints/loanEndpoints"
 
 export default function Loans() {
 
-
-  const loan1 = {
+  const [loans, setLoans] = useState<LoanDTO[]>([
+  {
     id: "00000000-0000-0000-0000-000000000000",
     name: "loan 1",
-    dateFrom: "2023-01-01",
-    dateTo: "2023-12-31",
+    dateFrom: new Date(),
+    dateTo: new Date(),
     interest: 5,
-    loanDue: 100000,
-  };
-
-  const loan2 = {
+    amount: 100000,
+    due: 500000,
+  },
+  {
     id: "00000000-1111-1111-1111-000000000000",
     name: "loan 2",
-    dateFrom: "2023-01-01",
-    dateTo: "2023-12-31",
+    dateFrom: new Date(),
+    dateTo: new Date(),
     interest: 5,
-    loanDue: 100000,
-  };
+    amount: 100000,
+    due: 500000,
+  }
+]);
 
   const [btnRequestContent, setBtnRequestContent] = useState("Request for a loan");
-  const [loans, setLoans] = useState([loan1, loan2]);
-  // const [loans, setLoans] = useState([loan1, loan2, loan2, loan2, loan2, loan2, loan2, loan2, loan2, loan2]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     id:"",
@@ -83,6 +86,22 @@ export default function Loans() {
     }
   };
 
+
+  useEffect(() => {
+    const fetchLoanList = async () => {
+      try {
+        const userId = "5151f90e-ce44-4784-bb73-26601cb2cbd9";
+        const response = await axios.get(`${LOGIN_ENDPOINT}${userId}`);
+        const data = response.data;
+        setLoans(data);
+      } catch (error) {
+        console.error('fetch loans error:', error);
+      }
+    };
+
+    fetchLoanList();
+  }, []);
+
   useEffect(() => {
     let interest = ""
     if (formData.months) {
@@ -111,13 +130,14 @@ export default function Loans() {
 
   const handleRequestLoan = () => {
     
-    const newLoan: Props = {
+    const newLoan: LoanDTO = {
       id: "uuid here",
       name: formData.name,
-      dateFrom: "today",
-      dateTo: "today",
-      interest: formData.interest,
-      loanDue: (Number(formData.amount) * (1 + Number(formData.interest) / 100)).toFixed(2).toString(),
+      interest: Number(formData.interest),
+      dateFrom: new Date(),
+      dateTo: new Date(),
+      amount: Number(formData.amount),
+      due: Number((Number(formData.amount) * (1 + Number(formData.interest) / 100)).toFixed(2)),
     };
 
     setLoans([...loans, newLoan]);
@@ -139,7 +159,7 @@ export default function Loans() {
           <div className="container rounded d-flex col-10 flex-column background-color-container p-5 pt-4 rounded-5 border border-white border-1 h-100">
             <button onClick={handleAddLoan}
               type="button"
-              className="btn btn-primary btn-lg align-self-end p-3 ps-4 pe-4 rounded-4"
+              className="btn btn-primary align-self-end p-3 ps-4 pe-4 rounded-4"
             >
               {btnRequestContent}
             </button>

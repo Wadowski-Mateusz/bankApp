@@ -1,37 +1,31 @@
-interface Props {
-    id: string,
-    name: string,
-    dateFrom: string,
-    dateTo: string,
-    interest: number,
-    loanDue: number,
-}
+import {LoanDTO} from "./LoanDTO"
+import { Container, Row, Col } from "react-bootstrap";
 
-export default function Loan({id, name, dateFrom, dateTo, interest, loanDue }: Props) {
+export default function Loan({id, name, dateFrom, dateTo, interest, amount, due }: LoanDTO) {
  return (
-    <div className="row p-3 bg-primary rounded-4 m-2 d-flex justify-content-center flex-column">
-            <span className="d-flex justify-content-around">
-              <span>
+    <Container className="row p-2 bg-primary rounded-4 m-2 d-flex justify-content-center flex-column">
+      <Row className="d-flex justify-content-around">
+              <Col>
                 <span className="fw-bold">Name</span>:{" "}
                 <span id="loan-name">{ name }</span>
-              </span>
-              <span>
+              </Col>
+              <Col>
                 <span className="fw-bold">From</span>:{" "}
-                <span id="loan-from">{ dateFrom }</span>
-              </span>
-              <span>
+                <span id="loan-from">{ dateFrom.toLocaleString() }</span>
+              </Col>
+              <Col>
                 <span className="fw-bold">To</span>:{" "}
-                <span id="loan-to">{ dateTo }</span>
-              </span>
-              <span>
+                <span id="loan-to">{ dateTo.toLocaleString() }</span>
+              </Col>
+              <Col>
                 <span className="fw-bold">Interets</span>:{" "}
                 <span id="loan-interest">{ interest }%</span>
-              </span>
-              <span>
+              </Col>
+              <Col>
                 <span className="fw-bold">To be repaid</span>:{" "}
-                <span id="loan-due">{ loanDue }</span>
-              </span>
-            </span>
-          </div>
+                <span id="loan-due">{ due }</span>
+              </Col>
+            </Row>
+      </Container>
  )   
 }

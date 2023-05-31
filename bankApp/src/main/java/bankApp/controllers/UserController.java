@@ -2,11 +2,14 @@ package bankApp.controllers;
 
 
 import bankApp.DTOs.AccountDTO;
+import bankApp.DTOs.LoginDTO;
+import bankApp.DTOs.UserDTO;
 import bankApp.DTOs.UserOptionsDTO;
 import bankApp.entities.User;
 import bankApp.exceptions.UserNotFoundException;
 import bankApp.services.AccountService;
 import bankApp.services.UserOptionsService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,39 +17,23 @@ import bankApp.services.UserService;
 
 import java.util.UUID;
 
+@AllArgsConstructor
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO) {
+        try {
+            User user = userService.getUserByLogin(loginDTO.login()).orElse(null);
+            if (user == null || !user.getPassword().equals(loginDTO.password()))
+                throw new UserNotFoundException("");
+            return ResponseEntity.ok(userService.convertUserToDTO(user));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
-
-//    @GetMapping
-//    public ResponseEntity<String> testGet() {
-//        try {
-//            String s = "f63d966f-e3c0-44e6-9108-565b1b8a47a2";
-//            User user = userService.getUserById(UUID.fromString(s)).orElseGet(null);
-//            if(user == null)
-//                throw new RuntimeException("asd");
-//            return ResponseEntity.ok(user.getUserDetails().getFullName());
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
-//    }
-
-//    @GetMapping("/account")
-//    public ResponseEntity<AccountDTO> getAccountByUserId(@RequestParam UUID userId) {
-//        User u = userService.getUserById(userId).orElseGet(null);
-//        try {
-//            if (u == null)
-//                throw new UserNotFoundException("");
-//            return ResponseEntity.ok(AccountService.convertAccountToDto(u.getAccount()));
-//        } catch (UserNotFoundException e){
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-//        }
-//    }
 
 }
