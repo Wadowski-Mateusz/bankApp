@@ -4,19 +4,15 @@ All:
   * user auth and session
   * roles
 
-
 Account:
-  * Component from transaction to display
   * input validation
   * making a transfer
   * filter transactions by date
 
-
 Login:
   * announcment https://getbootstrap.com/docs/5.2/utilities/text/#word-break
-  * delete alert on success
   * change background to picture
-  * add logo 
+  * add logo
   * delte navbar
 
 Register:
@@ -27,19 +23,15 @@ Register:
   * step 5 - user role display / add user to verify queue
   * for employee there should be "Back to panel"
 
-
 Settings:
   * "are you sure you want to delete an account"?
-
 
 Loans: 
   * (backend, but just to not forget) each 1st of the month, getting instalment(s) from account
 
 Panel: 
   * destroy session on logout
-  * verify client component
-  * add announcment component
-  * delete announcement component
+  * delete announcement overflow
 
 
 Navbar:

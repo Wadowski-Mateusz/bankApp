@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { States } from "./States";
 
 import Address from "../../classes/Address"
 
@@ -24,13 +25,12 @@ enum Action{
 }
 
 export default function Verification ({ setStateInPanel }: Props) {
-  const [inputValue, setInputValue] = useState(0);
 
   function handleClick(action: number) {
-    console.log(action)
+
     switch(action) {
       case Action.Panel:
-        setStateInPanel(0)
+        setStateInPanel(States.Default)
         break;
       case Action.Postpone:
         // postpone verification

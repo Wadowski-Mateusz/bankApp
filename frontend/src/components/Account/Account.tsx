@@ -2,6 +2,15 @@ import Table from 'react-bootstrap/Table';
 import MyNavbar from "../Nav/MyNavbar";
 import Footer from "../Nav/Footer";
 
+interface Transaction {
+  id: string;
+  date: string;
+  type: string;
+  from: string;
+  title: string;
+  amount: string;
+}
+
 export default function Account() {
   return (
     <>

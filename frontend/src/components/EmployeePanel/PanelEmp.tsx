@@ -3,12 +3,17 @@ import { useState } from "react";
 import { Container, Row } from "react-bootstrap";
 
 import Verification from "./Verification";
+import AddAnnouncement from "./AddAnnouncement";
+import DeleteAnnouncement from "./DeleteAnnouncement";
 import { States } from "./States";
 
 export default function PanelEmp() {
   const [state, setState] = useState(States.Default);
 
   function handleClick(stateId: number) {
+    console.log(States.Default, States.Register, States.Verify, States.AddAnnouncement, States.DeleteAnnouncement);
+    console.log(stateId);
+
     setState(stateId);
   }
 
@@ -17,6 +22,8 @@ export default function PanelEmp() {
       <div className="d-flex align-items-center vh-100">
         <div className="container text-light col-lg-7 col-8 h-75 d-flex align-items-center">
           {state === States.Verify && <Verification setStateInPanel={handleClick} />}
+          {state === States.AddAnnouncement && <AddAnnouncement setStateInPanel={handleClick} />}
+          {state === States.DeleteAnnouncement && <DeleteAnnouncement setStateInPanel={handleClick} />}
 
           {state === States.Default && (
             <Container
@@ -48,14 +55,14 @@ export default function PanelEmp() {
                 </Row>
                 <Row className="mt-3 justify-content-evenly">
                   <button
-                    onClick={() => handleClick(States.AddAnnouncemend)}
+                    onClick={() => handleClick(States.AddAnnouncement)}
                     type="button"
                     className="btn btn-primary btn-lg col-lg-5 col-12 rounded-4 m-1"
                   >
                     Add announcement
                   </button>
                   <button
-                    onClick={() => handleClick(States.DeleteAnnouncemend)}
+                    onClick={() => handleClick(States.DeleteAnnouncement)}
                     type="button"
                     className="btn btn-primary btn-lg col-lg-5 col-12 rounded-4 m-1"
                   >
