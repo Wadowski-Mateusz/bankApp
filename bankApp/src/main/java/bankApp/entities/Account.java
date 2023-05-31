@@ -18,8 +18,8 @@ import java.util.UUID;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true, updatable = false)
+    @Column(name = "id", nullable = false, unique = true, updatable = false,
+            columnDefinition = "uuid DEFAULT gen_random_uuid()")
     private UUID id;
 
     @Column(name = "balance", nullable = false, precision = 20, scale = 2)
@@ -28,14 +28,14 @@ public class Account {
     @Column(name = "number", nullable = false, unique = true)
     private String number;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false,
+            foreignKey = @ForeignKey(
+                    name = "FK_Accounts_Users",
+                    foreignKeyDefinition = "FOREIGN KEY (user_id)" +
+                            " REFERENCES users(id)" +
+                            " ON DELETE CASCADE" +
+                            " ON UPDATE CASCADE"))
     private User user;
-
-    @OneToMany(mappedBy = "fromAccount")
-    private List<Transaction> incomingTransactions;
-
-    @OneToMany(mappedBy = "toAccount")
-    private List<Transaction> outgoingTransactions;
 
 }

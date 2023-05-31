@@ -17,8 +17,8 @@ import java.util.UUID;
 public class Announcement {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id", nullable = false, unique = true, updatable = false,
+            columnDefinition = "uuid DEFAULT gen_random_uuid()")
     private UUID id;
 
     @Column(name = "date_from", nullable = false)
@@ -33,17 +33,17 @@ public class Announcement {
     @Column(name = "created", nullable = false)
     private Timestamp created;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = true,
             foreignKey = @ForeignKey(
                     name = "FK_Announcement_Author",
-                    foreignKeyDefinition = "FOREIGN KEY (deleted_by_id) " +
+                    foreignKeyDefinition = "FOREIGN KEY (author_id) " +
                             "REFERENCES users(id)" +
                             " ON DELETE SET NULL" +
                             " ON UPDATE CASCADE"))
     private User author;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "deleted_by_id", referencedColumnName = "id", nullable = true,
             foreignKey = @ForeignKey(
                     name = "FK_Announcement_DeletedBy",

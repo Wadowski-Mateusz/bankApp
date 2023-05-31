@@ -13,16 +13,9 @@ import lombok.*;
 @Table(name = "transactions")
 public class Transaction {
     @Id
-    @Column(name = "id", nullable = false, unique = true, updatable = false)
+    @Column(name = "id", nullable = false, unique = true, updatable = false,
+            columnDefinition = "uuid DEFAULT gen_random_uuid()")
     private UUID id;
-
-    @ManyToOne
-    @JoinColumn(name = "from_account")
-    private Account fromAccount;
-
-    @ManyToOne
-    @JoinColumn(name = "to_account")
-    private Account toAccount;
 
     @Column(name = "date", nullable = false)
     private LocalDateTime date;
@@ -33,5 +26,26 @@ public class Transaction {
     @Column(name = "title", nullable = false)
     private String title;
 
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "from_account_id", referencedColumnName = "id", nullable = false,
+            foreignKey = @ForeignKey(
+                    name = "FK_Transactions_FromAccount",
+                    foreignKeyDefinition = "FOREIGN KEY (from_account_id)" +
+                            " REFERENCES accounts(id)" +
+                            " ON DELETE SET NULL" +
+                            " ON UPDATE CASCADE"))
+    private Account fromAccount;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "to_account_id", referencedColumnName = "id", nullable = false,
+            foreignKey = @ForeignKey(
+                    name = "FK_Transactions_ToAccount",
+                    foreignKeyDefinition = "FOREIGN KEY (to_account_id)" +
+                            " REFERENCES accounts(id)" +
+                            " ON DELETE SET NULL" +
+                            " ON UPDATE CASCADE"))
+    private Account toAccount;
 
 }

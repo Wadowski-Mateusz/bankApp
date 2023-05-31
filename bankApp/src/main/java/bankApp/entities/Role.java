@@ -3,6 +3,8 @@ package bankApp.entities;
 import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 @Data
 @AllArgsConstructor
@@ -12,8 +14,8 @@ import lombok.*;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true, updatable = false)
+    @Column(name = "id", nullable = false, unique = true, updatable = false,
+            columnDefinition = "uuid DEFAULT gen_random_uuid()")
     private UUID id;
 
     @Column(name = "role", nullable = false, unique = true)

@@ -15,8 +15,8 @@ import java.util.UUID;
 public class UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, unique = true, updatable = false)
+    @Column(name = "id", nullable = false, unique = true, updatable = false,
+            columnDefinition = "uuid DEFAULT gen_random_uuid()")
     private UUID id;
 
     @Column(name = "name")
@@ -34,12 +34,15 @@ public class UserDetails {
     @Column(name = "id_number")
     private String idNumber;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false,
+            foreignKey = @ForeignKey(
+                    name = "FK_UserDetails_User",
+                    foreignKeyDefinition = "FOREIGN KEY (user_id)" +
+                            " REFERENCES users(id)" +
+                            " ON DELETE CASCADE" +
+                            " ON UPDATE CASCADE"))
     private User user;
-
-    @OneToOne(mappedBy = "userDetails", cascade = CascadeType.ALL)
-    private Address address;
 
     public String getFullName() {
         return name + " " + surname;

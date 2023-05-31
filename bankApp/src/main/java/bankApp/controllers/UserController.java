@@ -24,29 +24,29 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public ResponseEntity<String> testGet() {
-        try {
-            String s = "f63d966f-e3c0-44e6-9108-565b1b8a47a2";
-            User user = userService.getUserById(UUID.fromString(s)).orElseGet(null);
-            if(user == null)
-                throw new RuntimeException("asd");
-            return ResponseEntity.ok(user.getUserDetails().getFullName());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
+//    @GetMapping
+//    public ResponseEntity<String> testGet() {
+//        try {
+//            String s = "f63d966f-e3c0-44e6-9108-565b1b8a47a2";
+//            User user = userService.getUserById(UUID.fromString(s)).orElseGet(null);
+//            if(user == null)
+//                throw new RuntimeException("asd");
+//            return ResponseEntity.ok(user.getUserDetails().getFullName());
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
+//    }
 
-    @GetMapping("/account")
-    public ResponseEntity<AccountDTO> getAccountByUserId(@RequestParam UUID userId) {
-        User u = userService.getUserById(userId).orElseGet(null);
-        try {
-            if (u == null)
-                throw new UserNotFoundException("");
-            return ResponseEntity.ok(AccountService.convertAccountToDto(u.getAccount()));
-        } catch (UserNotFoundException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
+//    @GetMapping("/account")
+//    public ResponseEntity<AccountDTO> getAccountByUserId(@RequestParam UUID userId) {
+//        User u = userService.getUserById(userId).orElseGet(null);
+//        try {
+//            if (u == null)
+//                throw new UserNotFoundException("");
+//            return ResponseEntity.ok(AccountService.convertAccountToDto(u.getAccount()));
+//        } catch (UserNotFoundException e){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
 }

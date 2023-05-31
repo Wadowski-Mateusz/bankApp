@@ -26,15 +26,15 @@ public class UserDetailsController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public ResponseEntity<UserDetailsDTO> getUserDetails(@RequestParam UUID userId) {
-        User user = userService.getUserById(userId).orElse(null);
-        try {
-            if (user == null) throw new UserNotFoundException("");
-            return ResponseEntity.ok(userDetailsService.convertUserDetailsToDTO(user.getUserDetails()));
-        } catch (UserNotFoundException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
+//    @GetMapping
+//    public ResponseEntity<UserDetailsDTO> getUserDetails(@RequestParam UUID userId) {
+//        User user = userService.getUserById(userId).orElse(null);
+//        try {
+//            if (user == null) throw new UserNotFoundException("");
+//            return ResponseEntity.ok(userDetailsService.convertUserDetailsToDTO(user.getUserDetails()));
+//        } catch (UserNotFoundException e){
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+//        }
+//    }
 
 }
