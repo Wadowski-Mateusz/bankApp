@@ -17,7 +17,6 @@ public class RegisterController {
 
     AccountService accountService;
     AddressService addressService;
-    CardService cardService;
     RoleService roleService;
     UserDetailsService userDetailsService;
     UserOptionsService userOptionsService;

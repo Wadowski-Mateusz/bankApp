@@ -32,9 +32,6 @@ public class Account {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Card> cards;
-
     @OneToMany(mappedBy = "fromAccount")
     private List<Transaction> incomingTransactions;
 
