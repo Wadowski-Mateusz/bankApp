@@ -1,11 +1,8 @@
 package bankApp.controllers;
 
 import bankApp.DTOs.LoanDTO;
-import bankApp.DTOs.LoginDTO;
-import bankApp.DTOs.UserDTO;
+import bankApp.DTOs.LoanRequestDTO;
 import bankApp.entities.Loan;
-import bankApp.entities.User;
-import bankApp.exceptions.UserNotFoundException;
 import bankApp.services.LoanService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,4 +28,12 @@ public class LoansController {
                 .toList();
         return ResponseEntity.ok(loansDTOs);
     }
+
+    @PostMapping("/loanRequest")
+    public ResponseEntity<LoanDTO> addLoan(@RequestBody LoanRequestDTO loanRequestDTO) {
+        Loan loan = loanService.convertRequestToLoan(loanRequestDTO);
+        Loan createdLoan = loanService.createLoan(loan);
+        return ResponseEntity.ok(LoanService.convertLoanToDTO(createdLoan));
+    }
+
 }

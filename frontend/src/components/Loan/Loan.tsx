@@ -1,4 +1,4 @@
-import {LoanDTO} from "./LoanDTO"
+import { LoanDTO} from "./DTOs"
 import { Container, Row, Col } from "react-bootstrap";
 
 export default function Loan({id, name, dateFrom, dateTo, interest, amount, due }: LoanDTO) {

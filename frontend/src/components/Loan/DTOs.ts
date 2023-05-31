@@ -7,3 +7,12 @@ export interface LoanDTO {
   amount: number;
   due: number;
 }
+
+export interface LoanRequestDTO {
+  userId: string;
+  name: string;
+  dateFrom: Date;
+  amount: number;
+  months: number;
+  interest: number;
+}

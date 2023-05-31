@@ -4,31 +4,12 @@ import Footer from "../nav/Footer";
 import Loan from "./Loan";
 import axios from 'axios';
 
-import {LoanDTO} from "./LoanDTO"
-import {LOGIN_ENDPOINT} from "../../endpoints/loanEndpoints"
+import {LoanDTO, LoanRequestDTO} from "./DTOs"
+import {GET_USER_LOANS_ENDPOINT, SEND_REQUEST_FOR_LOAN_ENDPOINT} from "../../endpoints/loanEndpoints"
 
 export default function Loans() {
 
-  const [loans, setLoans] = useState<LoanDTO[]>([
-  {
-    id: "00000000-0000-0000-0000-000000000000",
-    name: "loan 1",
-    dateFrom: new Date(),
-    dateTo: new Date(),
-    interest: 5,
-    amount: 100000,
-    due: 500000,
-  },
-  {
-    id: "00000000-1111-1111-1111-000000000000",
-    name: "loan 2",
-    dateFrom: new Date(),
-    dateTo: new Date(),
-    interest: 5,
-    amount: 100000,
-    due: 500000,
-  }
-]);
+  const [loans, setLoans] = useState<LoanDTO[]>([]);
 
   const [btnRequestContent, setBtnRequestContent] = useState("Request for a loan");
   const [showForm, setShowForm] = useState(false);
@@ -86,22 +67,24 @@ export default function Loans() {
     }
   };
 
+  const IDtoDelete = "5151f90e-ce44-4784-bb73-26601cb2cbd9";
+
+  const fetchLoanList = async () => {
+    try {
+      const userId = IDtoDelete;
+      const response = await axios.get(`${GET_USER_LOANS_ENDPOINT}${userId}`);
+      const data = response.data;
+      setLoans(data);
+    } catch (error) {
+      console.error('fetch loans error:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchLoanList = async () => {
-      try {
-        const userId = "5151f90e-ce44-4784-bb73-26601cb2cbd9";
-        const response = await axios.get(`${LOGIN_ENDPOINT}${userId}`);
-        const data = response.data;
-        setLoans(data);
-      } catch (error) {
-        console.error('fetch loans error:', error);
-      }
-    };
-
     fetchLoanList();
   }, []);
 
+  // dynamic calculation for interest
   useEffect(() => {
     let interest = ""
     if (formData.months) {
@@ -117,9 +100,6 @@ export default function Loans() {
       }));
   }, [formData.months]);
   
-
-
-  
   const handleAddLoan = () => {
     if(showForm) 
       setBtnRequestContent("Request for a loan")
@@ -128,19 +108,30 @@ export default function Loans() {
     setShowForm(!showForm);
   };
 
-  const handleRequestLoan = () => {
+
+  // send request to add loan
+  const handleRequestLoan = async () => {
     
-    const newLoan: LoanDTO = {
-      id: "uuid here",
+    const newLoanRequest: LoanRequestDTO = {
+      userId: IDtoDelete,
       name: formData.name,
-      interest: Number(formData.interest),
       dateFrom: new Date(),
-      dateTo: new Date(),
       amount: Number(formData.amount),
-      due: Number((Number(formData.amount) * (1 + Number(formData.interest) / 100)).toFixed(2)),
+      months: Number(formData.months),
+      interest: Number(formData.interest),
     };
 
-    setLoans([...loans, newLoan]);
+
+    try {
+      const response = await axios.post(SEND_REQUEST_FOR_LOAN_ENDPOINT, newLoanRequest);
+      console.log('reponse from server', response.data);
+      if(response.status === 200) {
+        setLoans([...loans, response.data]);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
     setShowForm(false);
 
     formData.id=""
@@ -150,6 +141,7 @@ export default function Loans() {
     formData.interest="0"
     
     setBtnRequestContent("Request for a loan");
+    fetchLoanList
   };
 
   return (

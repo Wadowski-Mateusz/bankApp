@@ -25,7 +25,6 @@ function Login() {
     }
 
     try {
-      // const response = await axios.post<UserDTO>('http://localhost:8081/user/login', {
       const response = await axios.post<UserDTO>(LOGIN_ENDPOINT, {
         login: login,
         password: password,
