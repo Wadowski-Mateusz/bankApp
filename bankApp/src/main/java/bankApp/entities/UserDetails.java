@@ -34,6 +34,9 @@ public class UserDetails {
     @Column(name = "id_number")
     private String idNumber;
 
+    @Column(name = "id_uri")
+    private String idUri;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false,
             foreignKey = @ForeignKey(

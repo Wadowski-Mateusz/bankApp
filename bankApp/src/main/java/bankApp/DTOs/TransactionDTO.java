@@ -9,7 +9,8 @@ public record TransactionDTO(
         String fromName,
         UUID toId,
         String toName,
-        LocalDateTime timestamp,
-        BigDecimal amount
+        String title,
+        BigDecimal amount,
+        LocalDateTime timestamp
 ) {
 }

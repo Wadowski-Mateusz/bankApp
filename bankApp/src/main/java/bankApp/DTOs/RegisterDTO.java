@@ -3,20 +3,20 @@ package bankApp.DTOs;
 import java.time.LocalDate;
 
 public record RegisterDTO(
-        String login,
-        String password,
-        boolean isVerified,
-        String name,
-        String surname,
-        String email,
+        String firstName,
+        String lastName,
         LocalDate birthday,
+        String email,
+        String idURI,
         String idNumber,
-        String pesel,
         String country,
         String sector,
         String city,
         String street,
         String number,
-        String zip
+        String zip,
+        String login,
+        String password,
+        boolean isVerified
         ) {
 }

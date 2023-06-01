@@ -39,7 +39,7 @@ public class AnnouncementController {
         List<AnnouncementDTO> announcementDTOS = announcementService.getAllAnnouncements()
                 .stream()
                 .filter(announcement -> announcement.getDateTo().isAfter(LocalDate.now()))
-                .filter(announcement -> announcement.getDateFrom().isBefore(LocalDate.now().minusDays(1)))
+                .filter(announcement -> announcement.getDateFrom().isBefore(LocalDate.now().plusDays(1)))
                 .filter(announcement -> announcement.getDeletedBy() == null)
                 .map(AnnouncementService::convertAnnouncementToDTO)
                 .toList();
