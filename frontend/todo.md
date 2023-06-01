@@ -10,7 +10,6 @@ Account:
   * filter transactions by date
 
 Login:
-  * announcment https://getbootstrap.com/docs/5.2/utilities/text/#word-break
   * change background to picture
   * add logo
   * delte navbar
@@ -32,10 +31,6 @@ Loans:
 Panel: 
   * destroy session on logout
 
-
 Navbar:
   * delete "fast travel" to points which user shouldn't have access
   * destroy session on logout
-  
-Footer:
-  * make it work or delete

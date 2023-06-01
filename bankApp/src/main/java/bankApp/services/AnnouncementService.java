@@ -3,19 +3,19 @@ package bankApp.services;
 import bankApp.DTOs.AnnouncementDTO;
 import bankApp.entities.Announcement;
 import bankApp.repositories.AnnouncementRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class AnnouncementService {
 
     private final AnnouncementRepository announcementRepository;
-
-    public AnnouncementService(AnnouncementRepository announcementRepository) {
-        this.announcementRepository = announcementRepository;
-    }
+    private final UserService userService;
 
     public List<Announcement> getAllAnnouncements() {
         return announcementRepository.findAll();
@@ -30,15 +30,16 @@ public class AnnouncementService {
         return announcementRepository.save(announcement);
     }
 
-    public Announcement updateAnnouncement(UUID announcementId, Announcement announcementDetails) {
-        Announcement announcement = announcementRepository.findById(announcementId).orElse(null);
+    public Announcement updateAnnouncement(Announcement announcement) {
 
-        if (announcement != null) {
-            announcement.setDateFrom(announcementDetails.getDateFrom());
-            announcement.setDateTo(announcementDetails.getDateTo());
-            announcement.setContent(announcementDetails.getContent());
+        Announcement announcementFromDB = announcementRepository.findById(announcement.getId()).orElse(null);
 
-            return announcementRepository.save(announcement);
+        if (announcementFromDB != null) {
+            announcementFromDB.setDateFrom(announcement.getDateFrom());
+            announcementFromDB.setDateTo(announcement.getDateTo());
+            announcementFromDB.setContent(announcement.getContent());
+
+            return announcementRepository.save(announcementFromDB);
         } else {
             return null;
         }
@@ -60,15 +61,26 @@ public class AnnouncementService {
                 a.getId(),
                 a.getContent(),
                 a.getDateFrom(),
-                a.getDateTo()
+                a.getDateTo(),
+                a.getAuthor().getId()
         );
     }
 
-    public Announcement convertDtoToAnnounecemnt()AnnouncementDTO {
+    public Announcement convertDtoToAnnouncement(AnnouncementDTO announcementDTO) {
         return new Announcement (
                 UUID.randomUUID(),
-
+                announcementDTO.dateFrom(),
+                announcementDTO.dateTo(),
+                announcementDTO.content(),
+                LocalDateTime.MIN,
+                userService.getUserById(announcementDTO.authorId()).get(),
+                null
         );
+    }
+
+
+    public void setDeletingUser(Announcement announcement, UUID deletingUserId) {
+        announcement.setDeletedBy(userService.getUserById(deletingUserId).get());
     }
 
 }

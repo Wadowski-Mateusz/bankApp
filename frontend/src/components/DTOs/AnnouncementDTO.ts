@@ -1,6 +1,12 @@
 export interface AnnouncementDTO {
-  id: string,
+  id: string | null,
   content: string,
   dateFrom: Date,
-  DateTo: Date
+  dateTo: Date,
+  authorId: string,
+}
+
+export interface AnnouncementDeleteDTO {
+  announcementId: string,
+  deletingUserId: string,
 }

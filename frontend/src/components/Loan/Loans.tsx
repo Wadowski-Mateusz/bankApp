@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import MyNavbar from "../Nav/MyNavbar";
-import Footer from "../Nav/Footer";
 import Loan from "./Loan";
 import axios from 'axios';
 
@@ -192,7 +191,6 @@ export default function Loans() {
             </div>
           </div>
         </div>
-        <Footer />
     </>
   );
 }

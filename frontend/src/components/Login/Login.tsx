@@ -8,7 +8,7 @@ import Announcement from "./Announcement";
 import MyNavbar from "../Nav/MyNavbar";
 
 import {LOGIN_ENDPOINT} from "../../endpoints/userEndpoints";
-import {RANDOM_ANNOUNCEMENT} from "../../endpoints/announcementsEndpoints";
+import {RANDOM_ANNOUNCEMENT_ENDPOINT} from "../../endpoints/announcementsEndpoints";
 import {AnnouncementDTO} from "../DTOs/AnnouncementDTO";
 
 interface UserDTO {
@@ -26,7 +26,7 @@ function Login() {
   useEffect(() => {
     const fetchAnnouncement = async () => {
       try {
-        const response = await axios.get(`${RANDOM_ANNOUNCEMENT}`);
+        const response = await axios.get(`${RANDOM_ANNOUNCEMENT_ENDPOINT}`);
         const data: AnnouncementDTO = response.data;
         setAnnouncement(data);
       } catch (error) {

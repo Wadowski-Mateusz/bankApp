@@ -1,6 +1,5 @@
 import Table from 'react-bootstrap/Table';
 import MyNavbar from "../Nav/MyNavbar";
-import Footer from "../Nav/Footer";
 
 interface Transaction {
   id: string;
@@ -91,7 +90,6 @@ export default function Account() {
             </Table>
         </div>
     </div>
-    <Footer />
     </>
   );
 }

@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import SubCheckbox from "./SubCheckbox";
 import MyNavbar from "../Nav/MyNavbar";
-import Footer from "../Nav/Footer";
 import {GET_USER_SETTINGS_ENDPOINT, SEND_USER_SETTINGS_ENDPOINT, DELETE_ACCOUNT_ENDPOINT} from "../../endpoints/settingsEndpoints"
 import { useNavigate } from "react-router-dom";
 
@@ -154,12 +153,6 @@ function handleDeleteView(e: React.FormEvent<HTMLFormElement>) {
                 </Container>}
           </div>
     </div>
-
-
-
-
-    <Footer />
-
     </>
   );
 }

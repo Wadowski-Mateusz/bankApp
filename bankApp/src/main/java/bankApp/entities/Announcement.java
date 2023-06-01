@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,10 +22,10 @@ public class Announcement {
     private UUID id;
 
     @Column(name = "date_from", nullable = false)
-    private LocalDateTime dateFrom;
+    private LocalDate dateFrom;
 
     @Column(name = "date_to", nullable = false)
-    private LocalDateTime dateTo;
+    private LocalDate dateTo;
 
     @Column(name = "content", nullable = false)
     private String content;
@@ -50,7 +49,7 @@ public class Announcement {
                     name = "FK_Announcement_DeletedBy",
                     foreignKeyDefinition = "FOREIGN KEY (deleted_by_id)" +
                             " REFERENCES users(id)" +
-                            " ON DELETE SET NULL" +
+                            " ON DELETE NO ACTION" +
                             " ON UPDATE CASCADE"))
     private User deletedBy;
 
