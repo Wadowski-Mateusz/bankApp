@@ -24,7 +24,7 @@ Register:
   * for employee there should be "Back to panel"
 
 Settings:
-  * "are you sure you want to delete an account"?
+  * destroy session ini account delete
 
 Loans: 
   * (backend, but just to not forget) each 1st of the month, getting instalment(s) from account

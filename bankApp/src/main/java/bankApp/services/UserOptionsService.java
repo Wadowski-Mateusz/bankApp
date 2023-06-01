@@ -3,6 +3,7 @@ package bankApp.services;
 import bankApp.DTOs.UserOptionsDTO;
 import bankApp.entities.UserOptions;
 import bankApp.repositories.UserOptionsRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,13 +11,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UserOptionsService {
 
     private final UserOptionsRepository userOptionsRepository;
-
-    public UserOptionsService(UserOptionsRepository userOptionsRepository) {
-        this.userOptionsRepository = userOptionsRepository;
-    }
+    private final UserService userService;;
 
     public UserOptions createUserOptions(UserOptions userOptions) {
         return userOptionsRepository.save(userOptions);
@@ -38,8 +37,26 @@ public class UserOptionsService {
         return userOptionsRepository.save(userOptions);
     }
 
-    public UserOptionsDTO convertUserOptionsToDTO(UserOptions userOptions) {
-        return new UserOptionsDTO(userOptions.isEmailSubscription());
+    public Optional<UserOptions> getUserOptionsByUserId(UUID userId) {
+        return userOptionsRepository.findByUserId(userId);
     }
+
+    public static UserOptionsDTO convertOptionsToDto(UserOptions uo) {
+        return new UserOptionsDTO(
+                uo.getId(),
+                uo.isEmailSubscription(),
+                uo.getUser().getId()
+        );
+    }
+
+    public UserOptions convertDtoToOptions(UserOptionsDTO uoDto) {
+
+        return new UserOptions(
+                uoDto.id(),
+                uoDto.emailSubscription(),
+                userService.getUserById(uoDto.userId()).orElseGet(null)
+        );
+    }
+
 
 }

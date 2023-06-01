@@ -1,17 +1,8 @@
 package bankApp.controllers;
 
-import bankApp.DTOs.UserDetailsDTO;
-import bankApp.DTOs.UserOptionsDTO;
-import bankApp.entities.User;
-import bankApp.entities.UserOptions;
-import bankApp.exceptions.UserNotFoundException;
 import bankApp.services.UserDetailsService;
 import bankApp.services.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @CrossOrigin
 @RestController

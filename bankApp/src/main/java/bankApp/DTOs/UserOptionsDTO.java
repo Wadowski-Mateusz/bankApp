@@ -1,4 +1,6 @@
 package bankApp.DTOs;
 
-public record UserOptionsDTO(boolean emailSubscription){
+import java.util.UUID;
+
+public record UserOptionsDTO(UUID id, boolean emailSubscription, UUID userId) {
 }
