@@ -64,4 +64,11 @@ public class AnnouncementService {
         );
     }
 
+    public Announcement convertDtoToAnnounecemnt()AnnouncementDTO {
+        return new Announcement (
+                UUID.randomUUID(),
+
+        );
+    }
+
 }

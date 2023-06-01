@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import LoginForm from "./LoginForm";
 import Announcement from "./Announcement";
-import MyNavbar from "../nav/MyNavbar";
+import MyNavbar from "../Nav/MyNavbar";
 
 import {LOGIN_ENDPOINT} from "../../endpoints/userEndpoints";
 import {RANDOM_ANNOUNCEMENT} from "../../endpoints/announcementsEndpoints";

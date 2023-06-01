@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import MyNavbar from "../nav/MyNavbar";
-import Footer from "../nav/Footer";
+import MyNavbar from "../Nav/MyNavbar";
+import Footer from "../Nav/Footer";
 import Loan from "./Loan";
 import axios from 'axios';
 

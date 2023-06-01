@@ -39,6 +39,11 @@ public class AnnouncementController {
         return ResponseEntity.ok(announcementDTO);
     }
 
+    @PostMapping("/add")
+    ResponseEntity<AnnouncementDTO> addAnnouncement(AnnouncementDTO announcementDTO) {
+        
+    }
+
 
 
 }
