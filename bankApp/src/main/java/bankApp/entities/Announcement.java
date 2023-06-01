@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,16 +23,16 @@ public class Announcement {
     private UUID id;
 
     @Column(name = "date_from", nullable = false)
-    private Timestamp dateFrom;
+    private LocalDateTime dateFrom;
 
     @Column(name = "date_to", nullable = false)
-    private Timestamp dateTo;
+    private LocalDateTime dateTo;
 
     @Column(name = "content", nullable = false)
     private String content;
 
     @Column(name = "created", nullable = false)
-    private Timestamp created;
+    private LocalDateTime created;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = true,

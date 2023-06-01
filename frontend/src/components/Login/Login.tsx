@@ -1,12 +1,15 @@
 import { useNavigate, Link } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-
 import LoginForm from "./LoginForm";
+import Announcement from "./Announcement";
 import MyNavbar from "../nav/MyNavbar";
+
 import {LOGIN_ENDPOINT} from "../../endpoints/userEndpoints";
+import {RANDOM_ANNOUNCEMENT} from "../../endpoints/announcementsEndpoints";
+import {AnnouncementDTO} from "../DTOs/AnnouncementDTO";
 
 interface UserDTO {
   id: string;
@@ -16,10 +19,26 @@ interface UserDTO {
 function Login() {
   const navigate = useNavigate();
   const [submited, setSubmited] = useState(false);  
+  const [announcement, setAnnouncement] = useState<AnnouncementDTO>();  
+
+
+
+  useEffect(() => {
+    const fetchAnnouncement = async () => {
+      try {
+        const response = await axios.get(`${RANDOM_ANNOUNCEMENT}`);
+        const data: AnnouncementDTO = response.data;
+        setAnnouncement(data);
+      } catch (error) {
+        console.error('fetch error:', error);
+      }
+    };
+    fetchAnnouncement();
+  }, []);
+
 
 
   async function verify(login: string, password: string) {
-
     if(login === "" && password === "" ) {
       navigate("/account"); 
     }
@@ -57,14 +76,10 @@ function Login() {
           </Link>
         </div>
 
-        <div className="row justify-content-center mt-2">
-          <div
-            id="announcment"
-            className="text-center background-color-container col-lg-5 col-md-8 p-3 rounded-3 text-light"
-          >
-            Here will be an announcment.
-          </div>
-        </div>
+
+        <Announcement content={announcement?.content}/>
+
+
       </div>
     </div>
     </>

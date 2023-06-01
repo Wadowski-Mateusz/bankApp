@@ -1,5 +1,6 @@
 package bankApp.services;
 
+import bankApp.DTOs.AnnouncementDTO;
 import bankApp.entities.Announcement;
 import bankApp.repositories.AnnouncementRepository;
 import org.springframework.stereotype.Service;
@@ -53,4 +54,14 @@ public class AnnouncementService {
             return false;
         }
     }
+
+    public static AnnouncementDTO convertAnnouncementToDTO(Announcement a) {
+        return new AnnouncementDTO(
+                a.getId(),
+                a.getContent(),
+                a.getDateFrom(),
+                a.getDateTo()
+        );
+    }
+
 }

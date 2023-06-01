@@ -24,14 +24,13 @@ Register:
   * for employee there should be "Back to panel"
 
 Settings:
-  * destroy session ini account delete
+  * destroy session on account delete
 
 Loans: 
   * (backend, but just to not forget) each 1st of the month, getting instalment(s) from account
 
 Panel: 
   * destroy session on logout
-  * delete announcement overflow
 
 
 Navbar:

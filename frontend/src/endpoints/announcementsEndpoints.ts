@@ -1,0 +1,1 @@
+export const RANDOM_ANNOUNCEMENT = '/announcement/current/random'
