@@ -1,0 +1,17 @@
+export interface RegisterDTO {
+    firstName: string,
+    lastName: string,
+    birthday: Date,
+    email: string,
+    idURI: string,
+    idNumber: string,
+    country: string,
+    sector: string,
+    city: string,
+    street: string,
+    number: string,
+    zip: string,
+    login: string,
+    password: string,
+    isVerified: boolean,
+}

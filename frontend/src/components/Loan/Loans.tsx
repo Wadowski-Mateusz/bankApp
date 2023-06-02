@@ -64,7 +64,7 @@ export default function Loans() {
         if(Number(value) > MAX_MONTHS) {
           endValue = MAX_MONTHS.toString()
         }
-        
+        const { name, value } = e.target;
         break;
       }
 
