@@ -62,7 +62,6 @@ export default function AddAnnouncement({ setStateInPanel }: Props) {
                     dateFrom: date
                 }))}
                 className="form-control"
-                placeholder="announcement will be visible from"
               />
             </Col>
 
@@ -75,7 +74,6 @@ export default function AddAnnouncement({ setStateInPanel }: Props) {
                     dateTo: date
                 }))}
                 className="form-control"
-                placeholder="announcement will be visible to"
               />
             </Col>
           </Row>

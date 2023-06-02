@@ -4,12 +4,10 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import java.time.LocalDateTime;
 
-public record TransactionDTO(
+public record TransactionAddDTO(
         UUID id,
-        UUID fromId,
-        String fromName,
-        UUID toId,
-        String toName,
+        String receiverAccountNumber,
+        String senderAccountNumber,
         String title,
         BigDecimal amount,
         LocalDateTime timestamp

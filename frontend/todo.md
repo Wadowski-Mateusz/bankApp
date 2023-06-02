@@ -6,8 +6,10 @@ All:
 
 Account:
   * input validation
+  * valid numbers: "1234 1234", "1234-1234", "12341234"
   * making a transfer
   * filter transactions by date
+
 
 Login:
   * change background to picture

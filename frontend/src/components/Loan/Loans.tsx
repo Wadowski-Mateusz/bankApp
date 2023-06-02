@@ -41,6 +41,16 @@ export default function Loans() {
         if (value.includes('.')) {
           valid = (value.split('.')[1].length <= 2)
         }
+
+        if(value.length > 1) {
+          if(value.includes('.')) {
+            if(value[0] === '0' && value[1] !== '.')
+              valid = false
+          } else
+            if(value[0] === '0') 
+              valid = false
+        }
+
         if(Number(value) > MAX_AMOUNT)
           endValue = MAX_AMOUNT.toString()
         break;
@@ -110,7 +120,6 @@ export default function Loans() {
 
   // send request to add loan
   const handleRequestLoan = async () => {
-    
     const newLoanRequest: LoanRequestDTO = {
       userId: IDtoDelete,
       name: formData.name,

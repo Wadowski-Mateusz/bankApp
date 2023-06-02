@@ -1,6 +1,6 @@
 package bankApp.services;
 
-import bankApp.DTOs.TransactionDTO;
+import bankApp.DTOs.TransactionAddDTO;
 import bankApp.DTOs.TransactionViewDTO;
 import bankApp.entities.Transaction;
 import bankApp.repositories.TransactionRepository;
@@ -44,7 +44,7 @@ public class TransactionService {
          return transactionRepository.findAllByFromAccountId(accountId);
     }
 
-    public TransactionViewDTO convertToTransactionViewDTOOutgoing(Transaction transaction, String transactionType) {
+    public TransactionViewDTO convertTransactionToTransactionViewDTOOutgoing(Transaction transaction, String transactionType) {
 
         String fullName;
         BigDecimal amountToVieW;
@@ -63,7 +63,6 @@ public class TransactionService {
             }
         }
 
-
         return new TransactionViewDTO(
                 transaction.getId(),
                 fullName,
@@ -75,4 +74,14 @@ public class TransactionService {
     }
 
 
+    public static TransactionAddDTO convertTransactionToTransactionAddDTO(Transaction transaction) {
+        return new TransactionAddDTO(
+                transaction.getId(),
+                transaction.getToAccount().getNumber(),
+                transaction.getFromAccount().getNumber(),
+                transaction.getTitle(),
+                transaction.getAmount(),
+                transaction.getDate()
+        );
+    }
 }

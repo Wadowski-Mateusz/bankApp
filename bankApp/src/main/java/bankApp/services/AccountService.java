@@ -17,38 +17,40 @@ import java.util.UUID;
 public class AccountService {
 
     private final AccountRepository accountRepository;
-    private final UserService userService;
     private final UserDetailsService userDetailsService;
 
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
     }
 
-    public Account getAccountById(UUID accountId) {
-        return accountRepository.findById(accountId).orElse(null);
+    public Optional<Account> getAccountById(UUID accountId) {
+        return accountRepository.findById(accountId);
     }
 
     public Account createAccount(Account account) {
         return accountRepository.save(account);
     }
 
-    public Account updateAccount(UUID accountId, Account accountDetails) {
-        Account account = accountRepository.findById(accountId).orElse(null);
+    public Account updateAccountBalance(Account account) {
+        // Fetch to update only if in the database
+        Account accountUpdated = accountRepository.findById(account.getId()).orElse(null);
 
-        if (account != null) {
-//            account.setUserId(accountDetails.getUserId());
-            account.setBalance(accountDetails.getBalance());
-            account.setNumber(accountDetails.getNumber());
-
+        if (accountUpdated != null) {
+            accountUpdated.setBalance(account.getBalance());
             return accountRepository.save(account);
         } else {
             return null;
         }
     }
 
+    public Optional<Account> getAccountByNumber(String number) {
+        return accountRepository.findByNumber(number);
+    }
+
     public boolean deleteAccount(UUID accountId) {
         Account account = accountRepository.findById(accountId).orElse(null);
-
+        // TODO if both transaction are null, then delete transaction, if not, set to null
+        // delete only if balance is >= 0
         if (account != null) {
             accountRepository.delete(account);
             return true;
