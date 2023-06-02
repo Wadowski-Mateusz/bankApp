@@ -1,8 +1,10 @@
 package bankApp.services;
 
 import bankApp.DTOs.UserDetailsDTO;
+import bankApp.entities.User;
 import bankApp.entities.UserDetails;
 import bankApp.repositories.UserDetailsRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,13 +12,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UserDetailsService {
 
     private final UserDetailsRepository userDetailsRepository;
-
-    public UserDetailsService(UserDetailsRepository userDetailsRepository) {
-        this.userDetailsRepository = userDetailsRepository;
-    }
 
     public UserDetails createUserDetails(UserDetails userDetails) {
         return userDetailsRepository.save(userDetails);
@@ -36,6 +35,16 @@ public class UserDetailsService {
 
     public UserDetails updateUserDetails(UserDetails userDetails) {
         return userDetailsRepository.save(userDetails);
+    }
+
+    public Optional<UserDetails> getByUserId(UUID userId) {
+        Optional<UserDetails> userDetails = userDetailsRepository.findByUserId(userId);
+        return userDetails;
+    }
+
+    public User getUserByUserId(UUID userId) {
+        Optional<UserDetails> userDetails = userDetailsRepository.findByUserId(userId);
+        return userDetails.map(UserDetails::getUser).orElse(null);
     }
 
 

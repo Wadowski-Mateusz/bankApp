@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.time.LocalDateTime;
 
 public record TransactionDTO(
+        UUID id,
         UUID fromId,
         String fromName,
         UUID toId,

@@ -1,13 +1,14 @@
 package bankApp.services;
 
+import bankApp.DTOs.TransactionDTO;
+import bankApp.DTOs.TransactionViewDTO;
 import bankApp.entities.Transaction;
 import bankApp.repositories.TransactionRepository;
-import bankApp.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
-    private final UserService userService;
+    private final AccountService accountService;
 
 
     public Transaction createTransaction(Transaction transaction) {
@@ -27,10 +28,6 @@ public class TransactionService {
         return transactionRepository.findById(id);
     }
 
-    public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAll();
-    }
-
     public void deleteTransactionById(UUID id) {
         transactionRepository.deleteById(id);
     }
@@ -39,8 +36,43 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public String getFullNameByAccount(UUID accountId) {
-
-
+    public List<Transaction> getAllIncomingTransactionsByAccountId(UUID accountId) {
+         return transactionRepository.findAllByToAccountId(accountId);
     }
+
+    public List<Transaction> getAllOutgoingTransactionsByAccountId(UUID accountId) {
+         return transactionRepository.findAllByFromAccountId(accountId);
+    }
+
+    public TransactionViewDTO convertToTransactionViewDTOOutgoing(Transaction transaction, String transactionType) {
+
+        String fullName;
+        BigDecimal amountToVieW;
+        switch (transactionType) {
+            case Transaction.TYPE_OUTGOING -> {
+                amountToVieW = transaction.getAmount().negate();
+                fullName = accountService.getFullNameByAccountId(transaction.getToAccount().getId());
+            }
+            case Transaction.TYPE_INCOMING -> {
+                amountToVieW = transaction.getAmount();
+                fullName = accountService.getFullNameByAccountId(transaction.getFromAccount().getId());
+            }
+            default -> {
+                amountToVieW = transaction.getAmount();
+                fullName = "Cannot determine";
+            }
+        }
+
+
+        return new TransactionViewDTO(
+                transaction.getId(),
+                fullName,
+                transaction.getTitle(),
+                amountToVieW,
+                transaction.getDate(),
+                transactionType
+        );
+    }
+
+
 }

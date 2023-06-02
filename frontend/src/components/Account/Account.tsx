@@ -1,5 +1,19 @@
-import Table from 'react-bootstrap/Table';
+import {
+  FormFloating,
+  Row,
+  Col,
+  Container,
+  Button,
+  Form,
+} from "react-bootstrap";
+import Table from "react-bootstrap/Table";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import MyNavbar from "../Nav/MyNavbar";
+import TransactionView from "./TransactionView";
+import { TransactionViewDTO } from "../DTOs/TransactionDTOs";
+import * as TransactionEndpoint from "../../endpoints/transactionEndpoints";
 
 interface Transaction {
   id: string;
@@ -11,85 +25,135 @@ interface Transaction {
 }
 
 export default function Account() {
+  const IDtoDelete = "5151f90e-ce44-4784-bb73-26601cb2cbd9";
+
+  const [transactionViews, setTransactionViews] = useState<
+    TransactionViewDTO[]
+  >([]);
+  const fetcTransactionList = async () => {
+    try {
+      const userId = IDtoDelete;
+      const response = await axios.get(
+        `${TransactionEndpoint.GET_ALL_TRANSFERS_OF_USER}${userId}`
+      );
+      const data = response.data;
+      setTransactionViews(data);
+      console.log(data);
+    } catch (error) {
+      console.error("fetch loans error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetcTransactionList();
+  }, []);
   return (
     <>
-    <MyNavbar />
-    <div className="container text-light pt-2">
-        <div className="row"><div className="col text-end h6">Karol Karolowski</div></div>
-        <div className="row"><div className="col text-end h3">Balance: 12345.12</div></div>
-        <form className="row">
-          <div className="row justify-content-around mt-5 mb-5">
-            <div className="form-floating text-dark col-md-3 col-5">
-              <input type="text" id="receiver-number" className="form-control" placeholder="Receiver account number" />
-              <label htmlFor="To" className="form-label ms-2">Receiver number</label>
-            </div>
-            <div className="form-floating text-dark col-md-3 col-5">
-                <input type="text" id="amount" className="form-control" placeholder="Amount to transfer" />
-                <label htmlFor="amount" className="form-label ms-2">Amount</label>
-            </div>
-            <button className="btn btn-primary col-lg-3 col-2">Send</button>
-          </div>
-        </form>
+      <MyNavbar />
+      <Container className="text-light pt-2">
+        <Row>
+          <Col className="text-end h6">Karol Karolowski</Col>
+        </Row>
+        <Row>
+          <Col className="text-end h3">Balance: 12345.12</Col>
+        </Row>
+
+        <Form className="row">
+          <Row className="justify-content-around mt-5 mb-5">
+            <FormFloating className="text-dark col-lg-4 col-md-4 col-12 mb-1">
+              <input
+                type="text"
+                id="receiver-number"
+                className="form-control"
+                placeholder="Receiver account number"
+              />
+              <label htmlFor="To" className="form-label ms-2">
+                Receiver number
+              </label>
+            </FormFloating>
+            <FormFloating className="text-dark col-lg-4 col-md-4 col-12 mb-4">
+              <input
+                type="text"
+                id="amount"
+                className="form-control"
+                placeholder="Amount to transfer"
+              />
+              <label htmlFor="amount" className="form-label ms-2">
+                Amount
+              </label>
+            </FormFloating>
+            <Button className="btn-primary col-lg-3 col-md-2 col-11 mb-4">
+              Send
+            </Button>
+          </Row>
+        </Form>
+
         <hr />
-        <div className="row"><div className="col text-start h3">Transaction history</div></div>
-        <div className="row"><div className="col text-start h4">Select interval:</div></div>
 
-        <form>
-            <div className="row mt-2 mb-1 justify-content-evenly">
-                <div className="col-md-3 col-5 ms-3">
-                    <div className="row"><label htmlFor="after" className="form-label">After</label></div>
-                    <div className="row"><input type="date" id="after-date" className="form-control-lg" placeholder="Transaction after date"/></div>
-                </div>
-                <div className="col-md-3 col-5 ms-3">
-                    <div className="row"><label htmlFor="before" className="form-label">Before</label></div>
-                    <div className="row"><input type="date" id="before-date" className="form-control-lg" placeholder="Transaction before date"/></div>
-                </div>
-            </div>
-        </form>
+        <Row>
+          <Col className="text-start h3">Transaction history</Col>
+        </Row>
+        <Row>
+          <Col className="text-start h4">Select interval:</Col>
+        </Row>
 
+        <Form>
+          <Row className="mt-2 mb-1 justify-content-evenly">
+            <Col className="col-md-3 col-5">
+              <Row>
+                <label htmlFor="after" className="form-label">
+                  After
+                </label>
+              </Row>
+              <Row>
+                <input
+                  type="date"
+                  id="after-date"
+                  className="form-control-lg"
+                  placeholder="Transaction after date"
+                />
+              </Row>
+            </Col>
+            <Col className="col-md-3 col-5">
+              <Row>
+                <label htmlFor="before" className="form-label">
+                  Before
+                </label>
+              </Row>
+              <Row>
+                <input
+                  type="date"
+                  id="before-date"
+                  className="form-control-lg"
+                  placeholder="Transaction before date"
+                />
+              </Row>
+            </Col>
+          </Row>
+        </Form>
 
-        <div className="container background-color-container mt-5 mb-5 border border-1 border-white rounded-3">
-            <Table className="text-light">
-                <thead>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>From/To</th>
-                    <th>Title</th>
-                    <th>Amount</th>
-                </thead>
-                <tbody className="table-group-divider">
-                    <tr>
-                        <td>2023-04-12 03:23 PM</td>
-                        <td>Incoming</td>
-                        <td>Mom</td>
-                        <td>For living</td>
-                        <td>123.52</td>
-                    </tr>
-                    <tr>
-                        <td>2023-04-12 03:23 PM</td>
-                        <td>Outgoing</td>
-                        <td>Marsupium</td>
-                        <td>Loan for live</td>
-                        <td>-465.99</td>
-                    </tr>                    
-                    <tr>
-                        <td>2023-04-12 03:23 PM</td>
-                        <td>Incoming</td>
-                        <td>Dad</td>
-                        <td>For living</td>
-                        <td>50.00</td>
-                    </tr>
-                    <tr>
-                        <td>2023-04-12 03:23 PM</td>
-                        <td>Incoming</td>
-                        <td>Mom</td>
-                        <td>For living</td>
-                        <td>123.52</td>
-                    </tr>
-                </tbody>
-            </Table>
-        </div>
-    </div>
+        <Container className="background-color-container mt-5 mb-5 border border-1 border-white rounded-3">
+          <Table className="text-light">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>From/To</th>
+                <th>Title</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody className="table-group-divider">
+              {transactionViews.map((transactionView) => (
+                <TransactionView
+                  key={transactionView.id}
+                  transaction={transactionView}
+                />
+              ))}
+            </tbody>
+          </Table>
+        </Container>
+      </Container>
     </>
   );
 }

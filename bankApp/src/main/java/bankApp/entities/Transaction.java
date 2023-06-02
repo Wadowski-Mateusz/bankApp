@@ -6,12 +6,18 @@ import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
 
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "transactions")
 public class Transaction {
+
+    static public final String TYPE_OUTGOING = "Outgoing";
+    static public final String TYPE_INCOMING = "Incoming";
+
     @Id
     @Column(name = "id", nullable = false, unique = true, updatable = false,
             columnDefinition = "uuid DEFAULT gen_random_uuid()")
