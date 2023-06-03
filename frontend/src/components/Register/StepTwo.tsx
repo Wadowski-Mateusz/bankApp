@@ -1,7 +1,7 @@
 import { Row, Col, Container } from "react-bootstrap";
 import React, { useContext } from "react";
 
-import { RegisterDTO } from "../DTOs/RegisterDTO";
+
 import { RegisterDataContext } from "./Register";
 import HomeHyperlink from "./HomeHyperlink";
 import InputField from "./InputField";
@@ -27,21 +27,21 @@ export default function StepTwo({ move, stepId }: Props) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(name, value)
+    // console.log(name, value)
     setRegisterData((prevState) => ({
       ...prevState,
       [name]: value
     }));
   };
 
+  
   return (
     <>
       <span className="h1">STEP 2</span>
       <div className="d-flex align-items-center justify-content-center vh-100">
         <Container className="d-flex justify-content-center row col-8">
           <span className="text-white text-center h2 mb-3">
-            {" "}
-            Please enter your Address{" "}
+            Please enter your Address
           </span>
           <form
             onSubmit={handleSubmit}
@@ -60,14 +60,12 @@ export default function StepTwo({ move, stepId }: Props) {
             </Col>
             <Row className="d-flex justify-content-evenly">
               <button
-                type="submit"
                 name="back"
                 className="btn btn-primary col-xxl-4 col-5 mt-3"
               >
                 Back
               </button>
               <button
-                type="submit"
                 name="next"
                 className="btn btn-primary col-xxl-4 col-5 mt-3"
               >

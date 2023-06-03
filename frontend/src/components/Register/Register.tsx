@@ -25,9 +25,6 @@
     isVerified: false,
   };
 
-
-  // export const RegisterDataContext = React.createContext({registerData, setRegisterData: () => {}});
-
   export const RegisterDataContext = React.createContext<{
     registerData: RegisterDTO;
     setRegisterData: React.Dispatch<React.SetStateAction<RegisterDTO>>;

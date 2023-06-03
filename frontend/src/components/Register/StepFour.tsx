@@ -1,7 +1,12 @@
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col, Container, Alert } from 'react-bootstrap';
 import HomeHyperlink from './HomeHyperlink';
 import { Link } from "react-router-dom";
-
+import React, { ChangeEvent, useContext, useState } from "react";
+import { RegisterDataContext } from "./Register";
+import InputField from "./InputField";
+import axios from 'axios';
+import { REGISTER_USER } from '../../endpoints/endpoints';
+import { RegisterDTO } from '../DTOs/RegisterDTO';
 
 interface Props {
   move: (moveTo: number) => void,
@@ -11,30 +16,64 @@ interface Props {
 
 
 export default function StepFour( { move, stepId }: Props ) {
+  const { registerData, setRegisterData } = useContext(RegisterDataContext);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const [repeatedPassword, setRepeatedPassword] = useState("");
+  const RepeatedPasswordName = "repeatedPassword";
+  
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     // validation
     const btnName = (e.nativeEvent.submitter as HTMLButtonElement).name;
-    if(btnName === "next") {
-      move(stepId + 1)
-    }  
-    else {
+
+    if(btnName === "back") {
       move(stepId - 1)
+    } else if(btnName === "next") {
+      if(repeatedPassword !== registerData.password) {
+
+      }
+      try {
+        setRegisterData((prevState) => ({
+          ...prevState,
+          idURI: "/dev/null"
+        }));
+        console.log(registerData);
+        const response = await axios.post(REGISTER_USER, registerData);
+        const data: RegisterDTO = response.data;
+        console.log(response);
+        move(stepId + 1)  
+      } catch (error) {
+        console.error('fetch error:', error);
+      } 
+      /*
+      
+      */
     }
   }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    // console.log(name, value)
+    if(name !== RepeatedPasswordName)
+      setRegisterData((prevState) => ({
+        ...prevState,
+        [name]: value
+      }));
+    else
+      setRepeatedPassword(value);
+  };
   
   return (
     <>
     <span className="h1">STEP 4</span>
       <div className="d-flex align-items-center justify-content-center vh-100">
       <Container className="d-flex justify-content-center row col-lg-4 col-sm-6 col-8">
-      <span className='text-white text-center h2 mb-3'> Enter login and password</span>
+        <span className='text-white text-center h2 mb-3'> Enter login and password</span>
         <form onSubmit={handleSubmit} className="row d-flex justify-content-center">
           <Col className="d-flex flex-column">
-            <input type="text" placeholder="login" className="rounded-2 m-1"/>
-            <input type="text" placeholder="password" className="rounded-2 m-1"/>
-            <input type="text" placeholder="repeat password" className="rounded-2 m-1"/>
+            <InputField name="login" type="text" value={registerData.login} onChange={handleInputChange} placeholder="login"/>
+            <InputField name="password" type="password" value={registerData.password} onChange={handleInputChange} placeholder="password"/>
+            <InputField name={RepeatedPasswordName} type="password" value={repeatedPassword} onChange={handleInputChange} placeholder="repeat password"/>
           </Col>
           <Row className="d-flex justify-content-evenly">
             <button name="back" className="btn btn-primary col-xxl-4 col-sm-5 col-12 mt-3">Back</button> 

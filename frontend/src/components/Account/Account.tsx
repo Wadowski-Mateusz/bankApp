@@ -101,7 +101,7 @@ export default function Account() {
       amount: 0,
     }));
     setValueView("");
-    featchTransactionList;
+    featchTransactionList();
   };
 
   useEffect(() => {

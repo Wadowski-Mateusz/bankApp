@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useContext } from "react";
-import { Col, Container } from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import { Col, Container, Row } from 'react-bootstrap';
+import { useNavigate, Link } from "react-router-dom";
 
 import { RegisterDataContext } from "./Register";
 import HomeHyperlink from './HomeHyperlink'
@@ -16,17 +16,24 @@ interface Props {
 
 
 export default function StepOne( { move, stepId }: Props ) {
+  const navigate = useNavigate();
   const { registerData, setRegisterData } = useContext(RegisterDataContext);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+    e.preventDefault();
     // validation
-    move(stepId + 1)
+    const btnName = (e.nativeEvent.submitter as HTMLButtonElement).name;
+    if (btnName === "next") {
+      move(stepId + 1);
+    } else {
+      // move(stepId - 1);
+      navigate("/");
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(name, value)
+    // console.log(name, value)
     setRegisterData((prevState) => ({
       ...prevState,
       [name]: value
@@ -43,8 +50,7 @@ export default function StepOne( { move, stepId }: Props ) {
           <Col className="d-flex flex-column gap">
           <InputField name="firstName" type="text" value={registerData.firstName} onChange={handleInputChange} placeholder="First Name"/>
           <InputField name="lastName"  type="text" value={registerData.lastName} onChange={handleInputChange} placeholder="Last Name"/>
-          {/* <InputField name="Birthday" value={registerData.birthday} onChange={handleInputChange} placeholder="Birthday"/> */}
-          {/* <input type="text" placeholder="First Name" className="rounded-2 m-1" /> */}
+          {/* <InputField type="date" name="birthday" value={registerData.birthday} onChange={handleInputChange} placeholder="Select birthday"/> */}
           <DatePicker 
               selected = {registerData.birthday}
               onChange={(date: Date) => setRegisterData((prevState) => ({
@@ -62,13 +68,17 @@ export default function StepOne( { move, stepId }: Props ) {
             <button type="button" className="btn btn-sm btn-primary rounded-2 m-1">Add ID scan</button>
             <InputField name="idNumber" type="text" value={registerData.idNumber} onChange={handleInputChange} placeholder="ID number"/>
           </Col>
-          <button
+          {/* <button
             className="
               btn btn-primary 
               col-xxl-8 col-6 
               mt-3">
                 Next
-          </button>  
+          </button>   */}
+          <Row className="d-flex justify-content-evenly">
+            <button name="back" className="btn btn-primary col-xxl-4 col-sm-5 col-12 mt-3">Back</button> 
+            <button name="next" className="btn btn-primary col-xxl-4 col-sm-5 col-12 mt-3">Next</button>  
+          </Row>
         </form>
         <HomeHyperlink />
 

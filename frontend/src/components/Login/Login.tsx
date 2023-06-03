@@ -76,6 +76,7 @@ function Login() {
           </Link>
         </div>
 
+        {/* <Announcement content={announcement!!.content}/> */}
         <Announcement content={announcement?.content}/>
 
 
