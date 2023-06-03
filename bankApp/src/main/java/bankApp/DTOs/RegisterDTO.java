@@ -1,5 +1,7 @@
 package bankApp.DTOs;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalDate;
 
 public record RegisterDTO(
@@ -7,7 +9,9 @@ public record RegisterDTO(
         String lastName,
         LocalDate birthday,
         String email,
-        String idURI,
+//        String idURI,
+//        MultipartFile idScan,
+
         String idNumber,
         String country,
         String sector,

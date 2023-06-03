@@ -16,40 +16,81 @@ interface Props {
 
 
 export default function StepFour( { move, stepId }: Props ) {
-  const { registerData, setRegisterData } = useContext(RegisterDataContext);
+  const { registerData, setRegisterData, idScan } = useContext(RegisterDataContext);
 
   const [repeatedPassword, setRepeatedPassword] = useState("");
   const RepeatedPasswordName = "repeatedPassword";
   
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    // validation
-    const btnName = (e.nativeEvent.submitter as HTMLButtonElement).name;
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append('idScan', idScan);
+      formData.append('registerDTO', JSON.stringify(registerData));
+      // await axios.post(REGISTER_USER, formData);
+      // await axios.post(REGISTER_USER, registerData);
+        // await axios.post(REGISTER_USER, formData)
+        const response = await axios.post(REGISTER_USER, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(response.data)
 
-    if(btnName === "back") {
-      move(stepId - 1)
-    } else if(btnName === "next") {
-      if(repeatedPassword !== registerData.password) {
-
-      }
-      try {
-        setRegisterData((prevState) => ({
-          ...prevState,
-          idURI: "/dev/null"
-        }));
-        console.log(registerData);
-        const response = await axios.post(REGISTER_USER, registerData);
-        const data: RegisterDTO = response.data;
-        console.log(response);
-        move(stepId + 1)  
-      } catch (error) {
-        console.error('fetch error:', error);
-      } 
-      /*
-      
-      */
+    } catch (error) {
+      // console.error('error:', error);
+      // Handle error here
     }
   }
+  
+  // async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  //   e.preventDefault()
+  //   // validation
+  //   const btnName = (e.nativeEvent.submitter as HTMLButtonElement).name;
+
+  //   if(btnName === "back") {
+  //     move(stepId - 1)
+  //   } else if(btnName === "next") {
+  //     if(repeatedPassword !== registerData.password) {
+
+  //     }
+  //     try {
+  //       // setRegisterData((prevState) => ({
+  //       //   ...prevState,
+  //       //   idURI: "/dev/null"
+  //       // }));
+
+  //       // const formData = new FormData();
+  //       // formData.append('image', idScan!!);
+  //       // console.log(registerData, idScan);
+  //       // const response = await axios.post(REGISTER_USER, registerData, formData);
+
+  //       // ...
+  //       const formData = new FormData();
+  //       formData.append('image', idScan!!);
+  //       formData.append('registerDTO', new Blob([JSON.stringify(registerData)], { type: 'application/json' }));
+        
+  //       const config = {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data'
+  //         }
+  //       };
+        
+  //       const response = await axios.post(REGISTER_USER, formData, config);
+  //       // ...
+
+
+
+  //       console.log(response.data);
+  //       move(stepId + 1)  
+  //     } catch (error) {
+  //       console.error('fetch error:', error);
+  //     } 
+  //     /*
+      
+  //     */
+  //   }
+  // }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

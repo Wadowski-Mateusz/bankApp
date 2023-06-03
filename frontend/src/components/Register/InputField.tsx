@@ -19,7 +19,7 @@ export default function InputField ({ name, type, value, onChange, placeholder }
       value={convertedValue}
       onChange={onChange}
       placeholder={placeholder}
-      className="rounded-2 m-1"
+      className="rounded-2 m-1 form-control"
     />
   );
 };
