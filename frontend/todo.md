@@ -1,27 +1,28 @@
+Endpoints:
+  * account user name and balance
+  * filtering by date?
+  * verification
+  * send mail 
+
 All: 
   * card titles and icon
-  * connection to endpoints
   * user auth and session
   * roles
 
 Account:
   * input validation
   * valid numbers: "1234 1234", "1234-1234", "12341234"
-  * making a transfer
   * filter transactions by date
 
-
 Login:
-  * change background to picture
   * add logo
   * delte navbar
 
 Register:
   * input validation
   * delete spans with step number displayed on page
-  * step 1 - id submit
   * step 3 - send mail
-  * step 5 - user role display / add user to verify queue
+  * step 5 - user role display
   * for employee there should be "Back to panel"
 
 Settings:
@@ -32,6 +33,7 @@ Loans:
 
 Panel: 
   * destroy session on logout
+  * no user to verify
 
 Navbar:
   * delete "fast travel" to points which user shouldn't have access

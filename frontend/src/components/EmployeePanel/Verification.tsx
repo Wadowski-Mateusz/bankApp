@@ -1,47 +1,187 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import axios, { HttpStatusCode } from "axios";
+
+import {AddressDTO} from "../DTOs/AddressDTO"
+import {UserVerificationDTO, UserVerifyOrBanDTO} from "../DTOs/UserDTOs"
+import * as ENDPOINT from "../../endpoints/endpoints"
 import { States } from "./States";
-
-import Address from "../../classes/Address"
-
-interface UserVerificationDTO {
-  name: string,
-  email: string,
-  birthday: string,
-  address: Address,
-  idNumber: string,
-  idURI: string,
-}
 
 interface Props {
   setStateInPanel: (state: number) => void,
-
 }
 
 enum Action{
+  Waiting,
   Panel,
-  Postpone,
+  Ban,
   Verify,
 }
 
+const emptyAddress: AddressDTO = {
+  country: "",
+  sector: "",
+  city: "",
+  street: "",
+  number: "",
+  zip: "",
+}
+
+const userDataEmpty: UserVerificationDTO = {
+  userId: "",
+  fullName: "",
+  email: "",
+  birthday: "",
+  addressDTO: emptyAddress,
+  idNumber: "",
+}
+
+const verInit: UserVerifyOrBanDTO = {
+  userId: "",
+  verified: false,
+}
+
+
+
 export default function Verification ({ setStateInPanel }: Props) {
 
-  function handleClick(action: number) {
+  const [helper, setHelper] = useState(Action.Waiting);
+  const [userToVerifyDataTxt, setUserToVerifyDataTxt] = useState<UserVerificationDTO>();
+  const [idScan, setIdScan] = useState<Blob | null>(null);
+  const [verificationDTO, setVerificationDTO] = useState<UserVerifyOrBanDTO>(verInit)
 
-    switch(action) {
-      case Action.Panel:
-        setStateInPanel(States.Default)
-        break;
-      case Action.Postpone:
-        // postpone verification
-        // fetch new user
-        break;
-      case Action.Verify:
-        // verify in the database
-        // fetch new user
-        break;
+  // fetch user id afret user  is fetched
+  useEffect(() => {
+    const fetchUserIdScan = async () => {
+      if(userToVerifyDataTxt != userDataEmpty) {
+        try {
+          const response = await axios.get(`${ENDPOINT.GET_USER_TO_VERIFY_SCAN}${userToVerifyDataTxt?.userId}`,{
+            responseType: 'arraybuffer',
+          });
+          if (response.status === HttpStatusCode.Ok) {
+            const dataBlob = new Blob([response.data], { type: 'image/bmp' });
+            setIdScan(dataBlob);
+            // console.log(data)
+            // TODO NO USERS TO VERIFY
+          } else {
+            // Some error
+            // setIdScan(null)
+          }
+            
+        } catch (error) {
+          console.error('fetch error:', error);
+        }
+      }
     }
-  }
+    if(userToVerifyDataTxt !== userDataEmpty) {
+      fetchUserIdScan();
+    }
+
+  }, [userToVerifyDataTxt])
+
+
+  const fetchUserToVerification = async () => {
+    try {
+      const response = await axios.get(ENDPOINT.GET_USER_TO_VERIFY_DATA);
+      if(response.status === HttpStatusCode.Ok) {
+        const data: UserVerificationDTO = response.data;
+        setUserToVerifyDataTxt(data);
+        console.log(data)
+        // TODO NO USERS TO VERIFY
+      } else {
+        // Some HTTP error code
+        setUserToVerifyDataTxt(userDataEmpty)
+      }
+        
+    } catch (error) {
+      console.error('fetch error:', error);
+    }
+  };
+
+  useEffect(() => {
+    // const fetchUserToVerification = async () => {
+    //   try {
+    //     const response = await axios.get(ENDPOINT.GET_USER_TO_VERIFY_DATA);
+    //     if(response.status === HttpStatusCode.Ok){
+    //       const data: UserVerificationDTO = response.data;
+    //       setUserToVerifyDataTxt(data);
+    //       console.log(data)
+    //       // TODO NO USERS TO VERIFY
+    //     } else {
+    //       // Some HTTP error code
+    //       setUserToVerifyDataTxt(userDataEmpty)
+    //     }
+          
+    //   } catch (error) {
+    //     console.error('fetch error:', error);
+    //   }
+    // };
+    fetchUserToVerification();
+  }, []);
+
+
+  // PUT verificatoin
+  useEffect(() => {
+
+    const sendRequestWithVerification = async () => {
+      if(verificationDTO !== verInit) {
+          // console.log("inside")
+        try {
+          console.log("verification using", verificationDTO.userId)
+          const response = await axios.put(ENDPOINT.VERIFY_USER, verificationDTO);
+          if(response.status === HttpStatusCode.Ok) {
+            console.log(response)
+            setVerificationDTO(verInit);
+            setIdScan(null);
+            // setUserToVerifyDataTxt(userDataEmpty);
+            fetchUserToVerification();
+          } else {
+            // TODO?
+          }
+        } catch (error) {
+          console.error('error:', error);
+        }
+      } else {
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+      }
+    };
+
+
+    if(verificationDTO !== verInit) {
+      sendRequestWithVerification() 
+      setVerificationDTO(verInit);
+    }
+  }, [verificationDTO])
+
+
+  useEffect(() => {
+    const setVer = (verificationStaus: boolean) => {
+      setVerificationDTO((prevState) => ({
+        ...prevState,
+        userId: userToVerifyDataTxt?.userId || "",
+        verified: verificationStaus,
+      }))
+    };
+
+    if (helper != Action.Waiting) {
+      switch(helper) {
+        case Action.Panel:
+          setStateInPanel(States.Default)
+          break;
+        case Action.Ban:
+          setVer(false);
+          break;
+        case Action.Verify:
+          setVer(true);
+          break;
+        default:
+          console.log("Verification - this should never happen - switch");
+      }
+      setHelper(Action.Waiting);
+    }
+
+  }, [helper])
+
 
   return (
     <>
@@ -57,42 +197,49 @@ export default function Verification ({ setStateInPanel }: Props) {
         {/* Top 3 rows */}
         <Row className="gap-3">
           <Col>
-          <Row className="bg-primary rounded-3 my-3 p-1"><span>Name: John Carsa</span></Row>
-          <Row className="bg-primary rounded-3 my-3 p-1"><span>email:<br/> email.email@example.com</span></Row>
-          <Row className="bg-primary rounded-3 my-3 p-1"><span>Birthday: 30-03-1985</span></Row>
+          <Row className="bg-primary rounded-4 my-3 p-1"><span>Name: {userToVerifyDataTxt?.fullName}</span></Row>
+          <Row className="bg-primary rounded-4 my-3 p-1"><span>email:<br/>{userToVerifyDataTxt?.email}</span></Row>
+          <Row className="bg-primary rounded-4 my-3 p-1"><span>Birthday: {userToVerifyDataTxt?.birthday}</span></Row>
           </Col>
 
           <Col>
           <Row className="bg-primary rounded-4 my-3 p-1">
             <span className="text-center">
-              Poland
+              {userToVerifyDataTxt?.addressDTO.country}
             </span>
             <span className="text-center">
-              Lesser Poland
+              {`${userToVerifyDataTxt?.addressDTO.sector} ${userToVerifyDataTxt?.addressDTO.city}`}
             </span>
             <span className="text-center">
-              Cracow 00-000
+              {`${userToVerifyDataTxt?.addressDTO.street} ${userToVerifyDataTxt?.addressDTO.number}`}
             </span>
             <span className="text-center">
-              Szlak 999
+              {userToVerifyDataTxt?.addressDTO.zip}
             </span>
           </Row>
-          <Row className="bg-primary rounded-3 my-3 p-1"><span>ID number: xyzabc</span></Row>
+          <Row className="bg-primary rounded-4 my-3 p-1"><span>ID number:<br/>{userToVerifyDataTxt?.idNumber}</span></Row>
           </Col>
         </Row>
 
         {/* id pic */}
-        <Row className="h1">ID PIC</Row>
+        <Row className="h1">
+          { idScan ?
+          (<img src={URL.createObjectURL(idScan)} alt="Scan of client ID" />)
+          :
+          (
+            <span>Scan is loading...</span>
+          )
+          } 
+        </Row>
 
-        {/* navigation */}
         <Row className="gap-1 mt-4">
-          <Col type="button" onClick={() => handleClick(Action.Panel)} className="btn btn-primary rounded-4">
+          <Col type="button" onClick={() => setHelper(Action.Panel)} className="btn btn-primary rounded-4">
             <span>Panel</span>
           </Col>
-          <Col type="button" onClick={() => handleClick(Action.Postpone)} className="btn btn-primary rounded-4">
-            <span>Postpone</span>
+          <Col type="button" onClick={() => setHelper(Action.Ban)} className="btn btn-primary rounded-4">
+            <span>Ban</span>
           </Col>
-          <Col type="button" onClick={() => handleClick(Action.Verify)} className="btn btn-primary rounded-4">
+          <Col type="button" onClick={() => setHelper(Action.Verify)} className="btn btn-primary rounded-4">
             <span>Verify</span>
           </Col>
         </Row>

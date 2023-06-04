@@ -23,23 +23,29 @@ export default function StepFour( { move, stepId }: Props ) {
   
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append('idScan', idScan);
-      formData.append('registerDTO', JSON.stringify(registerData));
-      // await axios.post(REGISTER_USER, formData);
-      // await axios.post(REGISTER_USER, registerData);
-        // await axios.post(REGISTER_USER, formData)
-        const response = await axios.post(REGISTER_USER, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log(response.data)
+    const btnName = (e.nativeEvent.submitter as HTMLButtonElement).name;
 
-    } catch (error) {
-      // console.error('error:', error);
-      // Handle error here
+    if(btnName === "back") {
+      move(stepId - 1)
+    } else if(btnName === "next") {
+      try {
+        const formData = new FormData();
+        formData.append('idScan', idScan);
+        formData.append('registerDTO', JSON.stringify(registerData));
+          const response = await axios.post(REGISTER_USER, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log(response.data)
+        if(response.status === 200)  {
+          move(stepId + 1)
+        }
+
+      } catch (error) {
+        // console.error('error:', error);
+        // Handle error here
+      }
     }
   }
   

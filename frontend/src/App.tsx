@@ -6,6 +6,7 @@ import Account from "./components/Account/Account";
 import Settings from "./components/Settings/Settings";
 import PanelEmp from "./components/EmployeePanel/PanelEmp";
 import Register from "./components/Register/Register";
+import Test from "./Test";
 import "../css/main.css"
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/loans" element={<Loans />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="/settings" element={<Settings />}></Route>
+        <Route path="/test" element={<Test />}></Route>
       </Routes>
       </BrowserRouter>
     );

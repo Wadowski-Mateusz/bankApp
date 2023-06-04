@@ -1,22 +1,31 @@
 package bankApp.services;
 
 import bankApp.DTOs.UserDTO;
+import bankApp.DTOs.UserVerificationDTO;
+import bankApp.controllers.RegisterController;
+import bankApp.entities.Address;
 import bankApp.entities.User;
+import bankApp.entities.UserDetails;
+import bankApp.exceptions.UserNotFoundException;
 import bankApp.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserDetailsService userDetailsService;
+    private final AddressService addressService;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public User createUser(User user) {
         return userRepository.save(user);
@@ -42,9 +51,30 @@ public class UserService {
         return userRepository.findByLogin(login);
     }
 
-    public UserDTO convertUserToDTO(User user) {
-        // TODO
-        return null;
+    public UserDTO convertUserToDTO(User user) throws UserNotFoundException {
+        return new UserDTO(
+                user.getId(),
+                userDetailsService.getFullNameByUserId(user.getId()),
+                user.getRole().getRole()
+        );
     }
 
+    public UserVerificationDTO convertUserToVerificationDTO(User user) throws UserNotFoundException {
+        UserDetails userDetails = userDetailsService.getByUserId(user.getId())
+                .orElseThrow(() -> new UserNotFoundException("UserDetails not found"));
+        Address address = addressService.getAddressByUserDetailsId(userDetails.getId())
+                .orElseThrow(() -> new UserNotFoundException("Address not found"));
+        return new UserVerificationDTO(
+                user.getId().toString(),
+                userDetails.getFullName(),
+                userDetails.getEmail(),
+                userDetails.getBirthday().toString(),
+                AddressService.convertAddressToDTO(address),
+                userDetails.getIdNumber()
+        );
+    }
+
+    public List<User> getAllUnverified() {
+        return userRepository.findAllByIsVerified(false);
+    }
 }

@@ -1,10 +1,12 @@
 package bankApp.services;
 
+import bankApp.DTOs.AddressDTO;
 import bankApp.entities.Address;
 import bankApp.repositories.AddressRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Service
 public class AddressService {
@@ -53,5 +55,20 @@ public class AddressService {
         } else {
             return false;
         }
+    }
+
+    public Optional<Address> getAddressByUserDetailsId(UUID userDetailsId) {
+        return addressRepository.getByUserDetailsId(userDetailsId);
+    }
+
+    public static AddressDTO convertAddressToDTO(Address address) {
+        return new AddressDTO(
+                address.getCountry(),
+                address.getSector(),
+                address.getCity(),
+                address.getStreet(),
+                address.getNumber(),
+                address.getZip()
+        );
     }
 }

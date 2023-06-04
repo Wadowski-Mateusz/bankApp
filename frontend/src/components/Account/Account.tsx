@@ -63,7 +63,7 @@ export default function Account() {
     }
   }
 
-  const featchTransactionList = async () => {
+  const fetchTransactionList = async () => {
     try {
       const userId = IDtoDelete;
       const response = await axios.get(
@@ -101,11 +101,11 @@ export default function Account() {
       amount: 0,
     }));
     setValueView("");
-    featchTransactionList();
+    fetchTransactionList();
   };
 
   useEffect(() => {
-    featchTransactionList();
+    fetchTransactionList();
   }, []);
 
   return (

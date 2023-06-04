@@ -3,6 +3,7 @@ package bankApp.services;
 import bankApp.DTOs.UserDetailsDTO;
 import bankApp.entities.User;
 import bankApp.entities.UserDetails;
+import bankApp.exceptions.UserNotFoundException;
 import bankApp.repositories.UserDetailsRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,19 @@ public class UserDetailsService {
         return userDetails.map(UserDetails::getUser).orElse(null);
     }
 
+    public String getFullNameByUserId(UUID userId) throws UserNotFoundException {
+        Optional<UserDetails> userDetails = userDetailsRepository.findByUserId(userId);
+        if(userDetails.isEmpty())
+            throw new UserNotFoundException("User not found");
+        return userDetails.get().getFullName();
+    }
+
+    public String getIdURIByUserId(UUID userId) throws UserNotFoundException {
+        Optional<UserDetails> userDetails = userDetailsRepository.findByUserId(userId);
+        if(userDetails.isEmpty())
+            throw new UserNotFoundException("User not found");
+        return userDetails.get().getIdUri();
+    }
 
     public UserDetailsDTO convertUserDetailsToDTO(UserDetails userDetails) {
         return new UserDetailsDTO(
