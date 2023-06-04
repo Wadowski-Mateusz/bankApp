@@ -2,25 +2,22 @@ package bankApp.services;
 
 import bankApp.DTOs.UserDTO;
 import bankApp.DTOs.UserVerificationDTO;
-import bankApp.controllers.RegisterController;
 import bankApp.entities.Address;
 import bankApp.entities.User;
 import bankApp.entities.UserDetails;
 import bankApp.exceptions.UserNotFoundException;
 import bankApp.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class UserService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
@@ -77,4 +74,17 @@ public class UserService {
     public List<User> getAllUnverified() {
         return userRepository.findAllByIsVerified(false);
     }
+
+    @Override
+    public org.springframework.security.core.userdetails.UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return new org.springframework.security.core.userdetails.User(
+                user.getLogin(),
+                user.getPassword(),
+                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getRole()))
+        );
+    }
+
+
 }

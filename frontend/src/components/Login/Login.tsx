@@ -7,7 +7,7 @@ import LoginForm from "./LoginForm";
 import Announcement from "./Announcement";
 import MyNavbar from "../Nav/MyNavbar";
 
-import {LOGIN_ENDPOINT} from "../../endpoints/userEndpoints";
+import * as ENDPOINT from "../../endpoints/endpoints";
 import {RANDOM_ANNOUNCEMENT_ENDPOINT} from "../../endpoints/announcementsEndpoints";
 import {AnnouncementDTO} from "../DTOs/AnnouncementDTO";
 
@@ -30,7 +30,7 @@ function Login() {
         const data: AnnouncementDTO = response.data;
         setAnnouncement(data);
       } catch (error) {
-        console.error('fetch error:', error);
+        console.error('Announcement fetch error:', error);
       }
     };
     fetchAnnouncement();
@@ -44,7 +44,7 @@ function Login() {
     }
 
     try {
-      const response = await axios.post<UserDTO>(LOGIN_ENDPOINT, {
+      const response = await axios.post<UserDTO>(ENDPOINT.LOGIN_ENDPOINT, {
         login: login,
         password: password,
       });

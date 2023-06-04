@@ -13,10 +13,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RoleService {
 
-    public static final String CLIENT = "client";
-    public static final String EMPLOYEE = "employee";
-    public static final String ADMIN = "admin";
-
     private final RoleRepository roleRepository;
 
     public Optional<Role> getRoleByRole(String name) {

@@ -1,14 +1,25 @@
 package bankApp.controllers;
 
+import bankApp.DTOs.LoginDTO;
 import bankApp.DTOs.RegisterDTO;
+import bankApp.DTOs.UserDTO;
 import bankApp.entities.*;
+import bankApp.exceptions.UserNotFoundException;
+import bankApp.security.SecurityConfig;
 import bankApp.services.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -26,21 +36,39 @@ import java.util.stream.Stream;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/register")
+@RequestMapping("/auth")
 @AllArgsConstructor
-public class RegisterController {
-
+public class SecurityController {
     public final static String ID_DIRECTORY = "scans";
 
-    AccountService accountService;
-    AddressService addressService;
-    UserDetailsService userDetailsService;
-    UserOptionsService userOptionsService;
-    UserService userService;
-    RoleService roleService;
+    private AuthenticationManager authenticationManager;
+    private PasswordEncoder passwordEncoder;
+
+    private AccountService accountService;
+    private AddressService addressService;
+    private UserDetailsService userDetailsService;
+    private UserOptionsService userOptionsService;
+    private UserService userService;
+    private RoleService roleService;
+
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+
+        // TODO check if verified
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDTO.login(),
+                        loginDTO.password()
+                ));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return ResponseEntity.ok().build();
+    }
 
     @Transactional
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<String> registerUser(
             @RequestPart("idScan") MultipartFile idScan,
             @RequestPart("registerDTO") String registerData
@@ -55,14 +83,14 @@ public class RegisterController {
             return ResponseEntity.badRequest().build();
         }
 
-        Optional<Role> role = roleService.getRoleByRole(RoleService.CLIENT);
+        Optional<Role> role = roleService.getRoleByRole(SecurityConfig.ROLE_CLIENT);
         if(role.isEmpty()) return ResponseEntity.internalServerError().build();
-        if (validateDate(registerDTO)) return ResponseEntity.badRequest().build();
+        if(validateDate(registerDTO)) return ResponseEntity.badRequest().build();
 
         User user = new User(
                 UUID.randomUUID(),
                 registerDTO.login(),
-                registerDTO.password(),
+                passwordEncoder.encode(registerDTO.password()),
                 registerDTO.isVerified(),
                 role.get()
         );
@@ -101,7 +129,7 @@ public class RegisterController {
         UserOptions userOptions = new UserOptions(UUID.randomUUID(), false, user);
         Account account = new Account(UUID.randomUUID(), BigDecimal.ZERO, randAccountNumber(), user);
 
-        user = userService.createUser(user);
+        userService.createUser(user);
         userDetailsService.createUserDetails(userDetails);
         addressService.createAddress(address);
         userOptionsService.createUserOptions(userOptions);
@@ -159,24 +187,4 @@ public class RegisterController {
                         registerDTO.birthday().isAfter(LocalDate.now())
         );
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
