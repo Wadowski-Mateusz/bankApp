@@ -73,7 +73,7 @@ export default function Account() {
       setTransactionViews(data);
       console.log(data);
     } catch (error) {
-      console.error("fetch loans error:", error);
+      console.error("fetch transactions error:", error);
     }
   };
 
