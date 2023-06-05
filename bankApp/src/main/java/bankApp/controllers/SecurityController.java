@@ -1,10 +1,13 @@
 package bankApp.controllers;
 
+import bankApp.DTOs.AuthenticationDTO;
 import bankApp.DTOs.LoginDTO;
 import bankApp.DTOs.RegisterDTO;
 import bankApp.DTOs.UserDTO;
 import bankApp.entities.*;
 import bankApp.exceptions.UserNotFoundException;
+import bankApp.security.JwtAuthenticationFilter;
+import bankApp.security.JwtProvider;
 import bankApp.security.SecurityConfig;
 import bankApp.services.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -12,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,9 +41,22 @@ import java.util.stream.Stream;
 @CrossOrigin
 @RestController
 @RequestMapping("/auth")
-@AllArgsConstructor
+
 public class SecurityController {
     public final static String ID_DIRECTORY = "scans";
+
+    @Autowired
+    public SecurityController(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, AccountService accountService, AddressService addressService, UserDetailsService userDetailsService, UserOptionsService userOptionsService, UserService userService, RoleService roleService, JwtProvider jwtProvider) {
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.accountService = accountService;
+        this.addressService = addressService;
+        this.userDetailsService = userDetailsService;
+        this.userOptionsService = userOptionsService;
+        this.userService = userService;
+        this.roleService = roleService;
+        this.jwtProvider = jwtProvider;
+    }
 
     private AuthenticationManager authenticationManager;
     private PasswordEncoder passwordEncoder;
@@ -50,11 +67,11 @@ public class SecurityController {
     private UserOptionsService userOptionsService;
     private UserService userService;
     private RoleService roleService;
-
+    private JwtProvider jwtProvider;
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<AuthenticationDTO> login(@RequestBody LoginDTO loginDTO) {
 
         // TODO check if verified
 
@@ -64,7 +81,9 @@ public class SecurityController {
                         loginDTO.password()
                 ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return ResponseEntity.ok().build();
+        String token = jwtProvider.createToken(authentication);
+        return new ResponseEntity<>(new AuthenticationDTO(token), HttpStatus.OK);
+//        return ResponseEntity.ok(new AuthenticationDTO(token));
     }
 
     @Transactional
@@ -90,7 +109,7 @@ public class SecurityController {
         User user = new User(
                 UUID.randomUUID(),
                 registerDTO.login(),
-                passwordEncoder.encode(registerDTO.password()),
+                passwordEncoder.encode((registerDTO.password())),
                 registerDTO.isVerified(),
                 role.get()
         );

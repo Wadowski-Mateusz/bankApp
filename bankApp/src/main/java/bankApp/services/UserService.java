@@ -7,8 +7,7 @@ import bankApp.entities.User;
 import bankApp.entities.UserDetails;
 import bankApp.exceptions.UserNotFoundException;
 import bankApp.repositories.UserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,13 +15,18 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-@AllArgsConstructor
 public class UserService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserDetailsService userDetailsService;
     private final AddressService addressService;
 
+    @Autowired
+    public UserService(UserRepository userRepository, UserDetailsService userDetailsService, AddressService addressService) {
+        this.userRepository = userRepository;
+        this.userDetailsService = userDetailsService;
+        this.addressService = addressService;
+    }
 
     public User createUser(User user) {
         return userRepository.save(user);

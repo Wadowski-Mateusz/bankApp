@@ -41,19 +41,26 @@ function Login() {
   async function verify(login: string, password: string) {
     if(login === "" && password === "" ) {
       navigate("/account"); 
-    }
+    } else {
+      try {
 
-    try {
-      const response = await axios.post<UserDTO>(ENDPOINT.LOGIN_ENDPOINT, {
-        login: login,
-        password: password,
-      });
-  
-      const { id, fullName } = response.data;
-      navigate("/account");
-    } catch (error) {
-      setSubmited(true);
-      console.error('Login failed:', error);
+        let config = {
+          headers: {
+            "authorization": "owner "
+          }
+        }
+
+        console.log("login:", login);
+        console.log("password: ", password);
+        console.log("password: ", config);
+        const response = await axios.post<UserDTO>(ENDPOINT.LOGIN_ENDPOINT, {login: login, password: password}, config);
+        console.log("response: ", response);
+        console.log("response.data: ", response.data);
+        navigate("/account");
+      } catch (error) {
+        setSubmited(true);
+        // console.error('Login failed:', error);
+      }
     }
   }
 
