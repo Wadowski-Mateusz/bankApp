@@ -46,6 +46,7 @@ public class SecurityController {
     private final UserOptionsService userOptionsService;
     private final UserService userService;
     private final RoleService roleService;
+    private final TokenService tokenService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationDTO> login(@RequestBody LoginDTO loginDTO) {
@@ -64,8 +65,9 @@ public class SecurityController {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
-        String token = jwtService.createToken(user);
-        return ResponseEntity.ok(new AuthenticationDTO(token));
+        String jwtToken = jwtService.createToken(user);
+        tokenService.saveToken(user, jwtToken);
+        return ResponseEntity.ok(new AuthenticationDTO(jwtToken));
 //        try {
 //            User user = userService.getUserByLogin(loginDTO.login()).orElse(null);
 //            if (user == null || !user.getPassword().equals(loginDTO.password()))
@@ -143,9 +145,12 @@ public class SecurityController {
         userOptionsService.createUserOptions(userOptions);
         accountService.createAccount(account);
 
-        String token = jwtService.createToken(user);
+        String jwtToken = jwtService.createToken(user);
 
-        return ResponseEntity.ok(new AuthenticationDTO(token));
+        tokenService.saveToken(user, jwtToken);
+
+
+        return ResponseEntity.ok(new AuthenticationDTO(jwtToken));
     }
 
 

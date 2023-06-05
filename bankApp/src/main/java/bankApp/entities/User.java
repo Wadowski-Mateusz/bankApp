@@ -39,12 +39,17 @@ public class User implements UserDetails {
                             " ON UPDATE CASCADE"))
     private Role role;
 
+//    @OneToMany(mappedBy = "user")
+//    private List<Token> tokens;
+
     public User(String login, String password, boolean isVerified, Role role) {
         this.login = login;
         this.password = password;
         this.isVerified = isVerified;
         this.role = role;
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,7 +1,8 @@
 // Auth
   // POST
   export const REGISTER_USER = '/auth/register'
-  export const LOGIN_ENDPOINT = '/auth/login';
+  export const LOGIN_ENDPOINT = '/auth/login'
+  export const LOGOUT_ENDPOINT = '/auth/logout'
 
 // Panel
   // GET

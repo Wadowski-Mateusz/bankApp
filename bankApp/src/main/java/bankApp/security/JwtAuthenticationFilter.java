@@ -1,7 +1,9 @@
 package bankApp.security;
 
 import bankApp.Consts;
+import bankApp.entities.Token;
 import bankApp.services.JwtService;
+import bankApp.services.TokenService;
 import bankApp.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,6 +25,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserService usersService;
+    private final TokenService tokenService;
 
     @Override
     protected void doFilterInternal(
@@ -42,7 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails securityUserDetails = this.usersService.loadUserByUsername(login);
-            if (jwtService.isTokenValid(jwt, securityUserDetails)) {
+            Token token = tokenService.findByToken(jwt).orElseGet(null);
+            boolean isTokenValid = token != null && !token.isExpired();
+
+            if (jwtService.isTokenValid(jwt, securityUserDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         securityUserDetails,
                         null,
