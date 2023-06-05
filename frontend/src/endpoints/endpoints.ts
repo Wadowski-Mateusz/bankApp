@@ -1,6 +1,7 @@
-// Register
+// Auth
   // POST
-  export const REGISTER_USER = '/register'
+  export const REGISTER_USER = '/auth/register'
+  export const LOGIN_ENDPOINT = '/auth/login';
 
 // Panel
   // GET

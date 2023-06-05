@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-    Optional<User> findByLogin(String email);
+    Optional<User> findByLogin(String login);
 
     List<User> findAllByIsVerified(boolean isVerified);
 

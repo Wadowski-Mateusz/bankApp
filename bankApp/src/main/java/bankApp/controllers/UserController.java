@@ -1,6 +1,7 @@
 package bankApp.controllers;
 
 
+import bankApp.Consts;
 import bankApp.DTOs.*;
 import bankApp.entities.User;
 import bankApp.exceptions.UserNotFoundException;
@@ -26,18 +27,6 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
-
-    @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO) {
-        try {
-            User user = userService.getUserByLogin(loginDTO.login()).orElse(null);
-            if (user == null || !user.getPassword().equals(loginDTO.password()))
-                throw new UserNotFoundException("");
-            return ResponseEntity.ok(userService.convertUserToDTO(user));
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
 
     @GetMapping(value = "/verify/data")
     public ResponseEntity<UserVerificationDTO> getUserToVerification() {
@@ -65,7 +54,7 @@ public class UserController {
     @GetMapping(value = "/verify/scan", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getPicture(@RequestParam UUID userId) {
         try {
-            String path = RegisterController.ID_DIRECTORY + "/" + userDetailsService.getIdURIByUserId(userId);
+            String path = Consts.ID_DIRECTORY + "/" + userDetailsService.getIdURIByUserId(userId);
             File f = new File(path);
             byte[] scan = Files.readAllBytes(f.toPath());
             return ResponseEntity.ok(scan);

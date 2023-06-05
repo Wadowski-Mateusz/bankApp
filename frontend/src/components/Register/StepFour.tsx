@@ -5,7 +5,7 @@ import React, { ChangeEvent, useContext, useState } from "react";
 import { RegisterDataContext } from "./Register";
 import InputField from "./InputField";
 import axios from 'axios';
-import { REGISTER_USER } from '../../endpoints/endpoints';
+import * as Endpoint from '../../endpoints/endpoints';
 import { RegisterDTO } from '../DTOs/RegisterDTO';
 
 interface Props {
@@ -32,7 +32,7 @@ export default function StepFour( { move, stepId }: Props ) {
         const formData = new FormData();
         formData.append('idScan', idScan);
         formData.append('registerDTO', JSON.stringify(registerData));
-          const response = await axios.post(REGISTER_USER, formData, {
+          const response = await axios.post(Endpoint.REGISTER_USER, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

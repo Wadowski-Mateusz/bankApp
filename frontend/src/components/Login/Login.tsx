@@ -7,7 +7,7 @@ import LoginForm from "./LoginForm";
 import Announcement from "./Announcement";
 import MyNavbar from "../Nav/MyNavbar";
 
-import {LOGIN_ENDPOINT} from "../../endpoints/userEndpoints";
+import * as Endpoint from "../../endpoints/endpoints";
 import {RANDOM_ANNOUNCEMENT_ENDPOINT} from "../../endpoints/announcementsEndpoints";
 import {AnnouncementDTO} from "../DTOs/AnnouncementDTO";
 
@@ -44,12 +44,14 @@ function Login() {
     }
 
     try {
-      const response = await axios.post<UserDTO>(LOGIN_ENDPOINT, {
+      const response = await axios.post<UserDTO>(Endpoint.LOGIN_ENDPOINT, {
         login: login,
         password: password,
       });
   
-      const { id, fullName } = response.data;
+      console.log(response)
+      console.log(response.data)
+      
       navigate("/account");
     } catch (error) {
       setSubmited(true);

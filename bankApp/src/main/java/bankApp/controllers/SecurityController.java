@@ -1,7 +1,11 @@
 package bankApp.controllers;
 
+import bankApp.Consts;
+import bankApp.DTOs.AuthenticationDTO;
+import bankApp.DTOs.LoginDTO;
 import bankApp.DTOs.RegisterDTO;
 import bankApp.entities.*;
+import bankApp.exceptions.UserNotFoundException;
 import bankApp.services.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +13,9 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +24,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
@@ -26,22 +32,53 @@ import java.util.stream.Stream;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/register")
+@RequestMapping("/auth")
 @AllArgsConstructor
-public class RegisterController {
+public class SecurityController {
 
-    public final static String ID_DIRECTORY = "scans";
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    AuthenticationManager authenticationManager;
 
-    AccountService accountService;
-    AddressService addressService;
-    UserDetailsService userDetailsService;
-    UserOptionsService userOptionsService;
-    UserService userService;
-    RoleService roleService;
+    private final AccountService accountService;
+    private final AddressService addressService;
+    private final UserDetailsService userDetailsService;
+    private final UserOptionsService userOptionsService;
+    private final UserService userService;
+    private final RoleService roleService;
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationDTO> login(@RequestBody LoginDTO loginDTO) {
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDTO.login(),
+                        loginDTO.password()
+                )
+        );
+        User user;
+        try {
+            user = userService.getUserByLogin(loginDTO.login())
+                    .orElseThrow(() -> new UserNotFoundException("User with given login not found"));
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+        String token = jwtService.createToken(user);
+        return ResponseEntity.ok(new AuthenticationDTO(token));
+//        try {
+//            User user = userService.getUserByLogin(loginDTO.login()).orElse(null);
+//            if (user == null || !user.getPassword().equals(loginDTO.password()))
+//                throw new UserNotFoundException("");
+//            return ResponseEntity.ok(userService.convertUserToDTO(user));
+//        } catch (UserNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//        }
+    }
 
     @Transactional
-    @PostMapping
-    public ResponseEntity<String> registerUser(
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationDTO> registerUser(
             @RequestPart("idScan") MultipartFile idScan,
             @RequestPart("registerDTO") String registerData
     ) {
@@ -55,16 +92,16 @@ public class RegisterController {
             return ResponseEntity.badRequest().build();
         }
 
-        Optional<Role> role = roleService.getRoleByRole(RoleService.CLIENT);
-        if(role.isEmpty()) return ResponseEntity.internalServerError().build();
+        Optional<Role> clientRole = roleService.getRoleByRole(Consts.ROLE_CLIENT);
+        if(clientRole.isEmpty()) return ResponseEntity.internalServerError().build();
         if (validateDate(registerDTO)) return ResponseEntity.badRequest().build();
 
         User user = new User(
                 UUID.randomUUID(),
                 registerDTO.login(),
-                registerDTO.password(),
+                passwordEncoder.encode(registerDTO.password()),
                 registerDTO.isVerified(),
-                role.get()
+                clientRole.get()
         );
 
         String idURI;
@@ -82,7 +119,6 @@ public class RegisterController {
                 registerDTO.email(),
                 registerDTO.birthday(),
                 registerDTO.idNumber(),
-//                registerDTO.idURI(),
                 idURI,
                 user
         );
@@ -107,7 +143,9 @@ public class RegisterController {
         userOptionsService.createUserOptions(userOptions);
         accountService.createAccount(account);
 
-        return ResponseEntity.ok().build();
+        String token = jwtService.createToken(user);
+
+        return ResponseEntity.ok(new AuthenticationDTO(token));
     }
 
 
@@ -122,7 +160,7 @@ public class RegisterController {
         final String filename = UUID.randomUUID() + "." + originalFileNameSplit[originalFileNameSplit.length - 1];
 
         // Create a file object with the directory and filename
-        File imageFile = new File(ID_DIRECTORY, filename);
+        File imageFile = new File(Consts.ID_DIRECTORY, filename);
 
         // Write the image data to the file
         FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
@@ -159,24 +197,4 @@ public class RegisterController {
                         registerDTO.birthday().isAfter(LocalDate.now())
         );
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
