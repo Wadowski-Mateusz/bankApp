@@ -20,8 +20,8 @@ import java.util.function.Function;
 public class JwtService {
 
     private static final String KEY = "70337336763979244226452948404D635166546A576E5A7134743777217A25432A462D4A614E645267556B58703273357538782F413F4428472B4B6250655368";
-    private static final long KEY_LIFESPAN = 1000L * 60L * 15L;
-//    private static final long KEY_LIFESPAN = 1000L * 60L * 60L * 24L;
+//    private static final long KEY_LIFESPAN = 1000L * 60L * 15L;
+    private static final long KEY_LIFESPAN = 1000L * 60L * 60L * 24L;
     public String extractLogin(String token) {
         return  extractClaim(token, Claims::getSubject);
     }

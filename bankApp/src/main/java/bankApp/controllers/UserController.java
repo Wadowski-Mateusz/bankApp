@@ -6,7 +6,9 @@ import bankApp.DTOs.*;
 import bankApp.entities.User;
 import bankApp.exceptions.UserNotFoundException;
 import bankApp.services.UserDetailsService;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+
 @AllArgsConstructor
 @CrossOrigin
 @RestController
@@ -27,6 +30,7 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
+
 
     @GetMapping(value = "/verify/data")
     public ResponseEntity<UserVerificationDTO> getUserToVerification() {

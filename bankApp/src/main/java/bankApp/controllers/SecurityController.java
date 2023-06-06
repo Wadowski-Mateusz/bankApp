@@ -68,14 +68,6 @@ public class SecurityController {
         String jwtToken = jwtService.createToken(user);
         tokenService.saveToken(user, jwtToken);
         return ResponseEntity.ok(new AuthenticationDTO(jwtToken));
-//        try {
-//            User user = userService.getUserByLogin(loginDTO.login()).orElse(null);
-//            if (user == null || !user.getPassword().equals(loginDTO.password()))
-//                throw new UserNotFoundException("");
-//            return ResponseEntity.ok(userService.convertUserToDTO(user));
-//        } catch (UserNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-//        }
     }
 
     @Transactional

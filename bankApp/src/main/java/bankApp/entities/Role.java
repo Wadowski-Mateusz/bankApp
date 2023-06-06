@@ -1,10 +1,13 @@
 package bankApp.entities;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UuidGenerator;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +23,10 @@ public class Role {
 
     @Column(name = "role", nullable = false, unique = true)
     private String role;
+
+    public List<SimpleGrantedAuthority> getAuthorities() {
+        return Collections.singletonList(
+                new SimpleGrantedAuthority("ROLE_" + this.role));
+//                new SimpleGrantedAuthority(this.role));
+    }
 }

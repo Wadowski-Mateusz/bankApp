@@ -2,20 +2,23 @@ package bankApp.controllers;
 
 import bankApp.services.UserDetailsService;
 import bankApp.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
-@RequestMapping("user_details")
+@RequestMapping("/user_details")
+@RequiredArgsConstructor
 public class UserDetailsController {
 
     private final UserDetailsService userDetailsService;
     private final UserService userService;
 
-    public UserDetailsController(UserDetailsService userDetailsService, UserService userService) {
-        this.userDetailsService = userDetailsService;
-        this.userService = userService;
-    }
+
+    /* *************************/
+    /*  controller is set to   */
+    /*     hasRole(ADMIN)      */
+    /* *************************/
 
 //    @GetMapping
 //    public ResponseEntity<UserDetailsDTO> getUserDetails(@RequestParam UUID userId) {

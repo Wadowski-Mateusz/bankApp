@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
-@RequestMapping
+@RequestMapping("/roles")
 public class RolesController {
+    /* *************************/
+    /*  controller is set to   */
+    /*     hasRole(ADMIN)      */
+    /* *************************/
 }
