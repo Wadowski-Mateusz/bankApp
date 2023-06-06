@@ -27,7 +27,7 @@ public class TransactionController {
 
     @GetMapping("/user/all")
     public ResponseEntity<List<TransactionViewDTO>> getAllUserTransactions(@RequestParam UUID userId) {
-        Account account = accountService.getAccountByUserId(userId);
+        Account account = accountService.findAccountByUserId(userId);
         Stream<TransactionViewDTO> incomingTransactionsStream = transactionService
                 .getAllIncomingTransactionsByAccountId(account.getId())
                 .stream()
@@ -48,8 +48,8 @@ public class TransactionController {
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<TransactionAddDTO> addTransaction(@RequestBody TransactionAddDTO transactionAddDTO) {
-        Optional<Account> accountReceiverOptional = accountService.getAccountByNumber(transactionAddDTO.receiverAccountNumber());
-        Optional<Account> accountSenderOptional = accountService.getAccountByNumber(transactionAddDTO.senderAccountNumber());
+        Optional<Account> accountReceiverOptional = accountService.findAccountByNumber(transactionAddDTO.receiverAccountNumber());
+        Optional<Account> accountSenderOptional = accountService.findAccountByNumber(transactionAddDTO.senderAccountNumber());
         BigDecimal amount = transactionAddDTO.amount();
         LocalDateTime dateTime = transactionAddDTO.timestamp() != null
                 ? transactionAddDTO.timestamp() : LocalDateTime.now();

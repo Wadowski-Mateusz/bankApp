@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "tokens")
 public class Token {
     @Id
-    @Column(name = "id", nullable = false, unique = true, updatable = false,
+    @Column(name = "id", nullable = false, updatable = false,
             columnDefinition = "uuid DEFAULT gen_random_uuid()")
     private UUID id;
 

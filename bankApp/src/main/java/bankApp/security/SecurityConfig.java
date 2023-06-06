@@ -5,6 +5,7 @@ import bankApp.Consts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import static bankApp.Consts.*;
 
@@ -32,28 +34,31 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/account").hasRole(ROLE_ADMIN)
-                .requestMatchers("/account/**").hasRole(ROLE_ADMIN)
-                .requestMatchers("/address/").hasRole(ROLE_ADMIN)
+//                .requestMatchers("/account/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/test").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/test/**").permitAll()
+                .requestMatchers("/account/**").hasRole(ROLE_CLIENT)
                 .requestMatchers("/address/**").hasRole(ROLE_ADMIN)
+                .requestMatchers("/address/").hasRole(ROLE_ADMIN)
                 .requestMatchers("/announcement/current/random").permitAll()
                 .requestMatchers("/announcement/**").hasRole(ROLE_EMPLOYEE)
                 .requestMatchers("/auth").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/loans").hasRole(ROLE_CLIENT)
                 .requestMatchers("/loans/**").hasRole(ROLE_CLIENT)
-                .requestMatchers("/roles").hasRole(ROLE_ADMIN)
                 .requestMatchers("/roles/**").hasRole(ROLE_ADMIN)
-                .requestMatchers("/transaction").hasRole(ROLE_CLIENT)
+                .requestMatchers("/roles").hasRole(ROLE_ADMIN)
                 .requestMatchers("/transaction/**").hasRole(ROLE_CLIENT)
-                .requestMatchers("/user").hasRole(ROLE_ADMIN)
+                .requestMatchers("/transaction").hasRole(ROLE_CLIENT)
                 .requestMatchers("/user/verify/**").hasRole(ROLE_EMPLOYEE)
                 .requestMatchers("/user/delete").hasRole(ROLE_CLIENT)
                 .requestMatchers("/user/**").hasRole(ROLE_ADMIN)
-                .requestMatchers("/user_details").hasRole(ROLE_ADMIN)
+                .requestMatchers("/user").hasRole(ROLE_ADMIN)
                 .requestMatchers("/user_details/**").hasRole(ROLE_ADMIN)
-                .requestMatchers("/user_options").hasRole(ROLE_CLIENT)
+                .requestMatchers("/user_details").hasRole(ROLE_ADMIN)
                 .requestMatchers("/user_options/**").hasRole(ROLE_CLIENT)
+                .requestMatchers("/user_options").hasRole(ROLE_CLIENT)
                 .requestMatchers("/test").permitAll()
                 .requestMatchers("/test/logged").authenticated()
                 .requestMatchers("/test/client").hasRole(ROLE_CLIENT)

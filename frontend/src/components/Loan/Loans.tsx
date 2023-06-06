@@ -85,7 +85,7 @@ export default function Loans() {
       const data = response.data;
       setLoans(data);
     } catch (error) {
-      console.error('fetch loans error:', error);
+      // console.error('fetch loans error:', error);
     }
   };
 

@@ -32,7 +32,6 @@ public class AccountService {
     }
 
     public Account updateAccountBalance(Account account) {
-        // Fetch to update only if in the database
         Account accountUpdated = accountRepository.findById(account.getId()).orElse(null);
 
         if (accountUpdated != null) {
@@ -43,7 +42,7 @@ public class AccountService {
         }
     }
 
-    public Optional<Account> getAccountByNumber(String number) {
+    public Optional<Account> findAccountByNumber(String number) {
         return accountRepository.findByNumber(number);
     }
 
@@ -65,7 +64,7 @@ public class AccountService {
         return account.map(Account::getUser).orElse(null);
     }
 
-    public Account getAccountByUserId(UUID userId) {
+    public Account findAccountByUserId(UUID userId) {
         Optional<Account> account = accountRepository.findByUserId(userId);
         return account.orElse(null);
     }

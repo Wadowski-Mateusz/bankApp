@@ -15,6 +15,7 @@ axios.defaults.baseURL = 'http://localhost:8081';
 
 export default function App() {
     return (
+    <>
       <BrowserRouter>
       <Routes>
         <Route path="" element={<Login />}></Route>
@@ -28,5 +29,6 @@ export default function App() {
         <Route path="/test" element={<Test />}></Route>
       </Routes>
       </BrowserRouter>
+    </>
     );
 }

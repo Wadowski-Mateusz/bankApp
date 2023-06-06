@@ -53,14 +53,14 @@ public class JwtService {
     public String createToken(bankApp.entities.User user) {
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("user_id", user.getId());
+        map.put("userId", user.getId());
 //        map.put("role", user.getAuthorities());
         map.put("role", user.getRole().getRole());
         try {
             String fullName = bankUserDetailsService.getFullNameByUserId(user.getId());
-            map.put("full_name", fullName);
+            map.put("fullName", fullName);
         } catch (UserNotFoundException e) {
-            map.put("full_name", "");
+            map.put("fullName", "");
         }
 
         return createToken(map, user);

@@ -8,11 +8,15 @@ All:
   * card titles and icon
   * user auth and session
   * roles
+  * if user has valid token and try enter page vai url
+  * if user does not have valid token and try enter page vai url
+  * if user has valid token and try enter page via url without role
 
 Account:
   * input validation
   * valid numbers: "1234 1234", "1234-1234", "12341234"
   * filter transactions by date
+  * update displayed balance after transaction
 
 Login:
   * add logo

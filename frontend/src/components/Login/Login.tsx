@@ -1,13 +1,16 @@
 import { useNavigate, Link } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
+import jwt_decode from 'jwt-decode';
 
 import LoginForm from "./LoginForm";
 import Announcement from "./Announcement";
 import MyNavbar from "../Nav/MyNavbar";
 
 import * as Endpoint from "../../endpoints/endpoints";
+import * as roles from "../../endpoints/roles";
+
 import {RANDOM_ANNOUNCEMENT_ENDPOINT} from "../../endpoints/announcementsEndpoints";
 import {AnnouncementDTO} from "../DTOs/AnnouncementDTO";
 
@@ -22,7 +25,7 @@ function Login() {
   const [announcement, setAnnouncement] = useState<AnnouncementDTO>();  
 
 
-
+  // Fetching announcement to display
   useEffect(() => {
     const fetchAnnouncement = async () => {
       try {
@@ -39,20 +42,40 @@ function Login() {
 
 
   async function verify(login: string, password: string) {
-    if(login === "" && password === "" ) {
-      navigate("/account"); 
-    }
+    // bypass
+    // if(login === "" && password === "" ) {
+    //   navigate("/account"); 
+    // }
 
     try {
-      const response = await axios.post<UserDTO>(Endpoint.LOGIN_ENDPOINT, {
+      const response = await axios.post<{token: string}>(Endpoint.LOGIN_ENDPOINT, {
         login: login,
         password: password,
       });
-  
-      console.log(response)
-      console.log(response.data)
-      
-      navigate("/account");
+      console.log("response:", response);
+      if(response.status === HttpStatusCode.Ok) {
+        const token = response.data.token;
+        const decodedToken = jwt_decode(token) as { [key: string]: any };
+        const userId = decodedToken.userId;
+        const fullName = decodedToken.fullName;
+        const role = decodedToken.role;
+
+        console.log(userId)
+        console.log(fullName)
+        console.log(role)
+
+
+        localStorage.setItem('jwt', token);
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('fullName', fullName);
+        localStorage.setItem('role', role);
+        if (role == roles.ROLE_CLIENT)
+          navigate("/account");
+        else if (role == roles.ROLE_EMPLOYEE)
+          navigate("/panel");
+        else
+          console.log("Unknown role or admin")
+      }
     } catch (error) {
       setSubmited(true);
       console.error('Login failed:', error);
@@ -78,8 +101,11 @@ function Login() {
           </Link>
         </div>
 
-        {/* <Announcement content={announcement!!.content}/> */}
-        <Announcement content={announcement?.content}/>
+        {
+          announcement?.content 
+          &&
+          <Announcement content={announcement?.content}/>
+        }
 
 
       </div>

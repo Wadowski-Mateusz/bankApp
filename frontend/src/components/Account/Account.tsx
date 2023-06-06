@@ -11,16 +11,23 @@ import {
 
 import Table from "react-bootstrap/Table";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios, { HttpStatusCode, AxiosRequestConfig } from "axios";
 import DatePicker from "react-datepicker";
 
 import MyNavbar from "../Nav/MyNavbar";
 import TransactionView from "./TransactionView";
 import { TransactionViewDTO, TransactionAddDTO } from "../DTOs/TransactionDTOs";
-import * as TransactionEndpoint from "../../endpoints/transactionEndpoints";
+import { AccountDTO } from "../DTOs/AccountDTO";
+import * as endpoints from "../../endpoints/endpoints";
+
 
 export default function Account() {
-  const IDtoDelete = "5151f90e-ce44-4784-bb73-26601cb2cbd9";
+  const userId = localStorage.getItem("userId") || "";
+  const username = localStorage.getItem("fullName") || "";
+  const [account, setAccount] = useState<AccountDTO>();
+  const [token, setToken] = useState<String>(localStorage.getItem("jwt") || "");
+  
+
   const NametoDelete = "1111-1111-1111";
 
   const [valueView, setValueView] = useState(""); // what user see, it is use to display dot in the number
@@ -63,17 +70,43 @@ export default function Account() {
     }
   }
 
+ 
   const fetchTransactionList = async () => {
     try {
-      const userId = IDtoDelete;
       const response = await axios.get(
-        `${TransactionEndpoint.GET_ALL_TRANSFERS_OF_USER}${userId}`
+        `${endpoints.GET_ALL_TRANSFERS_OF_USER}${userId}`
       );
       const data = response.data;
       setTransactionViews(data);
       console.log(data);
     } catch (error) {
-      console.error("fetch transactions error:", error);
+      // console.error("fetch transactions error:", error);
+    }
+  };
+
+  async function fetchAccountData() {
+    if(token) {
+      console.log("fetching account")
+      try {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        console.log("before fetch: ", config)
+        console.log("before fetch: ", token)
+        const response = await axios.get(
+          `${endpoints.GET_ACCOUNT_BY_USER_ID}${userId}`,
+          config,
+          );
+      console.log("success fetch")
+      if (response.status === HttpStatusCode.Ok) {
+        console.log("OK")
+        setAccount(response.data);
+        console.log(response.data);
+      }
+      } catch (error) {
+        // console.error("fetch account error:", error);
+        console.log("ERROR")
+      }
     }
   };
 
@@ -86,12 +119,12 @@ export default function Account() {
 
       console.log("sending:", transactionAdd);
       const response = await axios.post(
-        TransactionEndpoint.ADD_TRANSACTION,
+        endpoints.ADD_TRANSACTION,
         transactionAdd
       );
       console.log("reponse from server", response.data);
     } catch (error) {
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
 
     setTransactionAdd((prevState) => ({
@@ -104,19 +137,27 @@ export default function Account() {
     fetchTransactionList();
   };
 
+  // useEffect(() => {
+  //   setToken(localStorage.getItem("jwt") || "")
+  // }, []);
+  
+  
   useEffect(() => {
-    fetchTransactionList();
-  }, []);
+    fetchAccountData();
+    // fetchTransactionList();
+  }, [token]);
 
+
+  
   return (
     <>
       <MyNavbar />
       <Container className="text-light pt-2">
         <Row>
-          <Col className="text-end h6">Karol Karolowski</Col>
+          <Col className="text-end h6">{username}</Col>
         </Row>
         <Row>
-          <Col className="text-end h3">Balance: 12345.12</Col>
+          <Col className="text-end h3">Balance: {account?.balance}</Col>
         </Row>
         <Row>
           <Form>
