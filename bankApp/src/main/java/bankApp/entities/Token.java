@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class Token {
             columnDefinition = "uuid DEFAULT gen_random_uuid()")
     private UUID id;
 
-    @Column(name = "token", nullable = false)
+    @Column(name = "token", nullable = false, length = 1024)
     private String token;
 
     @Column(name = "expired", nullable = false)

@@ -1,5 +1,6 @@
 package bankApp.services;
 
+import bankApp.exceptions.UserNotFoundException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,6 +23,9 @@ public class JwtService {
     private static final String KEY = "70337336763979244226452948404D635166546A576E5A7134743777217A25432A462D4A614E645267556B58703273357538782F413F4428472B4B6250655368";
 //    private static final long KEY_LIFESPAN = 1000L * 60L * 15L;
     private static final long KEY_LIFESPAN = 1000L * 60L * 60L * 24L;
+
+    bankApp.services.UserDetailsService bankUserDetailsService;
+
     public String extractLogin(String token) {
         return  extractClaim(token, Claims::getSubject);
     }
@@ -45,13 +49,26 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String createToken(UserDetails securityUserDetails) {
-        return createToken(new HashMap<>(), securityUserDetails);
+
+    public String createToken(bankApp.entities.User user) {
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("user_id", user.getId());
+//        map.put("role", user.getAuthorities());
+        map.put("role", user.getRole().getRole());
+        try {
+            String fullName = bankUserDetailsService.getFullNameByUserId(user.getId());
+            map.put("full_name", fullName);
+        } catch (UserNotFoundException e) {
+            map.put("full_name", "");
+        }
+
+        return createToken(map, user);
     }
 
     public String createToken(
             Map<String, Object> extraClaims,
-            UserDetails securityUserDetails//from spring security
+            UserDetails securityUserDetails
     ) {
         return Jwts
                 .builder()
@@ -60,7 +77,6 @@ public class JwtService {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + KEY_LIFESPAN))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS512)
-//                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // TODO if not working, uncomment
                 .compact();
     }
 
