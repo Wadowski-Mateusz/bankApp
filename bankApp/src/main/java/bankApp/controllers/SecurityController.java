@@ -69,6 +69,9 @@ public class SecurityController {
         }
         String jwtToken = jwtService.createToken(user);
         tokenService.saveToken(user, jwtToken);
+        if(!user.isVerified()) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(new AuthenticationDTO(jwtToken));
     }
 
