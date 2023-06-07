@@ -5,8 +5,11 @@ import bankApp.Consts;
 import bankApp.DTOs.*;
 import bankApp.entities.User;
 import bankApp.exceptions.UserNotFoundException;
+import bankApp.services.AccountService;
+import bankApp.services.TokenService;
 import bankApp.services.UserDetailsService;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Role;
 import org.springframework.http.HttpStatus;
@@ -30,6 +33,8 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
     private final UserDetailsService userDetailsService;
+    private final AccountService accountService;
+    private final TokenService tokenService;
 
 
     @GetMapping(value = "/verify/data")
@@ -70,32 +75,35 @@ public class UserController {
 
     @PutMapping("/verify/verify")
     public ResponseEntity<?> setVerification(@RequestBody UserVerifyOrBanDTO userVerifyOrBanDTO) {
-            UUID userid = UUID.fromString(userVerifyOrBanDTO.userId());
-            Optional<User> userOptional = userService.getUserById(userid);
-            if (userOptional.isEmpty())
-                return ResponseEntity.badRequest().build();
-            User user = userOptional.get();
-            if (user.isVerified())
-                return ResponseEntity.ok().build();
-            if (!userVerifyOrBanDTO.verified()) {
-                // TODO delete user and send mail
-                userService.deleteUserById(userid);
-            } else {
-                user.setVerified(true);
-                userService.updateUser(user);
-            }
+        UUID userid = UUID.fromString(userVerifyOrBanDTO.userId());
+        Optional<User> userOptional = userService.getUserById(userid);
+        if (userOptional.isEmpty())
+            return ResponseEntity.badRequest().build();
+        User user = userOptional.get();
+        if (user.isVerified())
             return ResponseEntity.ok().build();
+        if (!userVerifyOrBanDTO.verified()) {
+            // TODO delete user and send mail
+            userService.deleteUserById(userid);
+        } else {
+            user.setVerified(true);
+            userService.updateUser(user);
+        }
+        return ResponseEntity.ok().build();
     }
 
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Boolean> login(@RequestBody DeleteUserDTO duDTO) {
+    @Transactional
+    public ResponseEntity<Boolean> deleteUser(@RequestBody DeleteUserDTO duDTO) {
         try {
-            User user = userService.getUserById(duDTO.id()).orElse(null);
-            if (user == null || !user.getPassword().equals(duDTO.password()))
-                throw new UserNotFoundException("");
+            User user = userService.getUserById(duDTO.id())
+                    .orElseThrow(() -> new UserNotFoundException(""));
 
-            userService.deleteUserById(duDTO.id());
+            accountService.deleteAccount(user.getId());
+            tokenService.expireAllUserTokens(user.getId());
+            userService.deleteUserById(user.getId());
+
             return ResponseEntity.ok(true);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

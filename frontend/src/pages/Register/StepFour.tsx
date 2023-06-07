@@ -6,7 +6,7 @@ import { RegisterDataContext } from "./Register";
 import InputField from "./InputField";
 import axios from 'axios';
 import * as Endpoint from '../../endpoints/endpoints';
-import { RegisterDTO } from '../DTOs/RegisterDTO';
+import { RegisterDTO } from '../../DTOs/RegisterDTO';
 
 interface Props {
   move: (moveTo: number) => void,
@@ -32,7 +32,7 @@ export default function StepFour( { move, stepId }: Props ) {
         const formData = new FormData();
         formData.append('idScan', idScan);
         formData.append('registerDTO', JSON.stringify(registerData));
-          const response = await axios.post(Endpoint.REGISTER_USER, formData, {
+        const response = await axios.post(Endpoint.REGISTER_USER, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -49,54 +49,6 @@ export default function StepFour( { move, stepId }: Props ) {
     }
   }
   
-  // async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-  //   e.preventDefault()
-  //   // validation
-  //   const btnName = (e.nativeEvent.submitter as HTMLButtonElement).name;
-
-  //   if(btnName === "back") {
-  //     move(stepId - 1)
-  //   } else if(btnName === "next") {
-  //     if(repeatedPassword !== registerData.password) {
-
-  //     }
-  //     try {
-  //       // setRegisterData((prevState) => ({
-  //       //   ...prevState,
-  //       //   idURI: "/dev/null"
-  //       // }));
-
-  //       // const formData = new FormData();
-  //       // formData.append('image', idScan!!);
-  //       // console.log(registerData, idScan);
-  //       // const response = await axios.post(REGISTER_USER, registerData, formData);
-
-  //       // ...
-  //       const formData = new FormData();
-  //       formData.append('image', idScan!!);
-  //       formData.append('registerDTO', new Blob([JSON.stringify(registerData)], { type: 'application/json' }));
-        
-  //       const config = {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data'
-  //         }
-  //       };
-        
-  //       const response = await axios.post(REGISTER_USER, formData, config);
-  //       // ...
-
-
-
-  //       console.log(response.data);
-  //       move(stepId + 1)  
-  //     } catch (error) {
-  //       console.error('fetch error:', error);
-  //     } 
-  //     /*
-      
-  //     */
-  //   }
-  // }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -112,7 +64,6 @@ export default function StepFour( { move, stepId }: Props ) {
   
   return (
     <>
-    <span className="h1">STEP 4</span>
       <div className="d-flex align-items-center justify-content-center vh-100">
       <Container className="d-flex justify-content-center row col-lg-4 col-sm-6 col-8">
         <span className='text-white text-center h2 mb-3'> Enter login and password</span>

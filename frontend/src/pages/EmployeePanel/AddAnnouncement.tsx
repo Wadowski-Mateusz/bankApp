@@ -1,13 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-import { AnnouncementDTO } from "../DTOs/AnnouncementDTO";
+import { AnnouncementDTO } from "../../DTOs/AnnouncementDTO";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
 import axios from 'axios';
 
 
 import { States } from "./States";
-import { ADD_ANNOUNCEMENT_ENDPOINT } from "../../endpoints/announcementsEndpoints"
+import * as endpoints from "../../endpoints/endpoints"
 
 
 interface Props {
@@ -15,7 +15,8 @@ interface Props {
 }
 
 export default function AddAnnouncement({ setStateInPanel }: Props) {
-  const UserIdToDelete: string = "5151f90e-ce44-4784-bb73-26601cb2cbd9";
+  const userId = localStorage.getItem("userId") || "";
+  const token = localStorage.getItem("jwt") || "";
 
 
   const [announcementToAdd, setAnnouncementToAdd] = useState<AnnouncementDTO>({
@@ -23,16 +24,31 @@ export default function AddAnnouncement({ setStateInPanel }: Props) {
     content: "",
     dateFrom: new Date(),
     dateTo: new Date(),
-    authorId: UserIdToDelete,
+    authorId: userId,
   });
 
+  useEffect(() => {
+    setAnnouncementToAdd((prevState) => ({
+      ...prevState,
+      authorId: userId,
+    }))
+  }, [userId])
 
+
+  // send
   async function handleClick(action: number) {
     console.log(action);
     if (action === 1) {
       try {
         console.log("CLICK:", announcementToAdd)
-        const response = await axios.post(ADD_ANNOUNCEMENT_ENDPOINT, announcementToAdd);
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        const response = await axios.post(
+          endpoints.ADD_ANNOUNCEMENT_ENDPOINT,
+          announcementToAdd,
+          config
+        );
         const data: AnnouncementDTO = response.data;
         console.log("RESPONSE:", data)
 

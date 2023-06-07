@@ -152,6 +152,18 @@ public class SecurityController {
         return ResponseEntity.ok(new AuthenticationDTO(jwtToken));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody AuthenticationDTO authenticationDTO) {
+        final String jwt = authenticationDTO.token();
+        Token token = tokenService.findByToken(jwt).orElse(null);
+        if (token != null) {
+            token.setExpired(true);
+            tokenService.saveToken(token);
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
 
 
     private String saveIdScan(MultipartFile scan) throws IOException, IndexOutOfBoundsException {

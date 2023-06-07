@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/transaction")
 @AllArgsConstructor
+@CrossOrigin
 public class TransactionController {
 
     TransactionService transactionService;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios, {AxiosRequestConfig} from "axios";
 import * as endpoints from "./endpoints/endpoints";
-import { AccountDTO } from "./components/DTOs/AccountDTO";
+import { AccountDTO } from "./DTOs/AccountDTO";
 
 
 export default function Test() {

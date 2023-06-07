@@ -5,9 +5,11 @@ import bankApp.entities.Account;
 import bankApp.entities.User;
 import bankApp.entities.UserDetails;
 import bankApp.repositories.AccountRepository;
+import bankApp.repositories.TransactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +19,7 @@ import java.util.UUID;
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final TransactionRepository transactionRepository;
     private final UserDetailsService userDetailsService;
 
     public List<Account> getAllAccounts() {
@@ -46,16 +49,23 @@ public class AccountService {
         return accountRepository.findByNumber(number);
     }
 
-    public boolean deleteAccount(UUID accountId) {
-        Account account = accountRepository.findById(accountId).orElse(null);
-        // TODO if both transaction are null, then delete transaction, if not, set to null
-        // delete only if balance is >= 0
-        if (account != null) {
-            accountRepository.delete(account);
-            return true;
-        } else {
-            return false;
-        }
+    public void deleteAccount(UUID userId) throws Exception {
+        Account account = accountRepository.findByUserId(userId)
+                .orElseThrow(() -> new Exception(""));
+        if(account.getBalance().compareTo(BigDecimal.ZERO) < 0)
+            throw new Exception("");
+
+        transactionRepository.findAllByFromAccountId(account.getId())
+                .forEach(t -> {
+                    if(t.getToAccount() == null)
+                        transactionRepository.deleteById(t.getId());
+                });
+        transactionRepository.findAllByToAccountId(account.getId())
+                .forEach(t -> {
+                    if(t.getFromAccount() == null)
+                        transactionRepository.deleteById(t.getId());
+                });
+
     }
 
 

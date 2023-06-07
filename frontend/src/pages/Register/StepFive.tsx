@@ -1,16 +1,15 @@
-import { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import React, { ChangeEvent, useContext, useState } from "react";
+import { RegisterDataContext } from "./Register";
+import { ROLE_EMPLOYEE } from '../../endpoints/roles';
 
 export default function StepFive() {
-
-  const [clientRole, setClientRole] = useState(true);
- 
+  const { role } = useContext(RegisterDataContext);
 
 
   return (
     <>
-    <span className="h1">STEP 5</span>
     <div className="d-flex align-items-center justify-content-center vh-100">
       <Container 
         className="
@@ -19,7 +18,7 @@ export default function StepFive() {
           fs-md-5 fs-3 
           text-white">
       <form className="row d-flex justify-content-center">
-        { clientRole &&
+        { role !== ROLE_EMPLOYEE &&
           <>
             <span className='badge text-wrap'>
               Please, wait for our consultant to verify Your account. We will send You an email when this is done.
@@ -32,7 +31,7 @@ export default function StepFive() {
             </Link>
           </>
         }
-        { !clientRole &&
+        { role===ROLE_EMPLOYEE &&
           <>
             <span className='badge text-wrap'>
               Client account has been created!

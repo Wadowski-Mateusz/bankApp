@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-import Login from "./components/Login/Login";
-import Loans from "./components/Loan/Loans";
-import Account from "./components/Account/Account";
-import Settings from "./components/Settings/Settings";
-import PanelEmp from "./components/EmployeePanel/PanelEmp";
-import Register from "./components/Register/Register";
+import Login from "./pages/Login/Login";
+import Loans from "./pages/Loan/Loans";
+import Account from "./pages/Account/Account";
+import Settings from "./pages/Settings/Settings";
+import PanelEmp from "./pages/EmployeePanel/PanelEmp";
+import Register from "./pages/Register/Register";
 import Test from "./Test";
 import "../css/main.css"
 

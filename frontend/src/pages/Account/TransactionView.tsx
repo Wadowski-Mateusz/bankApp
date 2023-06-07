@@ -1,5 +1,6 @@
 import React from "react";
-import { TransactionViewDTO } from "../DTOs/TransactionDTOs";
+import { TransactionViewDTO } from "../../DTOs/TransactionDTOs";
+import { format } from 'date-fns';
 
 interface Props {
   transaction: TransactionViewDTO;
@@ -8,7 +9,7 @@ interface Props {
 export default function TransactionView({ transaction }: Props) {
   return (
     <tr>
-      <td>{transaction.timestamp.toLocaleString()}</td>
+      <td>{format(new Date(transaction.timestamp), 'dd MMMM yyyy')}</td>
       <td>{transaction.type}</td>
       <td>{transaction.fullName}</td>
       <td>{transaction.title}</td>

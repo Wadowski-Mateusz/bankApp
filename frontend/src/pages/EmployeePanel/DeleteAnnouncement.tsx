@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { States } from "./States";
 import Announcement from "./Announcement";
-import { AnnouncementDTO, AnnouncementDeleteDTO } from "../DTOs/AnnouncementDTO";
+import { AnnouncementDTO, AnnouncementDeleteDTO } from "../../DTOs/AnnouncementDTO";
 import axios from 'axios';
 
-import { ALL_CURRENT_ANNOUNCEMENT_ENDPOINT, DELETE_ANNOUNCEMENT_ENDPOINT } from "../../endpoints/announcementsEndpoints"
+import * as endpoints from "../../endpoints/endpoints"
 
 
 interface Props {
@@ -15,26 +15,39 @@ interface Props {
 export default function DeleteAnnouncement ({ setStateInPanel }: Props) {
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [announcements, setAnnouncements] = useState<AnnouncementDTO[]>([]);
-
-  const UserIdToDelete: string = "5151f90e-ce44-4784-bb73-26601cb2cbd9";
+  const userId = localStorage.getItem("userId") || "";
+  const token = localStorage.getItem("jwt") || "";
 
   const fetchAnnouncementsList = async () => {
     try {
-      const response = await axios.get(ALL_CURRENT_ANNOUNCEMENT_ENDPOINT);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      const response = await axios.get(
+        endpoints.GET_AVAILABLE_ANNOUNCEMENTS,
+        config
+        );
       const data = response.data;
       setAnnouncements(data);
       console.log("response: ", data)
     } catch (error) {
-      console.error('fetch loans error:', error);
+      console.error('fetch announcements error:', error);
     }
   };
 
   async function deleteAnnouncement(announcementId: string) {
     const annDel: AnnouncementDeleteDTO = {
       announcementId: announcementId,
-      deletingUserId: UserIdToDelete,
+      deletingUserId: userId,
     }
-    const response = await axios.post(DELETE_ANNOUNCEMENT_ENDPOINT, annDel);
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+    const response = await axios.post(
+      endpoints.DELETE_ANNOUNCEMENT,
+      annDel,
+      config
+    );
     if (response.status === 200) {
       console.log("Success")
       fetchAnnouncementsList();
@@ -46,8 +59,9 @@ export default function DeleteAnnouncement ({ setStateInPanel }: Props) {
 
   // load announcements 
   useEffect(() => {
-    fetchAnnouncementsList();
-  }, []);
+    if(token && userId)
+      fetchAnnouncementsList();
+  }, [token, userId]);
 
 
   useEffect(() => {

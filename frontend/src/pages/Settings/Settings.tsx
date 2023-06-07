@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import {Container, Row, Col} from 'react-bootstrap'
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 
 import SubCheckbox from "./SubCheckbox";
 import MyNavbar from "../Nav/MyNavbar";
@@ -8,7 +8,7 @@ import {GET_USER_SETTINGS_ENDPOINT, SEND_USER_SETTINGS_ENDPOINT, DELETE_ACCOUNT_
 import { useNavigate } from "react-router-dom";
 
 interface SettingsDTO {
-  id: string | undefined,
+  id: string,
   emailSubscription: boolean | undefined,
   userId: string,
 }
@@ -18,46 +18,74 @@ interface DeleteDTO {
   password: string
 }
 
-const IDtoDelete = "5151f90e-ce44-4784-bb73-26601cb2cbd9";
-
 
 export default function Settings() {
 
-  const [switchValue, setSwitchValue] = useState<boolean>();
-  const [settingsId, setSettingsId] = useState<string>();
-  const [password, setPassword] = useState("");
+  const settingsInit: SettingsDTO = {
+    id: "",
+    emailSubscription: false,
+    userId: "",
+  }
 
-  const [deleteAccView, setDeleteAccView] = useState(false);
   const navigate = useNavigate();
+  const token = localStorage.getItem("jwt") || "";
+  const userId = localStorage.getItem("userId") || "";
+  const [settings, setSettings] = useState<SettingsDTO>(settingsInit);
+  const [deleteAccView, setDeleteAccView] = useState(false);
+  const [switchValue, setSwitchValue] = useState<boolean>();
+  // const [settingsId, setSettingsId] = useState<string>();
+  const [password, setPassword] = useState("");
+  const [dataFetch, setDataFetch] = useState(false)
+
 
   useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const userId = IDtoDelete;
-        const response = await axios.get(`${GET_USER_SETTINGS_ENDPOINT}${userId}`);
-        const data: SettingsDTO = response.data;
+    if(token && userId) {
+      fetchSettings()
+    }
+  }, [token, userId]);
 
-        setSwitchValue(data.emailSubscription);
-        setSettingsId(data.id)
-      } catch (error) {
-        console.error('fetch error:', error);
-      }
-    };
-    fetchSettings();
-  }, []);
+
+  async function fetchSettings() {
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      const response = await axios.get(
+        `${GET_USER_SETTINGS_ENDPOINT}${userId}`,
+         config
+      );
+      const data: SettingsDTO = response.data;
+      console.log("fetched: ", data)
+      setSwitchValue(data.emailSubscription)
+      setSettings(data);
+      console.log("set: ", settings)
+        
+    } catch (error) {
+      console.error('fetch error:', error);
+    }
+  };
+
+  
 
 
 // send settings
-const handleSavingSettings = async () => {
-  const settingsToSave: SettingsDTO = {
-    id: settingsId,
-    emailSubscription: switchValue,
-    userId: IDtoDelete,
-  };
+async function handleSavingSettings() {
 
   try {
-    const response = await axios.put(SEND_USER_SETTINGS_ENDPOINT, settingsToSave);
+    if(settings.emailSubscription != switchValue)
+      setSettings((prevState) => ({
+        ...prevState, 
+        emailSubscription: switchValue,
+      }))
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+    const response = await axios.put(
+      SEND_USER_SETTINGS_ENDPOINT,
+       settings,
+       config);
     console.log('reponse from server', response.data);
+    fetchSettings()
   } catch (error) {
     console.error('Error:', error);
   }
@@ -67,44 +95,37 @@ const handleSavingSettings = async () => {
 
 async function deleteAccount(e: React.FormEvent<HTMLFormElement>) {
 
-
-
   e.preventDefault();
   setDeleteAccView(!deleteAccView);
   const deletedto: DeleteDTO = {
-    id: IDtoDelete,
+    id: userId,
     password: password
   };
 
-  console.log(deletedto)
-
   try {
-    const response = await axios.delete(DELETE_ACCOUNT_ENDPOINT, {data: deletedto});
-
-
-    console.log('reponse from server', response.data);
+    console.log("del:", deletedto)
+    const headers = { Authorization: `Bearer ${token}` };
+    const response = await axios.delete(
+      DELETE_ACCOUNT_ENDPOINT, 
+      {
+        headers: headers,
+        data: deletedto, 
+      }
+    );
     setPassword("")
-    if(response.status === 200)
+    if(response.status === 200) {
       navigate("/");
+    }
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error del:', error);
   }
 
 }
-
-
-const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-  console.log("before:", switchValue, "after", event.target.checked)
-  setSwitchValue(event.target.checked);
-};
-
 
 function handleDeleteView(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
   setDeleteAccView(!deleteAccView);
 }
-
-
 
   return (
     <>
@@ -115,7 +136,14 @@ function handleDeleteView(e: React.FormEvent<HTMLFormElement>) {
 
            {!deleteAccView && <>
             <form id="form-settings" className="p-5 mt-5 d-flex flex-column">
-                <SubCheckbox chckVal={switchValue} onChange={handleCheckboxChange}/>
+                <SubCheckbox
+                 chckVal={settings.emailSubscription} 
+                 onChange={() =>   
+                  setSettings((prevState) => ({
+                  ...prevState, 
+                  emailSubscription: !settings.emailSubscription,
+                }))} 
+                 />
                 <button type="button" onClick={handleSavingSettings} className="btn btn-primary btn-lg m-2">Save</button>
             </form>
 
@@ -132,12 +160,12 @@ function handleDeleteView(e: React.FormEvent<HTMLFormElement>) {
               <Container className="p-5 mt-5">
                 <form onSubmit={deleteAccount}>           
                   <Row className="d-flex flex-column justify-content-center align-items-center">
-                  <span className="text-center text-white">To delete account enter password:</span>
+                  <span className="text-center text-white">Are you sure you want to delete account?</span>
               
-                  <div className="row mt-2">
+                  {/* <div className="row mt-2">
                     <input value={password} onChange={(e) => setPassword(e.target.value)}
                     type="password" className="rounded-2" placeholder="password" />
-                  </div>
+                  </div> */}
                   </Row>
                   <Row className="d-flex flex-column justify-content-center align-items-center">
                   <button className="btn btn-primary btn-lg mt-2 col-lg-6 col-12"> Confirm </button>

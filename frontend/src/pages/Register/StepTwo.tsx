@@ -5,6 +5,7 @@ import React, { useContext } from "react";
 import { RegisterDataContext } from "./Register";
 import HomeHyperlink from "./HomeHyperlink";
 import InputField from "./InputField";
+import { ROLE_EMPLOYEE } from "../../endpoints/roles";
 
 interface Props {
   move: (moveTo: number) => void;
@@ -12,14 +13,17 @@ interface Props {
 }
 
 export default function StepTwo({ move, stepId }: Props) {
-  const { registerData, setRegisterData } = useContext(RegisterDataContext);
+  const { registerData, setRegisterData, role } = useContext(RegisterDataContext);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     // validation
     const btnName = (e.nativeEvent.submitter as HTMLButtonElement).name;
     if (btnName === "next") {
-      move(stepId + 1);
+      if(role !== ROLE_EMPLOYEE)
+        move(stepId + 1);
+      if(role === ROLE_EMPLOYEE)
+        move(stepId + 2);
     } else {
       move(stepId - 1);
     }
@@ -37,11 +41,11 @@ export default function StepTwo({ move, stepId }: Props) {
   
   return (
     <>
-      <span className="h1">STEP 2</span>
       <div className="d-flex align-items-center justify-content-center vh-100">
         <Container className="d-flex justify-content-center row col-8">
           <span className="text-white text-center h2 mb-3">
-            Please enter your Address
+          {role!==ROLE_EMPLOYEE && <span>Enter your address</span>}
+          {role===ROLE_EMPLOYEE && <span>Enter client address</span>}
           </span>
           <form
             onSubmit={handleSubmit}

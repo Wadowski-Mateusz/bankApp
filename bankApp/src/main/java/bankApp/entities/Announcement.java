@@ -34,7 +34,7 @@ public class Announcement {
     private LocalDateTime created;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = true,
+    @JoinColumn(name = "author_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(
                     name = "FK_Announcement_Author",
                     foreignKeyDefinition = "FOREIGN KEY (author_id) " +

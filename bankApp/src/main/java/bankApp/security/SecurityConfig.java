@@ -34,7 +34,6 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-//                .requestMatchers("/account/**").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/test").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/test/**").permitAll()
@@ -72,9 +71,10 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout()
-                .logoutUrl("/auth/logout")
+//                .logoutUrl("/auth/logout")
                 .addLogoutHandler(logoutHandler)
-                .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext()));
+                .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext()))
+        ;
 
 
         return http.build();

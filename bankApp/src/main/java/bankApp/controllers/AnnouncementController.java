@@ -34,6 +34,18 @@ public class AnnouncementController {
         return ResponseEntity.ok(announcementDTOS);
     }
 
+    @GetMapping("/available")
+    ResponseEntity<List<AnnouncementDTO>> getAllAvailableAnnouncements(){
+        List<AnnouncementDTO> announcementDTOS = announcementService.getAllAnnouncements()
+                .stream()
+                .filter(announcement -> announcement.getDateTo().isAfter(LocalDate.now()))
+                .filter(announcement -> announcement.getDeletedBy() == null)
+                .map(AnnouncementService::convertAnnouncementToDTO)
+                .toList();
+        return ResponseEntity.ok(announcementDTOS);
+    }
+
+
     @GetMapping("/current/all")
     ResponseEntity<List<AnnouncementDTO>> getAllCurrentAnnouncements(){
         List<AnnouncementDTO> announcementDTOS = announcementService.getAllAnnouncements()

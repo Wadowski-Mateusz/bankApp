@@ -44,7 +44,6 @@ export default function StepThree( { move, stepId }: Props ) {
   
   return (
     <>
-    <span className="h1">STEP 3</span>
     <div className="d-flex align-items-center justify-content-center vh-100">
       <Container className="d-flex justify-content-center row col-lg-4 col-sm-6 col-8">
         <span className='text-white text-center h2 mb-3'> Please, enter code from Your e-mail </span>

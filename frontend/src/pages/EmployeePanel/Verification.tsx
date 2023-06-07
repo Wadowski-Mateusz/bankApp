@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import axios, { HttpStatusCode } from "axios";
 
-import {AddressDTO} from "../DTOs/AddressDTO"
-import {UserVerificationDTO, UserVerifyOrBanDTO} from "../DTOs/UserDTOs"
+import {AddressDTO} from "../../DTOs/AddressDTO"
+import {UserVerificationDTO, UserVerifyOrBanDTO} from "../../DTOs/UserDTOs"
 import * as ENDPOINT from "../../endpoints/endpoints"
 import { States } from "./States";
 
@@ -44,7 +44,7 @@ const verInit: UserVerifyOrBanDTO = {
 
 
 export default function Verification ({ setStateInPanel }: Props) {
-
+  const token = localStorage.getItem("jwt") || "";
   const [helper, setHelper] = useState(Action.Waiting);
   const [userToVerifyDataTxt, setUserToVerifyDataTxt] = useState<UserVerificationDTO>();
   const [idScan, setIdScan] = useState<Blob | null>(null);
@@ -55,9 +55,18 @@ export default function Verification ({ setStateInPanel }: Props) {
     const fetchUserIdScan = async () => {
       if(userToVerifyDataTxt != userDataEmpty) {
         try {
-          const response = await axios.get(`${ENDPOINT.GET_USER_TO_VERIFY_SCAN}${userToVerifyDataTxt?.userId}`,{
-            responseType: 'arraybuffer',
-          });
+          const config = {
+            headers: { Authorization: `Bearer ${token}` },
+            responseType: 'arraybuffer'
+          };
+          const response = await axios.get(
+            `${ENDPOINT.GET_USER_TO_VERIFY_SCAN}${userToVerifyDataTxt?.userId}`,
+            config
+          );
+          // const response = await axios.get(
+          //   `${ENDPOINT.GET_USER_TO_VERIFY_SCAN}${userToVerifyDataTxt?.userId}`,
+          //   { responseType: 'arraybuffer', }
+          // );
           if (response.status === HttpStatusCode.Ok) {
             const dataBlob = new Blob([response.data], { type: 'image/bmp' });
             setIdScan(dataBlob);
@@ -73,7 +82,7 @@ export default function Verification ({ setStateInPanel }: Props) {
         }
       }
     }
-    if(userToVerifyDataTxt !== userDataEmpty) {
+    if(userToVerifyDataTxt) {
       fetchUserIdScan();
     }
 
@@ -82,40 +91,32 @@ export default function Verification ({ setStateInPanel }: Props) {
 
   const fetchUserToVerification = async () => {
     try {
-      const response = await axios.get(ENDPOINT.GET_USER_TO_VERIFY_DATA);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      const response = await axios.get(
+        ENDPOINT.GET_USER_TO_VERIFY_DATA,
+        config
+      );
       if(response.status === HttpStatusCode.Ok) {
         const data: UserVerificationDTO = response.data;
+
         setUserToVerifyDataTxt(data);
         console.log(data)
+
         // TODO NO USERS TO VERIFY
       } else {
         // Some HTTP error code
-        setUserToVerifyDataTxt(userDataEmpty)
+        setUserToVerifyDataTxt(userDataEmpty);
+        setIdScan(null);
       }
         
     } catch (error) {
-      console.error('fetch error:', error);
+      // console.error('fetch error:', error);
     }
   };
 
   useEffect(() => {
-    // const fetchUserToVerification = async () => {
-    //   try {
-    //     const response = await axios.get(ENDPOINT.GET_USER_TO_VERIFY_DATA);
-    //     if(response.status === HttpStatusCode.Ok){
-    //       const data: UserVerificationDTO = response.data;
-    //       setUserToVerifyDataTxt(data);
-    //       console.log(data)
-    //       // TODO NO USERS TO VERIFY
-    //     } else {
-    //       // Some HTTP error code
-    //       setUserToVerifyDataTxt(userDataEmpty)
-    //     }
-          
-    //   } catch (error) {
-    //     console.error('fetch error:', error);
-    //   }
-    // };
     fetchUserToVerification();
   }, []);
 
@@ -128,7 +129,10 @@ export default function Verification ({ setStateInPanel }: Props) {
           // console.log("inside")
         try {
           console.log("verification using", verificationDTO.userId)
-          const response = await axios.put(ENDPOINT.VERIFY_USER, verificationDTO);
+          const config = {
+            headers: { Authorization: `Bearer ${token}` }
+          };
+          const response = await axios.put(ENDPOINT.VERIFY_USER, verificationDTO, config);
           if(response.status === HttpStatusCode.Ok) {
             console.log(response)
             setVerificationDTO(verInit);
@@ -169,10 +173,12 @@ export default function Verification ({ setStateInPanel }: Props) {
           setStateInPanel(States.Default)
           break;
         case Action.Ban:
-          setVer(false);
+          if(userToVerifyDataTxt)
+            setVer(false);
           break;
         case Action.Verify:
-          setVer(true);
+          if(userToVerifyDataTxt)
+            setVer(true);
           break;
         default:
           console.log("Verification - this should never happen - switch");
@@ -204,32 +210,33 @@ export default function Verification ({ setStateInPanel }: Props) {
 
           <Col>
           <Row className="bg-primary rounded-4 my-3 p-1">
-            <span className="text-center">
-              {userToVerifyDataTxt?.addressDTO.country}
-            </span>
-            <span className="text-center">
-              {`${userToVerifyDataTxt?.addressDTO.sector} ${userToVerifyDataTxt?.addressDTO.city}`}
-            </span>
-            <span className="text-center">
-              {`${userToVerifyDataTxt?.addressDTO.street} ${userToVerifyDataTxt?.addressDTO.number}`}
-            </span>
-            <span className="text-center">
-              {userToVerifyDataTxt?.addressDTO.zip}
-            </span>
+            {userToVerifyDataTxt?.addressDTO &&
+              <>
+                <span className="text-center">
+                  {userToVerifyDataTxt?.addressDTO.country}
+                </span>
+                <span className="text-center">
+                  {`${userToVerifyDataTxt?.addressDTO.sector} ${userToVerifyDataTxt?.addressDTO.city}`}
+                </span>
+                <span className="text-center">
+                  {`${userToVerifyDataTxt?.addressDTO.street} ${userToVerifyDataTxt?.addressDTO.number}`}
+                </span>
+                <span className="text-center">
+                  {userToVerifyDataTxt?.addressDTO.zip}
+                </span>
+              </>
+            }
           </Row>
           <Row className="bg-primary rounded-4 my-3 p-1"><span>ID number:<br/>{userToVerifyDataTxt?.idNumber}</span></Row>
           </Col>
         </Row>
 
-        {/* id pic */}
+
         <Row className="h1">
-          { idScan ?
-          (<img src={URL.createObjectURL(idScan)} alt="Scan of client ID" />)
-          :
-          (
-            <span>Scan is loading...</span>
-          )
-          } 
+          { (idScan) && (<img src={URL.createObjectURL(idScan)} alt="Scan of client ID" style={{ maxHeight: '300px', maxWidth: '1500px'}}/>) }
+          { !idScan && (userToVerifyDataTxt) && <span> Scan is loading...</span>}
+          { !idScan && (!userToVerifyDataTxt || userToVerifyDataTxt === userDataEmpty) && <span> No clients to verify </span>}
+          
         </Row>
 
         <Row className="gap-1 mt-4">

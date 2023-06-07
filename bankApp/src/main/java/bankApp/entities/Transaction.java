@@ -34,7 +34,7 @@ public class Transaction {
 
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "from_account_id", referencedColumnName = "id", nullable = false,
+    @JoinColumn(name = "from_account_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(
                     name = "FK_Transactions_FromAccount",
                     foreignKeyDefinition = "FOREIGN KEY (from_account_id)" +
@@ -45,7 +45,7 @@ public class Transaction {
 
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "to_account_id", referencedColumnName = "id", nullable = false,
+    @JoinColumn(name = "to_account_id", referencedColumnName = "id",
             foreignKey = @ForeignKey(
                     name = "FK_Transactions_ToAccount",
                     foreignKeyDefinition = "FOREIGN KEY (to_account_id)" +

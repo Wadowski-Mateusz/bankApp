@@ -2,6 +2,7 @@ package bankApp.services;
 
 import bankApp.DTOs.TransactionAddDTO;
 import bankApp.DTOs.TransactionViewDTO;
+import bankApp.entities.Account;
 import bankApp.entities.Transaction;
 import bankApp.repositories.TransactionRepository;
 import lombok.AllArgsConstructor;
@@ -47,20 +48,26 @@ public class TransactionService {
     public TransactionViewDTO convertTransactionToTransactionViewDTOOutgoing(Transaction transaction, String transactionType) {
 
         String fullName;
-        BigDecimal amountToVieW;
-        switch (transactionType) {
-            case Transaction.TYPE_OUTGOING -> {
-                amountToVieW = transaction.getAmount().negate();
-                fullName = accountService.getFullNameByAccountId(transaction.getToAccount().getId());
+        BigDecimal amountToVieW = null;
+
+        try {
+            switch (transactionType) {
+                case Transaction.TYPE_OUTGOING -> {
+                    amountToVieW = transaction.getAmount().negate();
+                    fullName = accountService.getFullNameByAccountId(transaction.getToAccount().getId());
+                }
+                case Transaction.TYPE_INCOMING -> {
+                    amountToVieW = transaction.getAmount();
+                    fullName = accountService.getFullNameByAccountId(transaction.getFromAccount().getId());
+                }
+                default -> {
+                    amountToVieW = transaction.getAmount();
+                    fullName = "Cannot determine";
+                }
             }
-            case Transaction.TYPE_INCOMING -> {
-                amountToVieW = transaction.getAmount();
-                fullName = accountService.getFullNameByAccountId(transaction.getFromAccount().getId());
-            }
-            default -> {
-                amountToVieW = transaction.getAmount();
-                fullName = "Cannot determine";
-            }
+        } catch (NullPointerException e) { // if second account has been deleted
+            // `amountToView` is set before exception has been thrown
+            fullName = "Account deleted";
         }
 
         return new TransactionViewDTO(
@@ -84,4 +91,6 @@ public class TransactionService {
                 transaction.getDate()
         );
     }
+
+
 }

@@ -13,33 +13,35 @@ import Table from "react-bootstrap/Table";
 import React, { useState, useEffect } from "react";
 import axios, { HttpStatusCode, AxiosRequestConfig } from "axios";
 import DatePicker from "react-datepicker";
+import { format } from 'date-fns';
 
 import MyNavbar from "../Nav/MyNavbar";
 import TransactionView from "./TransactionView";
-import { TransactionViewDTO, TransactionAddDTO } from "../DTOs/TransactionDTOs";
-import { AccountDTO } from "../DTOs/AccountDTO";
+import { TransactionViewDTO, TransactionAddDTO } from "../../DTOs/TransactionDTOs";
+import { AccountDTO } from "../../DTOs/AccountDTO";
 import * as endpoints from "../../endpoints/endpoints";
 
 
 export default function Account() {
-  const userId = localStorage.getItem("userId") || "";
-  const username = localStorage.getItem("fullName") || "";
-  const [account, setAccount] = useState<AccountDTO>();
-  const [token, setToken] = useState<String>(localStorage.getItem("jwt") || "");
-  
-
-  const NametoDelete = "1111-1111-1111";
-
-  const [valueView, setValueView] = useState(""); // what user see, it is use to display dot in the number
-  const [transactionViews, setTransactionViews] = useState<TransactionViewDTO[]>([]);
-  const [transactionAdd, setTransactionAdd] = useState<TransactionAddDTO>({
+  const initTransaction: TransactionAddDTO = {
     id: null,
     receiverAccountNumber: "",
-    senderAccountNumber: NametoDelete,
+    senderAccountNumber: "",
     title: "",
     amount: 0,
     timestamp: new Date(),
-  });
+  }
+  
+  const userId = localStorage.getItem("userId") || "";
+  const username = localStorage.getItem("fullName") || "";
+  const token = localStorage.getItem("jwt") || "";
+  const [account, setAccount] = useState<AccountDTO>();
+  const [valueView, setValueView] = useState(""); // what user see, it is use to display dot in the number
+  const [transactionViews, setTransactionViews] = useState<TransactionViewDTO[]>([]);
+  const [transactionAdd, setTransactionAdd] = useState<TransactionAddDTO>(initTransaction);
+
+
+
 
   function handleAmountChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { value } = e.target;
@@ -71,14 +73,20 @@ export default function Account() {
   }
 
  
-  const fetchTransactionList = async () => {
+  async function fetchTransactionList(){
     try {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
       const response = await axios.get(
-        `${endpoints.GET_ALL_TRANSFERS_OF_USER}${userId}`
+        `${endpoints.GET_ALL_TRANSFERS_OF_USER}${userId}`,
+        config
       );
-      const data = response.data;
-      setTransactionViews(data);
-      console.log(data);
+      if(response.status === HttpStatusCode.Ok) {
+        const data = response.data;
+        setTransactionViews(data);
+        console.log(data);
+      }
     } catch (error) {
       // console.error("fetch transactions error:", error);
     }
@@ -91,17 +99,13 @@ export default function Account() {
         const config = {
           headers: { Authorization: `Bearer ${token}` }
         };
-        console.log("before fetch: ", config)
-        console.log("before fetch: ", token)
         const response = await axios.get(
           `${endpoints.GET_ACCOUNT_BY_USER_ID}${userId}`,
           config,
           );
-      console.log("success fetch")
       if (response.status === HttpStatusCode.Ok) {
         console.log("OK")
         setAccount(response.data);
-        console.log(response.data);
       }
       } catch (error) {
         // console.error("fetch account error:", error);
@@ -111,42 +115,43 @@ export default function Account() {
   };
 
   const handleTransaction = async () => {
-    try {
-      setTransactionAdd((prevState) => ({
-        ...prevState,
-        timestamp: new Date(),
-      }));
+    if(transactionAdd !== initTransaction) {
+      try {
+        const config = {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+        console.log("sending:", transactionAdd);
+        const response = await axios.post(
+          endpoints.ADD_TRANSACTION,
+          transactionAdd,
+          config
+        );
+        console.log("reponse from server", response.data);
+        fetchAccountData()
+      } catch (error) {
+        // console.error("Error:", error);
+      }
 
-      console.log("sending:", transactionAdd);
-      const response = await axios.post(
-        endpoints.ADD_TRANSACTION,
-        transactionAdd
-      );
-      console.log("reponse from server", response.data);
-    } catch (error) {
-      // console.error("Error:", error);
+      setTransactionAdd(initTransaction);
+      setValueView("");
+      fetchTransactionList();
     }
-
-    setTransactionAdd((prevState) => ({
-      ...prevState,
-      title: "",
-      receiverAccountNumber: "",
-      amount: 0,
-    }));
-    setValueView("");
-    fetchTransactionList();
   };
 
-  // useEffect(() => {
-  //   setToken(localStorage.getItem("jwt") || "")
-  // }, []);
-  
+  useEffect(() => {
+    setTransactionAdd((prevState) => ({
+      ...prevState,
+      senderAccountNumber: account?.number || ""
+    }));
+  }, [account])
   
   useEffect(() => {
     fetchAccountData();
-    // fetchTransactionList();
   }, [token]);
-
+  
+  useEffect(() => {
+    fetchTransactionList();
+  }, [userId])
 
   
   return (
@@ -227,7 +232,7 @@ export default function Account() {
           <Row>
             <Col className="text-start h3">Transaction history</Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col className="text-start h4">Select interval:</Col>
           </Row>
 
@@ -264,7 +269,7 @@ export default function Account() {
                 </Row>
               </Col>
             </Row>
-          </Form>
+          </Form> */}
 
           <Container className="background-color-container mt-5 mb-5 border border-1 border-white rounded-3">
             <Table className="text-light">

@@ -2,6 +2,7 @@ package bankApp.services;
 
 import bankApp.DTOs.AnnouncementDTO;
 import bankApp.entities.Announcement;
+import bankApp.entities.User;
 import bankApp.repositories.AnnouncementRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,23 +58,30 @@ public class AnnouncementService {
     }
 
     public static AnnouncementDTO convertAnnouncementToDTO(Announcement a) {
+        User author = a.getAuthor();
+        UUID id = author != null ? author.getId() : null;
+
         return new AnnouncementDTO(
                 a.getId(),
                 a.getContent(),
                 a.getDateFrom(),
                 a.getDateTo(),
-                a.getAuthor().getId()
+                id
         );
     }
 
     public Announcement convertDtoToAnnouncement(AnnouncementDTO announcementDTO) {
+
+//        User author = userService.getUserById(announcementDTO.authorId());
+
+
         return new Announcement (
                 UUID.randomUUID(),
                 announcementDTO.dateFrom(),
                 announcementDTO.dateTo(),
                 announcementDTO.content(),
                 LocalDateTime.MIN,
-                userService.getUserById(announcementDTO.authorId()).get(),
+                userService.getUserById(announcementDTO.authorId()).orElseGet(null),
                 null
         );
     }

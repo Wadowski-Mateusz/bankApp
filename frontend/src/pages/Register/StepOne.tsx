@@ -7,6 +7,7 @@ import HomeHyperlink from "./HomeHyperlink";
 import InputField from "./InputField";
 
 import DatePicker from "react-datepicker";
+import { ROLE_EMPLOYEE } from "../../endpoints/roles";
 
 interface Props {
   move: (moveTo: number) => void;
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export default function StepOne({ move, stepId }: Props) {
-  const { registerData, setRegisterData, idScan, setIdScan } = useContext(RegisterDataContext);
+  const { registerData, setRegisterData, idScan, setIdScan, role } = useContext(RegisterDataContext);
   const navigate = useNavigate();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -25,7 +26,10 @@ export default function StepOne({ move, stepId }: Props) {
       move(stepId + 1);
     } else {
       // move(stepId - 1);
-      navigate("/");
+      if(role===ROLE_EMPLOYEE)
+        navigate("/panel")
+      else
+        navigate("/");
     }
   }
 
@@ -39,23 +43,17 @@ export default function StepOne({ move, stepId }: Props) {
   };
 
   const handleFileSelect = (files: File[]) => {
-    console.log(files[0])
-    // setSelectedFile(files[0]);
     setIdScan(files[0]);
-    // setRegisterData((prevState) => ({
-    //   ...prevState,
-    //   idScan: files[0]
-    // }))
   };
 
   return (
     <>
-      <span className="h1">STEP 1</span>
       <div className="d-flex align-items-center justify-content-center vh-100">
         <Container className="d-flex justify-content-center row col-8">
           <span className="text-white text-center h2 mb-3">
-            {" "}
-            Please enter your data{" "}
+            {role!==ROLE_EMPLOYEE && <span>Enter your data</span>}
+            {role===ROLE_EMPLOYEE && <span>Enter client data</span>}
+            
           </span>
           <form
             onSubmit={handleSubmit}

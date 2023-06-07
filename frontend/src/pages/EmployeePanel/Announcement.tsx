@@ -1,8 +1,7 @@
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import {  } from "../../endpoints/announcementsEndpoints"
 
 import React, { useState } from "react";
-import { AnnouncementDTO } from "../DTOs/AnnouncementDTO";
+import { AnnouncementDTO } from "../../DTOs/AnnouncementDTO";
 
 interface Props {
   announcementDTO: AnnouncementDTO,

@@ -3,22 +3,28 @@ import MyNavbar from "../Nav/MyNavbar";
 import Loan from "./Loan";
 import axios from 'axios';
 
-import {LoanDTO, LoanRequestDTO} from "./DTOs"
-import {GET_USER_LOANS_ENDPOINT, SEND_REQUEST_FOR_LOAN_ENDPOINT} from "../../endpoints/loanEndpoints"
+import {LoanDTO, LoanRequestDTO} from "../../DTOs/LoanDTOs"
+import * as endpoints from "../../endpoints/endpoints";
+
 
 export default function Loans() {
 
-  const [loans, setLoans] = useState<LoanDTO[]>([]);
-
-  const [btnRequestContent, setBtnRequestContent] = useState("Request for a loan");
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
+  
+  const initForm = {
     id:"",
     name: "",
     amount: "",
     months: "",
-    interest: "0"
-  });
+    interest: "0"    
+  }
+  
+  const [loans, setLoans] = useState<LoanDTO[]>([]);
+  const [btnRequestContent, setBtnRequestContent] = useState("Request for a loan");
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState(initForm);
+  const token = localStorage.getItem("jwt") || "";
+  const userId = localStorage.getItem("userId") || "";
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -64,7 +70,7 @@ export default function Loans() {
         if(Number(value) > MAX_MONTHS) {
           endValue = MAX_MONTHS.toString()
         }
-        const { name, value } = e.target;
+        // const { name, value } = e.target;
         break;
       }
 
@@ -76,22 +82,29 @@ export default function Loans() {
     }
   };
 
-  const IDtoDelete = "5151f90e-ce44-4784-bb73-26601cb2cbd9";
-
-  const fetchLoanList = async () => {
+  async function fetchLoanList() {
     try {
-      const userId = IDtoDelete;
-      const response = await axios.get(`${GET_USER_LOANS_ENDPOINT}${userId}`);
-      const data = response.data;
-      setLoans(data);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      const response = await axios.get(
+        `${endpoints.GET_USER_LOANS_ENDPOINT}${userId}`,
+         config
+      );
+      
+      const data:LoanDTO[] = response.data;
+      if(data.length > 0)
+        setLoans(data);
     } catch (error) {
       // console.error('fetch loans error:', error);
     }
   };
 
   useEffect(() => {
-    fetchLoanList();
-  }, []);
+    if(userId && token){
+      fetchLoanList();
+    }
+  }, [token, userId]);
 
   // dynamic calculation for interest
   useEffect(() => {
@@ -118,10 +131,10 @@ export default function Loans() {
   };
 
 
-  // send request to add loan
+  // send request for a loan
   const handleRequestLoan = async () => {
     const newLoanRequest: LoanRequestDTO = {
-      userId: IDtoDelete,
+      userId: userId,
       name: formData.name,
       dateFrom: new Date(),
       amount: Number(formData.amount),
@@ -131,25 +144,27 @@ export default function Loans() {
 
 
     try {
-      const response = await axios.post(SEND_REQUEST_FOR_LOAN_ENDPOINT, newLoanRequest);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+      const response = await axios.post(
+        endpoints.SEND_REQUEST_FOR_LOAN_ENDPOINT,
+        newLoanRequest,
+        config
+      );
       console.log('reponse from server', response.data);
       if(response.status === 200) {
-        setLoans([...loans, response.data]);
+        // setLoans([...loans, response.data]);
+        fetchLoanList()
       }
     } catch (error) {
       console.error('Error:', error);
     }
 
     setShowForm(false);
-
-    formData.id=""
-    formData.name=""
-    formData.amount=""
-    formData.months=""
-    formData.interest="0"
+    setFormData(initForm);
     
     setBtnRequestContent("Request for a loan");
-    fetchLoanList
   };
 
   return (

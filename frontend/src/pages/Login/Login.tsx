@@ -8,11 +8,10 @@ import LoginForm from "./LoginForm";
 import Announcement from "./Announcement";
 import MyNavbar from "../Nav/MyNavbar";
 
-import * as Endpoint from "../../endpoints/endpoints";
+import * as endpoints from "../../endpoints/endpoints";
 import * as roles from "../../endpoints/roles";
 
-import {RANDOM_ANNOUNCEMENT_ENDPOINT} from "../../endpoints/announcementsEndpoints";
-import {AnnouncementDTO} from "../DTOs/AnnouncementDTO";
+import {AnnouncementDTO} from "../../DTOs/AnnouncementDTO";
 
 interface UserDTO {
   id: string;
@@ -29,7 +28,7 @@ function Login() {
   useEffect(() => {
     const fetchAnnouncement = async () => {
       try {
-        const response = await axios.get(`${RANDOM_ANNOUNCEMENT_ENDPOINT}`);
+        const response = await axios.get(`${endpoints.RANDOM_ANNOUNCEMENT_ENDPOINT}`);
         const data: AnnouncementDTO = response.data;
         setAnnouncement(data);
       } catch (error) {
@@ -42,13 +41,9 @@ function Login() {
 
 
   async function verify(login: string, password: string) {
-    // bypass
-    // if(login === "" && password === "" ) {
-    //   navigate("/account"); 
-    // }
 
     try {
-      const response = await axios.post<{token: string}>(Endpoint.LOGIN_ENDPOINT, {
+      const response = await axios.post<{token: string}>(endpoints.LOGIN_ENDPOINT, {
         login: login,
         password: password,
       });
@@ -85,12 +80,12 @@ function Login() {
 
   return (
     <>
-    <MyNavbar />
     {submited && <Alert  className="alert-danger text-center">Wrong login or password</Alert>}
     <div className="d-flex align-items-center vh-100">
       <div className="container col-6">
         <div className="row text-center">
-          <h1>[logo] Marsupium</h1>
+          
+          <h1><img src="../../../money-bag.png" height="48" width="48"/> Marsupium</h1>
         </div>
         <div className="row justify-content-center">
           <LoginForm verify={verify}/>
