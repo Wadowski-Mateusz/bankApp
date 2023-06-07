@@ -28,29 +28,29 @@ export default function App() {
           <Route path="/login" element={<Login />}></Route>
 
           {/* no_role + employee */}
-          {(!role || role === ROLE_EMPLOYEE) && (
+          {/* {(!role || role === ROLE_EMPLOYEE) && ( */}
               <Route path="/register" element={<Register />}></Route>
-          )}
+          {/* )} */}
 
           {/* client */}
-          {role === ROLE_CLIENT && (
+          {/* {role === ROLE_CLIENT && ( */}
             <>
               <Route path="/account" element={<Account />}></Route>
               <Route path="/loans" element={<Loans />}></Route>
               <Route path="/settings" element={<Settings />}></Route>
             </>
-          )}
+          {/* )} */}
 
           {/* employee */}
-          {role === ROLE_EMPLOYEE && (
+          {/* {role === ROLE_EMPLOYEE && ( */}
             <>
               <Route path="/panel" element={<PanelEmp />}></Route>
             </>
-          )}
+          {/* )} */}
           {/* admin */}
-          {role === ROLE_ADMIN && (
+          {/* {role === ROLE_ADMIN && ( */}
             <Route path="/test" element={<Test />}></Route>
-          )}
+          {/* )} */}
 
           <Route path="*" element={<NotFound />}></Route>
         </Routes>

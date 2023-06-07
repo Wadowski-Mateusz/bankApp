@@ -30,7 +30,10 @@ function MyNavbar() {
   return (
     <Navbar bg="primary" expand="lg" className="fs-4">
       <Container>
-        <Navbar.Brand href="#">[LOGO]</Navbar.Brand>
+        <Navbar.Brand href="#">
+        <img src="../../../money-bag.png" height="48" width="48"/>
+          {/* [LOGO] */}
+          </Navbar.Brand>
         <Navbar.Toggle/>
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
