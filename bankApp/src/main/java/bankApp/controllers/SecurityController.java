@@ -30,10 +30,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
+@CrossOrigin
 public class SecurityController {
 
     private final PasswordEncoder passwordEncoder;

@@ -163,6 +163,9 @@ export default function Account() {
         </Row>
         <Row>
           <Col className="text-end h3">Balance: {account?.balance}</Col>
+        </Row>        
+        <Row>
+          <Col className="text-end h5">Account number: {account?.number}</Col>
         </Row>
         <Row>
           <Form>

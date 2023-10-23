@@ -61,10 +61,11 @@ public class AnnouncementController {
 
     @GetMapping("/current/random")
     ResponseEntity<AnnouncementDTO> getRandomCurrentAnnouncement(){
-        List<AnnouncementDTO> announcementDTOS = announcementService.getAllAnnouncements()
+        List<Announcement> ann = announcementService.getAllAnnouncements();
+        List<AnnouncementDTO> announcementDTOS = ann
                 .stream()
-                .filter(announcement -> announcement.getDateFrom().isBefore(LocalDate.now()))
-                .filter(announcement -> announcement.getDateTo().isAfter(LocalDate.now()))
+                .filter(announcement -> announcement.getDateFrom().isBefore(LocalDate.now().plusDays(1)))
+                .filter(announcement -> announcement.getDateTo().isAfter(LocalDate.now().minusDays(1)))
                 .filter(announcement -> announcement.getDeletedBy() == null)
                 .map(AnnouncementService::convertAnnouncementToDTO)
                 .toList();

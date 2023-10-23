@@ -1,0 +1,43 @@
+version: '3'
+services:
+
+  bank-db:
+    container_name: bank-db
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - postgres:/var/lib
+    networks:
+      - app-network
+  
+  bank-server:
+    container_name: bank-server
+    image: bank-server
+    ports:
+      - '8081:8081'
+    networks:
+      - app-network
+    depends_on:
+      - bank-db
+
+  bank-web:
+    container_name: bank-web
+    image: bank-web
+    ports:
+      - '5173:5173'
+    networks:
+      - app-network
+    depends_on:
+      - bank-server
+
+volumes:
+  postgres:
+
+networks:
+ app-network:
+   driver: bridge
