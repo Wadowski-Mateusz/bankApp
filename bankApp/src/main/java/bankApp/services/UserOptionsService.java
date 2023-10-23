@@ -15,7 +15,7 @@ import java.util.UUID;
 public class UserOptionsService {
 
     private final UserOptionsRepository userOptionsRepository;
-    private final UserService userService;;
+    private final UserService userService;
 
     public UserOptions createUserOptions(UserOptions userOptions) {
         return userOptionsRepository.save(userOptions);

@@ -8,7 +8,6 @@ import bankApp.services.AccountService;
 import bankApp.services.LoanService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

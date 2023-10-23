@@ -39,8 +39,7 @@ public class UserDetailsService {
     }
 
     public Optional<UserDetails> getByUserId(UUID userId) {
-        Optional<UserDetails> userDetails = userDetailsRepository.findByUserId(userId);
-        return userDetails;
+        return userDetailsRepository.findByUserId(userId);
     }
 
     public User getUserByUserId(UUID userId) {

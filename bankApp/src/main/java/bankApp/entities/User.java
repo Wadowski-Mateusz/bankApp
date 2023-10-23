@@ -1,12 +1,10 @@
 package bankApp.entities;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @AllArgsConstructor
@@ -39,8 +37,6 @@ public class User implements UserDetails {
                             " ON UPDATE CASCADE"))
     private Role role;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<Token> tokens;
 
     public User(String login, String password, boolean isVerified, Role role) {
         this.login = login;

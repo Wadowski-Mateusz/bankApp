@@ -2,7 +2,6 @@ package bankApp.services;
 
 import bankApp.DTOs.TransactionAddDTO;
 import bankApp.DTOs.TransactionViewDTO;
-import bankApp.entities.Account;
 import bankApp.entities.Transaction;
 import bankApp.repositories.TransactionRepository;
 import lombok.AllArgsConstructor;

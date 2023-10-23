@@ -16,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -143,11 +141,6 @@ public class SecurityController {
         accountService.createAccount(account);
 
         String jwtToken = jwtService.createToken(user);
-
-
-//        TransactionStatus status = TransactionAspectSupport.currentTransactionStatus();
-//        status.flush(); // Flushes any pending changes to the database
-//        status.flush(); // Commits the transaction
 
         tokenService.saveToken(user, jwtToken);
 

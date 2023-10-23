@@ -1,7 +1,5 @@
 package bankApp.DTOs;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDate;
 
 public record RegisterDTO(
