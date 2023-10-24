@@ -5,9 +5,9 @@
 ### Backend 
 
 * Java 17
-* Spring boot 3.0.5
+* Spring Boot 3.0.5
 * Spring Data
-* Spring security 
+* Spring Security 
 * Spring Web
 * Hibernate
 * Jakarta
@@ -17,6 +17,8 @@
 
 ### Database
 * PostgreSQL
+
+![Alt text](docs/db.jpg)
 
 ### Frontend
 * React
@@ -118,7 +120,3 @@ Paste account number\
 
 Setting, here you would be able to delete your account, but it is broken. Switch do, surprise, nothing.
 ![Alt text](docs/image-19.png)
-
-## Database ERD diagram
-
-![Alt text](docs/database_diagram.png)
