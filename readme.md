@@ -31,13 +31,31 @@
 * Internet connection
 * Browser
 
+*Tested under Linux and Windows*
+
 ### Setting up docker
-```docker build -t bank-server .```
 
-```docker build -t bank-web -f Dockerfile-web .```
+Start Docker
 
-```docker compose up```
+Linux: 
+```
+sudo systemctl start docker.service
+```
 
+Create server image:
+```
+docker build -t bank-server .
+```
+
+Crete web-page image:
+```
+docker build -t bank-web -f Dockerfile-web .
+```
+
+Create containsers:
+```
+docker compose up
+```
 
 ## Running the app
 Go to: http://localhost:5173
@@ -120,3 +138,48 @@ Paste account number\
 
 Setting, here you would be able to delete your account, but it is broken. Switch do, surprise, nothing.
 ![Alt text](docs/image-19.png)
+
+
+## Cleaning up
+
+### Check if containers are running:
+```
+docker ps
+```
+### If they are, stop them:
+```
+docker stop bank-web
+```
+```
+docker stop bank-server
+```
+```
+docker stop bank-db
+```
+
+
+### Remove containers:
+```
+docker rm bank-web
+```
+```
+docker rm bank-server
+```
+```
+docker rm bank-db
+```
+
+### Remove images:
+```
+docker rmi bank-web
+```
+```
+docker rmi bank-server
+```
+
+
+
+### (Optional) Remove other images, if no longer needed:
+```
+docker rmi postgres
+```
